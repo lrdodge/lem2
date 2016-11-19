@@ -16,13 +16,17 @@
   <body>
     <div class="container">
       <h1>LEM2</h1>
-      <p>Instructions</p>
       <form>
         <div class="form-group">
-          <textarea id="data-input" class="form-control"></textarea>
+          <p>Add comma separated value (CSV) data below.</p>
+          <textarea id="data-input" rows="10" class="form-control"></textarea>
         </div>
         <button id="process-data" type="button" class="btn btn-primary">Process</button>
       </form>
+
+      <div id="data-parse-result">
+        <p id="data-parse-result-message"></p>
+      </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
