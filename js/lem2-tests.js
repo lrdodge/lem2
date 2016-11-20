@@ -8,6 +8,6 @@ describe('LEM2 Module', function() {
     });
 
     it('should have an executeProcedure function', function() {
-      expect(LEM2.executeProcedure).to.not.be.undefined;
+      expect(LEM2.executeProcedure).to.be.a('function');
     });
 });
