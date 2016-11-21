@@ -11,6 +11,10 @@ describe('LEM2 Module', function() {
       expect(LEM2.executeProcedure).to.be.a('function');
     });
 
+    it('should have an reduceRuleset function', function() {
+      expect(LEM2.reduceRuleset).to.be.a('function');
+    });
+
     describe('#executeProcedure()', function() {
       it('should take a set (concept) and an array (data set) and return a single local covering of the set', function() {
         // Example 1
