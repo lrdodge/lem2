@@ -50,4 +50,16 @@ describe('LEM2 Module', function() {
         expect(actual).to.be.eql(rulesetFluNo2);
       })
     });
+
+    describe('#reduceRuleset()', function() {
+      it('should take a ruleset object and an array (data set) and return a minimal ruleset object', function() {
+        // Example 1 (already minimal)
+        var actual = LEM2.reduceRuleset(rulesetFluYes1, dataSet1);
+        expect(actual).to.be.eql(rulesetFluYes1);
+
+        actual = LEM2.reduceRuleset(rulesetFluNo1, dataSet1);
+        expect(actual).to.be.eql(rulesetFluNo1);
+
+      });
+    });
 });

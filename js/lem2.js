@@ -19,9 +19,8 @@ LEM2 = {
         return {"rules":[{"conditions":[{"headache":"no"}],"decision":{"flu":"no"}},{"conditions":[{"temperature":"normal"}],"decision":{"flu":"no"}}]};
       }
     },
-
-    reduceRuleset: function() {
-      
+    reduceRuleset: function(ruleset) {
+      return ruleset;
     }
 };
 
