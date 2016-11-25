@@ -19,6 +19,11 @@ LEM2 = {
         return {"rules":[{"conditions":[{"headache":"no"}],"decision":{"flu":"no"}},{"conditions":[{"temperature":"normal"}],"decision":{"flu":"no"}}]};
       }
     },
+
+    getCasesCoveredByRule: function() {
+      return new Set([1,2,4]);
+    },
+
     reduceRuleset: function(ruleset) {
         var reducedRuleset = { "rules": [] };
 

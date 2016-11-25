@@ -23,6 +23,10 @@ describe('LEM2 Module', function() {
       expect(LEM2.executeProcedure).to.be.a('function');
     });
 
+    it('should have an getCasesCoveredByRule function', function() {
+      expect(LEM2.getCasesCoveredByRule).to.be.a('function');
+    });
+
     it('should have an reduceRuleset function', function() {
       expect(LEM2.reduceRuleset).to.be.a('function');
     });
@@ -48,6 +52,15 @@ describe('LEM2 Module', function() {
         conceptFluNo = new Set([3,5,6]);
         actual = LEM2.executeProcedure(conceptFluNo, dataSet2);
         expect(actual).to.be.eql(rulesetFluNo2);
+      })
+    });
+
+    describe('#getCasesCoveredByRule', function() {
+      it('should take a rule object and an array (data set) and return a set (covered cases)', function() {
+        // Example 1
+        var coveredCases = new Set([1,2,4]);
+        var actual = LEM2.getCasesCoveredByRule(rulesetFluYes1.rules[0], dataSet1);
+        expect(actual).to.be.eql(coveredCases);
       })
     });
 
