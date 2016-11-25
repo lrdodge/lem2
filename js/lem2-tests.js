@@ -1,4 +1,5 @@
 'use strict';
+require('./set.js');
 var expect = require('chai').expect;
 var LEM2 = require('./lem2.js');
 
