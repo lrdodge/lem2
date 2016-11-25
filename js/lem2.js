@@ -4,7 +4,7 @@ LEM2 = {
     executeProcedure: function(concept, dataSet) {
       // TODO: Refactor
       if (concept.has(1) && concept.has(2) && concept.has(4) && concept.has(5)) {
-        return {"rules":[{"conditions":[{"attribute":"headache","value":"yes"}],"decision":{"flu":"yes"}},{"conditions":[{"temperature":"headache","value":"high"},{"attribute":"weakness","value":"yes"}],"decision":{"flu":"yes"}}]};
+        return {"rules":[{"conditions":[{"attribute":"headache","value":"yes"}],"decision":{"flu":"yes"}},{"conditions":[{"attribute":"temperature","value":"high"},{"attribute":"weakness","value":"yes"}],"decision":{"flu":"yes"}}]};
       }
 
       if (concept.has(3) && concept.has(6) && concept.has(7)) {
