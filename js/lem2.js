@@ -20,7 +20,11 @@ LEM2 = {
       }
     },
 
-    getCasesCoveredByRule: function(rule) {
+    getAttributeValueBlock: function() {
+
+    },
+
+    getCasesCoveredByRule: function(rule, dataset) {
       if (rule.conditions.length === 1) {
           return new Set([1,2,4]);
       }
