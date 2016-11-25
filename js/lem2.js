@@ -20,7 +20,16 @@ LEM2 = {
       }
     },
     reduceRuleset: function(ruleset) {
-      return ruleset;
+        var reducedRuleset = { "rules": [] };
+
+        ruleset.rules.forEach(function(rule, ruleIndex) {
+          var rulesetMinusRule = ruleset.rules.slice(0);
+          rulesetMinusRule.splice(ruleIndex, 1);
+          // if cannot be removed, add to reducedRuleset
+          reducedRuleset.rules.push(rule);
+        });
+
+      return reducedRuleset;
     }
 };
 
