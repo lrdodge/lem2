@@ -77,6 +77,14 @@ describe('LEM2 Module', function() {
         actual = LEM2.reduceRuleset(rulesetFluNo1, dataSet1);
         expect(actual).to.be.eql(rulesetFluNo1);
 
+        // Example 1 (not minimal)
+        var expandedRulesetFluYes1 = {"rules":[{"conditions":[{"headache":"yes"}],"decision":{"flu":"yes"}},{"conditions":[{"headache":"yes"},{"weakness":"yes"},{"nausea":"yes"}],"decision":{"flu":"yes"}},{"conditions":[{"temperature":"high","weakness":"yes"}],"decision":{"flu":"yes"}}]};
+        actual = LEM2.reduceRuleset(expandedRulesetFluYes1, dataSet1);
+        expect(actual).to.be.eql(rulesetFluYes1);
+
+        var expandedRulesetFluNo1 = {"rules":[{"conditions":[{"temperature":"normal","headache":"no"}],"decision":{"flu":"no"}},{"conditions":[{"temperature":"normal","headache":"no","weakness":"yes"}],"decision":{"flu":"no"}},{"conditions":[{"headache":"no","weakness":"no"}],"decision":{"flu":"no"}},{"conditions":[{"temperature":"normal","headache":"no","weakness":"no"}],"decision":{"flu":"no"}}]};
+        actual = LEM2.reduceRuleset(expandedRulesetFluNo1, dataSet1);
+        expect(actual).to.be.eql(rulesetFluNo1);
       });
     });
 });
