@@ -5,14 +5,14 @@ var LEM2 = require('./lem2.js');
 // Data Example 1
 
 var dataSet1 = [["temperature","headache","weakness","nausea","flu"],["very_high","yes","yes","no","yes"],["high","yes","no","yes","yes"],["normal","no","no","no","no"],["normal","yes","yes","yes","yes"],["high","no","yes","no","yes"],["high","no","no","no","no"],["normal","no","yes","no","no"]];
-var rulesetFluYes1 = {"rules":[{"conditions":[{"headache":"yes"}],"decision":{"flu":"yes"}},{"conditions":[{"temperature":"high"},{"weakness":"yes"}],"decision":{"flu":"yes"}}]};
-var rulesetFluNo1 = {"rules":[{"conditions":[{"temperature":"normal"},{"headache":"no"}],"decision":{"flu":"no"}},{"conditions":[{"headache":"no"},{"weakness":"no"}],"decision":{"flu":"no"}}]};
+var rulesetFluYes1 = {"rules":[{"conditions":[{"attribute":"headache","value":"yes"}],"decision":{"flu":"yes"}},{"conditions":[{"temperature":"headache","value":"high"},{"attribute":"weakness","value":"yes"}],"decision":{"flu":"yes"}}]};
+var rulesetFluNo1 = {"rules":[{"conditions":[{"attribute":"temperature","value":"normal"},{"attribute":"headache","value":"no"}],"decision":{"flu":"no"}},{"conditions":[{"attribute":"headache","value":"no"},{"attribute":"weakness","value":"no"}],"decision":{"flu":"no"}}]};
 
 // Data Example 2
 
 var dataSet2 = [["temperature","headache","nausea","cough","flu"],["high","yes","no","yes","yes"],["very_high","yes","yes","no","yes"],["high","no","no","no","no"],["high","yes","yes","yes","yes"],["normal","yes","no","no","no"],["normal","no","yes","yes","no"]];
-var rulesetFluYes2 = {"rules":[{"conditions":[{"headache":"yes"},{"temperature":"high"}],"decision":{"flu":"yes"}},{"conditions":[{"temperature":"very_high"}],"decision":{"flu":"yes"}}]};
-var rulesetFluNo2 = {"rules":[{"conditions":[{"headache":"no"}],"decision":{"flu":"no"}},{"conditions":[{"temperature":"normal"}],"decision":{"flu":"no"}}]};
+var rulesetFluYes2 = {"rules":[{"conditions":[{"attribute":"headache","value":"yes"},{"attribute":"temperature","value":"high"}],"decision":{"flu":"yes"}},{"conditions":[{"attribute":"temperature","value":"very_high"}],"decision":{"flu":"yes"}}]};
+var rulesetFluNo2 = {"rules":[{"conditions":[{"attribute":"headache","value":"no"}],"decision":{"flu":"no"}},{"conditions":[{"attribute":"temperature","value":"normal"}],"decision":{"flu":"no"}}]};
 
 describe('LEM2 Module', function() {
     it('should exist', function() {
