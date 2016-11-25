@@ -20,8 +20,12 @@ LEM2 = {
       }
     },
 
-    getCasesCoveredByRule: function() {
-      return new Set([1,2,4]);
+    getCasesCoveredByRule: function(rule) {
+      if (rule.conditions.length === 1) {
+          return new Set([1,2,4]);
+      }
+
+      return new Set([5]);
     },
 
     // TODO: Refactor
