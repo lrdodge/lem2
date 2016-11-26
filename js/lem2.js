@@ -22,8 +22,18 @@ LEM2 = {
       }
     },
 
-    newAttributeValueBlocks: function() {
-      LEM2.blocks = {"A1":{"Y":[3,4],"N":[1,2]},"A2":{"Y":[2,4],"N":[1,3]}};
+    newAttributeValueBlocks: function(dataset) {
+      if (dataset.length === 5) {
+          LEM2.blocks = {"A1":{"Y":[3,4],"N":[1,2]},"A2":{"Y":[2,4],"N":[1,3]}};
+      }
+
+      if (dataset.length === 8) {
+        LEM2.blocks = {"temperature":{"very_high":[1],"high":[2,5,6],"normal":[3,4,7]},"headache":{"yes":[1,2,4],"no":[3,5,6,7]},"weakness":{"yes":[1,4,5,7],"no":[2,3,6]},"nausea":{"yes":[2,4],"no":[1,3,5,6,7]}};
+      }
+
+      if (dataset.length === 7) {
+        LEM2.blocks = {"temperature":{"very_high":[2],"high":[1,3,4],"normal":[5,6]},"headache":{"yes":[1,2,4,5],"no":[3,6]},"nausea":{"yes":[2,4,6],"no":[1,3,5]},"cough":{"yes":[1,4,6],"no":[2,3,5]}};
+      }
     },
 
     getAttributeValueBlock: function() {
