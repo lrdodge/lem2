@@ -25,6 +25,8 @@ LEM2 = {
 
     newAttributeValueBlocks: function(dataset) {
       LEM2.blocks = {};
+      var dataset = dataset.slice(0);
+
       var attributeNames = dataset[0];
       // Remove decision label
       attributeNames.pop();
