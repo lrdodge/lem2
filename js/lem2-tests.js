@@ -95,7 +95,6 @@ describe('LEM2 Module', function() {
       it('should take a rule object and an array (data set) and return a set (covered cases)', function() {
         // Example 1
         LEM2.newAttributeValueBlocks(dataSet1);
-        console.log(LEM2.blocks);
         let coveredCases = new Set([1,2,4]);
         let actual = LEM2.getCasesCoveredByRule(rulesetFluYes1.rules[0], dataSet1);
         expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
