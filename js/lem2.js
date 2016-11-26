@@ -24,17 +24,33 @@ LEM2 = {
     },
 
     newAttributeValueBlocks: function(dataset) {
-      if (dataset.length === 5) {
-          LEM2.blocks = {"A1":{"Y":[3,4],"N":[1,2]},"A2":{"Y":[2,4],"N":[1,3]}};
-      }
+      LEM2.blocks = {};
+      var attributeNames = dataset[0];
+      // Remove decision label
+      attributeNames.pop();
+      // Remove labels
+      dataset.shift();
 
-      if (dataset.length === 8) {
-        LEM2.blocks = {"temperature":{"very_high":[1],"high":[2,5,6],"normal":[3,4,7]},"headache":{"yes":[1,2,4],"no":[3,5,6,7]},"weakness":{"yes":[1,4,5,7],"no":[2,3,6]},"nausea":{"yes":[2,4],"no":[1,3,5,6,7]}};
-      }
+      attributeNames.forEach(function(attributeName, attributeIndex) {
+        LEM2.blocks[attributeName] = {};
 
-      if (dataset.length === 7) {
-        LEM2.blocks = {"temperature":{"very_high":[2],"high":[1,3,4],"normal":[5,6]},"headache":{"yes":[1,2,4,5],"no":[3,6]},"nausea":{"yes":[2,4,6],"no":[1,3,5]},"cough":{"yes":[1,4,6],"no":[2,3,5]}};
-      }
+        var column = dataset.map(function(value) {
+          return value[attributeIndex];
+        });
+
+        var attributeValues = column.filter(function(value, index, self) {
+          return self.indexOf(value) === index;
+        });
+
+        attributeValues.forEach(function(attributeValue) {
+          LEM2.blocks[attributeName][attributeValue] = column.reduce(function(attributeValues, value, index) {
+            if (value === attributeValue){
+              attributeValues.push(index + 1);
+            }
+            return attributeValues;
+          }, []);
+        });
+      });
     },
 
     getAttributeValueBlock: function() {
@@ -42,6 +58,17 @@ LEM2 = {
     },
 
     getCasesCoveredByRule: function(rule, dataset) {
+      var attributes = dataset[0];
+      var coveredCases = new Set();
+
+      rule.conditions.forEach(function(condition) {
+        var attributeIndex = attributes.indexOf(condition.attribute);
+
+        var block = LEM2.getAttributeValueBlock();
+        // add block to covered cases if empty
+        // otherwise, intersection of coveredCases and block
+      });
+
       if (rule.conditions.length === 1) {
           return new Set([1,2,4]);
       }
