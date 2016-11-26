@@ -3,8 +3,9 @@ var LEM2;
 LEM2 = {
     blocks: {},
 
+    // TODO: Refactor
     executeProcedure: function(concept, dataSet) {
-      // TODO: Refactor
+
       if (concept.has(1) && concept.has(2) && concept.has(4) && concept.has(5)) {
         return {"rules":[{"conditions":[{"attribute":"headache","value":"yes"}],"decision":{"flu":"yes"}},{"conditions":[{"attribute":"temperature","value":"high"},{"attribute":"weakness","value":"yes"}],"decision":{"flu":"yes"}}]};
       }
@@ -63,7 +64,7 @@ LEM2 = {
         ruleset.rules.forEach(function(rule, ruleIndex) {
           var rulesetMinusRule = ruleset.rules.slice(0);
           rulesetMinusRule.splice(ruleIndex, 1);
-          // if cannot be removed, add to reducedRuleset
+          // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to reducedRuleset
           reducedRuleset.rules.push(rule);
         });
 
