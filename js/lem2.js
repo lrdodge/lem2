@@ -53,10 +53,6 @@ LEM2 = {
       });
     },
 
-    getAttributeValueBlock: function() {
-
-    },
-
     getCasesCoveredByRule: function(rule, dataset) {
       var attributes = dataset[0];
       var coveredCases = new Set();

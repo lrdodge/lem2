@@ -34,10 +34,6 @@ describe('LEM2 Module', function() {
       expect(LEM2.newAttributeValueBlocks).to.be.a('function');
     });
 
-    it('should have an getAttributeValueBlock function', function() {
-      expect(LEM2.getAttributeValueBlock).to.be.a('function');
-    });
-
     it('should have an getCasesCoveredByRule function', function() {
       expect(LEM2.getCasesCoveredByRule).to.be.a('function');
     });
