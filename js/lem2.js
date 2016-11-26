@@ -1,6 +1,8 @@
 var LEM2;
 
 LEM2 = {
+    blocks: {},
+
     executeProcedure: function(concept, dataSet) {
       // TODO: Refactor
       if (concept.has(1) && concept.has(2) && concept.has(4) && concept.has(5)) {
@@ -18,6 +20,10 @@ LEM2 = {
       if (concept.has(3) && concept.has(5) && concept.has(6)) {
         return {"rules":[{"conditions":[{"attribute":"headache","value":"no"}],"decision":{"flu":"no"}},{"conditions":[{"attribute":"temperature","value":"normal"}],"decision":{"flu":"no"}}]};
       }
+    },
+
+    newAttributeValueBlocks: function() {
+      LEM2.blocks = {"A1":{"Y":[3,4],"N":[1,2]},"A2":{"Y":[2,4],"N":[1,3]}};
     },
 
     getAttributeValueBlock: function() {

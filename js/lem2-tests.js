@@ -24,6 +24,14 @@ describe('LEM2 Module', function() {
       expect(LEM2.executeProcedure).to.be.a('function');
     });
 
+    it('should have a blocks object', function() {
+      expect(LEM2.blocks).to.be.a('object');
+    });
+
+    it('should have an newAttributeValueBlocks function', function() {
+      expect(LEM2.newAttributeValueBlocks).to.be.a('function');
+    });
+
     it('should have an getAttributeValueBlock function', function() {
       expect(LEM2.getAttributeValueBlock).to.be.a('function');
     });
@@ -37,6 +45,15 @@ describe('LEM2 Module', function() {
     });
 
     // Functions
+
+    describe('#newAttributeValueBlocks()', function() {
+      it('should take a set (data set) and creates a blocks object (attribute-value blocks)', function() {
+        var dataset = [["A1","A2","D"],["N","N","False"],["N","Y","True"],["Y","N","False"],["Y","Y","True"]];
+        var blocks = {"A1":{"Y":[3,4],"N":[1,2]},"A2":{"Y":[2,4],"N":[1,3]}};
+        LEM2.newAttributeValueBlocks(dataset);
+        expect(LEM2.blocks).to.be.eql(blocks);
+      })
+    });
 
     describe('#executeProcedure()', function() {
       it('should take a set (concept) and an array (data set) and return a ruleset object (single local covering of the set)', function() {
