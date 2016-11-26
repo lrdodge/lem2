@@ -62,16 +62,15 @@ LEM2 = {
       rule.conditions.forEach(function(condition) {
         var attributeIndex = attributes.indexOf(condition.attribute);
 
-        var block = LEM2.getAttributeValueBlock();
-        // add block to covered cases if empty
-        // otherwise, intersection of coveredCases and block
+        var block = new Set(LEM2.blocks[condition.attribute][condition.value]);
+        if (coveredCases.size === 0) {
+          coveredCases = block;
+          return;
+        }
+        coveredCases = coveredCases.intersection(block);
       });
 
-      if (rule.conditions.length === 1) {
-          return new Set([1,2,4]);
-      }
-
-      return new Set([5]);
+      return coveredCases;
     },
 
     // TODO: Refactor

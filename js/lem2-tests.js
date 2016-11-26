@@ -86,6 +86,7 @@ describe('LEM2 Module', function() {
     describe('#getCasesCoveredByRule', function() {
       it('should take a rule object and an array (data set) and return a set (covered cases)', function() {
         // Example 1
+        LEM2.newAttributeValueBlocks(dataSet1);
         var coveredCases = new Set([1,2,4]);
         var actual = LEM2.getCasesCoveredByRule(rulesetFluYes1.rules[0], dataSet1);
         expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
@@ -94,13 +95,12 @@ describe('LEM2 Module', function() {
         actual = LEM2.getCasesCoveredByRule(rulesetFluYes1.rules[1], dataSet1);
         expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
 
-        // Example 2
-        coveredCases = new Set([3,6]);
-        actual = LEM2.getCasesCoveredByRule(rulesetFluYes2.rules[0], dataSet2);
+        coveredCases = new Set([3,7]);
+        actual = LEM2.getCasesCoveredByRule(rulesetFluNo1.rules[0], dataSet1);
         expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
 
-        coveredCases = new Set([3,7]);
-        actual = LEM2.getCasesCoveredByRule(rulesetFluYes2.rules[1], dataSet2);
+        coveredCases = new Set([3,6]);
+        actual = LEM2.getCasesCoveredByRule(rulesetFluNo1.rules[1], dataSet1);
         expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
       })
     });
