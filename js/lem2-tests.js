@@ -45,7 +45,7 @@ describe('LEM2 Module', function() {
     // Functions
 
     describe('#newAttributeValueBlocks()', function() {
-      it('should take a set (data set) and creates a blocks object (attribute-value blocks)', function() {
+      it('should take an array (data set) and create a blocks object (attribute-value blocks)', function() {
         var dataset = [["A1","A2","D"],["N","N","False"],["N","Y","True"],["Y","N","False"],["Y","Y","True"]];
         var blocks = {"A1":{"Y":[3,4],"N":[1,2]},"A2":{"Y":[2,4],"N":[1,3]}};
         LEM2.newAttributeValueBlocks(dataset);
@@ -58,6 +58,14 @@ describe('LEM2 Module', function() {
         // Example 2
         LEM2.newAttributeValueBlocks(dataSet2);
         expect(LEM2.blocks).to.be.eql(blocks2);
+      });
+
+      it('should not modify the input array (data set)', function() {
+        var expected = [["temperature","headache","weakness","nausea","flu"],["very_high","yes","yes","no","yes"],["high","yes","no","yes","yes"],["normal","no","no","no","no"],["normal","yes","yes","yes","yes"],["high","no","yes","no","yes"],["high","no","no","no","no"],["normal","no","yes","no","no"]];
+        expect(dataSet1).to.be.eql(expected);
+
+        expected = [["temperature","headache","nausea","cough","flu"],["high","yes","no","yes","yes"],["very_high","yes","yes","no","yes"],["high","no","no","no","no"],["high","yes","yes","yes","yes"],["normal","yes","no","no","no"],["normal","no","yes","yes","no"]];
+        expect(dataSet2).to.be.eql(expected);
       })
     });
 
@@ -80,13 +88,14 @@ describe('LEM2 Module', function() {
         conceptFluNo = new Set([3,5,6]);
         actual = LEM2.executeProcedure(conceptFluNo, dataSet2);
         expect(actual).to.be.eql(rulesetFluNo2);
-      })
+      });
     });
 
     describe('#getCasesCoveredByRule', function() {
       it('should take a rule object and an array (data set) and return a set (covered cases)', function() {
         // Example 1
         LEM2.newAttributeValueBlocks(dataSet1);
+        console.log(LEM2.blocks);
         var coveredCases = new Set([1,2,4]);
         var actual = LEM2.getCasesCoveredByRule(rulesetFluYes1.rules[0], dataSet1);
         expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
@@ -102,7 +111,7 @@ describe('LEM2 Module', function() {
         coveredCases = new Set([3,6]);
         actual = LEM2.getCasesCoveredByRule(rulesetFluNo1.rules[1], dataSet1);
         expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
-      })
+      });
     });
 
     describe('#reduceRuleset()', function() {
