@@ -1,10 +1,11 @@
 var LEM2;
 
 LEM2 = {
+  dataset: {},
   blocks: {},
 
   // TODO: Refactor
-  executeProcedure: function(concept, dataSet) {
+  executeProcedure: function(concept) {
 
     if (concept.has(1) && concept.has(2) && concept.has(4) && concept.has(5)) {
       return {"rules":[{"conditions":[{"attribute":"headache","value":"yes"}],"decision":{"flu":"yes"}},{"conditions":[{"attribute":"temperature","value":"high"},{"attribute":"weakness","value":"yes"}],"decision":{"flu":"yes"}}]};
@@ -23,9 +24,9 @@ LEM2 = {
     }
   },
 
-  newAttributeValueBlocks: function(dataset) {
+  newAttributeValueBlocks: function() {
     LEM2.blocks = {};
-    var dataset = dataset.slice(0);
+    var dataset = LEM2.dataset.slice(0);
 
     var attributeNames = dataset[0].slice(0);
     // Remove decision label
@@ -55,8 +56,8 @@ LEM2 = {
     });
   },
 
-  getCasesCoveredByRule: function(rule, dataset) {
-    var attributes = dataset[0];
+  getCasesCoveredByRule: function(rule) {
+    var attributes = LEM2.dataset[0];
     var coveredCases = new Set();
 
     rule.conditions.forEach(function(condition) {
