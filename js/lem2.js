@@ -26,7 +26,38 @@ LEM2 = {
   },
 
   newConcepts: function() {
-    LEM2.concepts = [{ "decision": "flu", "value": "yes", "cases": new Set([1,2,4,5])}, { "decision": "flu", "value": "no", "cases": new Set([3,6,7])}];
+    LEM2.concepts = [];
+
+    var decisionIndex = LEM2.dataset[0].length - 1;
+    var dataset = LEM2.dataset.slice(0);
+    var decision = dataset[0][decisionIndex];
+    // Remove decision label
+    dataset.shift();
+
+    var column = dataset.map(function(value) {
+      return value[decisionIndex];
+    });
+
+    var decisionValues = column.filter(function(value, index, self) {
+      return self.indexOf(value) === index;
+    });
+
+    decisionValues.forEach(function(decisionValue) {
+      var cases = column.reduce(function(decisionValues, value, index) {
+        if (value === decisionValue){
+          decisionValues.push(index + 1);
+        }
+        return decisionValues;
+      }, []);
+
+      var concept = {
+        "decision": decision,
+        "value": decisionValue,
+        "cases": new Set(cases)
+      };
+
+      LEM2.concepts.push(concept);
+    });
   },
 
   newAttributeValueBlocks: function() {

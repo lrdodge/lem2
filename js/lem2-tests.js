@@ -67,9 +67,29 @@ describe('LEM2 Module', function() {
         // Example 1
         LEM2.dataset = dataSet1;
         LEM2.newConcepts();
-        var expected = [conceptFluYes1, conceptFluNo1];
+        let expected = [conceptFluYes1, conceptFluNo1];
+        expect(LEM2.concepts).to.be.eql(expected);
+
+        // Example 2
+        LEM2.dataset = dataSet2;
+        LEM2.newConcepts();
+        expected = [conceptFluYes2, conceptFluNo2];
         expect(LEM2.concepts).to.be.eql(expected);
       });
+
+      it('should not modify the input array (data set)', function() {
+        // Example 1
+        LEM2.dataset = dataSet1;
+        LEM2.newConcepts();
+        let expected = [["temperature","headache","weakness","nausea","flu"],["very_high","yes","yes","no","yes"],["high","yes","no","yes","yes"],["normal","no","no","no","no"],["normal","yes","yes","yes","yes"],["high","no","yes","no","yes"],["high","no","no","no","no"],["normal","no","yes","no","no"]];
+        expect(dataSet1).to.be.eql(expected);
+
+        // Example 2
+        LEM2.dataset = dataSet2;
+        LEM2.newConcepts();
+        expected = [["temperature","headache","nausea","cough","flu"],["high","yes","no","yes","yes"],["very_high","yes","yes","no","yes"],["high","no","no","no","no"],["high","yes","yes","yes","yes"],["normal","yes","no","no","no"],["normal","no","yes","yes","no"]];
+        expect(dataSet2).to.be.eql(expected);
+      })
     });
 
     describe('#newAttributeValueBlocks()', function() {
