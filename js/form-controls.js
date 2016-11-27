@@ -1,7 +1,7 @@
 var FormController = (function () {
 
   var _addEventHandlers = function () {
-    $("#process-data").click(parseData);
+    $("#process-data").click(processData);
   };
 
   var parseData = function() {
@@ -40,6 +40,13 @@ var FormController = (function () {
     })
     $("#data-parse-result").append(errorList);
   }
+
+  var processData = function() {
+    var data = parseData().data;
+    LEM2.dataset = data;
+    var concept = new Set([1,2,4,5]);
+    var ruleset = LEM2.executeProcedure(concept);
+  };
 
   return {
     addEventHandlers: _addEventHandlers
