@@ -22,7 +22,7 @@
           <textarea id="data-input" rows="10" class="form-control"></textarea>
           <span class="help-block">First row should be the column labels. Last column should be the decision value. Omit case numbers.</span>
         </div>
-        <button id="process-data" type="button" class="btn btn-primary">Process</button>
+        <button type="button" class="btn btn-primary" id="process-data-button" >Process</button>
 
         <div id="data-parse-result">
           <p id="data-parse-result-message"></p>
@@ -46,7 +46,7 @@
             </form>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-primary" id="induce-rules-button">Induce Rules</button>
             </div>
           </div>
         </div>
