@@ -3,6 +3,7 @@ var LEM2;
 LEM2 = {
   dataset: {},
   blocks: {},
+  concepts: [],
 
   // TODO: Refactor
   executeProcedure: function(concept) {

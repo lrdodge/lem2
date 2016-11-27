@@ -24,12 +24,16 @@ describe('LEM2 Module', function() {
 
     // Objects
 
+    it('should have a dataset object', function() {
+      expect(LEM2.dataset).to.be.a('object');
+    });
+
     it('should have a blocks object', function() {
       expect(LEM2.blocks).to.be.a('object');
     });
 
-    it('should have a dataset object', function() {
-      expect(LEM2.dataset).to.be.a('object');
+    it('should have a concepts array', function() {
+      expect(LEM2.concepts).to.be.a('array');
     });
 
     // Functions
