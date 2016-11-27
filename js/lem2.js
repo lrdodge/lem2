@@ -8,25 +8,25 @@ LEM2 = {
   // TODO: Refactor
   executeProcedure: function(concept) {
 
-    if (concept.has(1) && concept.has(2) && concept.has(4) && concept.has(5)) {
+    if (concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4) && concept.cases.has(5)) {
       return {"rules":[{"conditions":[{"attribute":"headache","value":"yes"}],"decision":{"name":"flu","value":"yes"}},{"conditions":[{"attribute":"temperature","value":"high"},{"attribute":"weakness","value":"yes"}],"decision":{"name":"flu","value":"yes"}}]};
     }
 
-    if (concept.has(3) && concept.has(6) && concept.has(7)) {
+    if (concept.cases.has(3) && concept.cases.has(6) && concept.cases.has(7)) {
         return {"rules":[{"conditions":[{"attribute":"temperature","value":"normal"},{"attribute":"headache","value":"no"}],"decision":{"name":"flu","value":"no"}},{"conditions":[{"attribute":"headache","value":"no"},{"attribute":"weakness","value":"no"}],"decision":{"name":"flu","value":"no"}}]};
     }
 
-    if (concept.has(1) && concept.has(2) && concept.has(4)) {
+    if (concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4)) {
       return {"rules":[{"conditions":[{"attribute":"headache","value":"yes"},{"attribute":"temperature","value":"high"}],"decision":{"name":"flu","value":"yes"}},{"conditions":[{"attribute":"temperature","value":"very_high"}],"decision":{"name":"flu","value":"yes"}}]};
     }
 
-    if (concept.has(3) && concept.has(5) && concept.has(6)) {
+    if (concept.cases.has(3) && concept.cases.has(5) && concept.cases.has(6)) {
       return {"rules":[{"conditions":[{"attribute":"headache","value":"no"}],"decision":{"name":"flu","value":"no"}},{"conditions":[{"attribute":"temperature","value":"normal"}],"decision":{"name":"flu","value":"no"}}]};
     }
   },
 
   newConcepts: function() {
-
+    LEM2.concepts = [{ "decision": "flu", "value": "yes", "cases": new Set([1,2,4,5])}, { "decision": "flu", "value": "no", "cases": new Set([3,6,7])}];
   },
 
   newAttributeValueBlocks: function() {
