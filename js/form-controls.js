@@ -84,6 +84,21 @@ var FormController = (function () {
     LEM2.newAttributeValueBlocks();
     LEM2.newConcepts();
 
+    // Build Modal
+    var conceptModalBody = $("#concept-modal-body");
+    conceptModalBody.empty();
+    var conceptList = $("<ul/>");
+    console.log(LEM2.concepts);
+    LEM2.concepts.forEach(function(concept) {
+      var conceptItem = $("<li>", {
+        "text": "(" + concept.decision + ", " + concept.value + ") = " + concept.cases.toString()
+      });
+      conceptList.append(conceptItem);
+    });
+    conceptModalBody.append(conceptList);
+
+    $("#concept-modal").modal();
+
     var ruleset = LEM2.executeProcedure(LEM2.concepts[0]);
     displayRules(ruleset.rules);
   };
