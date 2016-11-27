@@ -45,6 +45,8 @@ var FormController = (function () {
         errorList.append(errorItem);
     })
     $("#data-parse-result").append(errorList);
+
+    return false;
   };
 
   var displayRules = function(rules) {
@@ -55,11 +57,11 @@ var FormController = (function () {
       console.log(rule);
       var ruleText = "";
       rule.conditions.forEach(function(condition) {
-        ruleText += "(" + condition.attribute + "," + condition.value + ") && ";
+        ruleText += "(" + condition.attribute + ", " + condition.value + ") && ";
       });
       ruleText = ruleText.substring(0, ruleText.length - 3);
       ruleText += "-> ";
-      ruleText += "(" + rule.decision.name + "," + rule.decision.value + ")"
+      ruleText += "(" + rule.decision.name + ", " + rule.decision.value + ")"
 
       var ruleItem = $("<li/>", {
         "text": ruleText
@@ -70,7 +72,12 @@ var FormController = (function () {
   };
 
   var processData = function() {
-    var data = parseData().data;
+    var csv = parseData();
+    if (!csv) {
+      return;
+    }
+
+    var data = csv.data;
     LEM2.dataset = data;
     var concept = new Set([1,2,4,5]);
     var ruleset = LEM2.executeProcedure(concept);
