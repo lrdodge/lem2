@@ -6,8 +6,12 @@ var FormController = (function () {
 
   var parseData = function() {
     var parseResultMessage = $("#data-parse-result-message");
+    var rulesContainer = $("#rules-div");
+
+    rulesContainer.hide();
     parseResultMessage.empty();
     $("#data-parse-error-list").remove();
+    $("#rules-list").remove();
 
     var csv = $("#data-input").val();
     var data = Papa.parse(csv);
@@ -16,11 +20,11 @@ var FormController = (function () {
     parseResultMessage.toggleClass("text-success", !data.errors.length);
 
     if (!data.errors.length) {
-      $("#rules-div").show();
+      rulesContainer.show();
       return data;
     }
 
-    $("#rules-div").hide();
+    rulesContainer.hide();
     parseResultMessage.text("Data Input Errors");
 
     var errorList = $("<ul/>", {
@@ -41,13 +45,36 @@ var FormController = (function () {
         errorList.append(errorItem);
     })
     $("#data-parse-result").append(errorList);
-  }
+  };
+
+  var displayRules = function(rules) {
+    var ruleList = $("<ol/>", {
+      "id": "rules-list"
+    });
+    rules.forEach(function(rule) {
+      console.log(rule);
+      var ruleText = "";
+      rule.conditions.forEach(function(condition) {
+        ruleText += "(" + condition.attribute + "," + condition.value + ") && ";
+      });
+      ruleText = ruleText.substring(0, ruleText.length - 3);
+      ruleText += "-> ";
+      ruleText += "(" + rule.decision.name + "," + rule.decision.value + ")"
+
+      var ruleItem = $("<li/>", {
+        "text": ruleText
+      });
+      ruleList.append(ruleItem);
+      $("#rules-div").append(ruleList);
+    });
+  };
 
   var processData = function() {
     var data = parseData().data;
     LEM2.dataset = data;
     var concept = new Set([1,2,4,5]);
     var ruleset = LEM2.executeProcedure(concept);
+    displayRules(ruleset.rules);
   };
 
   return {
