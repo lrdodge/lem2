@@ -16,9 +16,11 @@ var FormController = (function () {
     parseResultMessage.toggleClass("text-success", !data.errors.length);
 
     if (!data.errors.length) {
-      return;
+      $("#rules-div").show();
+      return data;
     }
 
+    $("#rules-div").hide();
     parseResultMessage.text("Data Input Errors");
 
     var errorList = $("<ul/>", {
