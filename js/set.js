@@ -37,3 +37,7 @@ Set.prototype.sort = function() {
   var setArray = Array.from(this);
   return new Set(setArray.sort());
 }
+
+Set.prototype.toString = function() {
+  return "{" + [...this] + "}"
+}
