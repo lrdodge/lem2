@@ -25,6 +25,10 @@ LEM2 = {
     }
   },
 
+  newConcepts: function() {
+
+  },
+
   newAttributeValueBlocks: function() {
     LEM2.blocks = {};
     var dataset = LEM2.dataset.slice(0);

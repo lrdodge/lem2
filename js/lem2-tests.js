@@ -42,6 +42,10 @@ describe('LEM2 Module', function() {
       expect(LEM2.executeProcedure).to.be.a('function');
     });
 
+    it('should have a newConcepts function', function() {
+      expect(LEM2.newConcepts).to.be.a('function');
+    });
+
     it('should have an newAttributeValueBlocks function', function() {
       expect(LEM2.newAttributeValueBlocks).to.be.a('function');
     });
