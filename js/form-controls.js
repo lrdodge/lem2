@@ -78,9 +78,13 @@ var FormController = (function () {
     }
 
     var data = csv.data;
+
+    // Initialize
     LEM2.dataset = data;
-    var concept = new Set([1,2,4,5]);
-    var ruleset = LEM2.executeProcedure(concept);
+    LEM2.newAttributeValueBlocks();
+    LEM2.newConcepts();
+
+    var ruleset = LEM2.executeProcedure(LEM2.concepts[0]);
     displayRules(ruleset.rules);
   };
 
