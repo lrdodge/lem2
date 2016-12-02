@@ -98,7 +98,7 @@ var FormController = (function () {
     LEM2.newConcepts();
 
     // Build Concept Chooser Modal
-    var conceptModalBody = $("#concept-modal-body");
+    var conceptModalBody = $("#concept-modal-form");
     conceptModalBody.empty();
     LEM2.concepts.forEach(function(concept, conceptIndex) {
 
@@ -110,7 +110,7 @@ var FormController = (function () {
       });
       var radioButton = $("<input/>", {
         "type": "radio",
-        "name": "concept-choice",
+        "name": "concept",
         "id": "concept-" + conceptIndex,
         "value": conceptIndex
       });
@@ -118,13 +118,28 @@ var FormController = (function () {
       radioButtonLabel.prepend(radioButton);
       radioButtonContainer.append(radioButtonLabel);
       conceptModalBody.append(radioButtonContainer);
+      conceptModalBody.validate({
+        errorClass: "text-danger",
+        errorPlacement: function(error, element) {
+          error.appendTo(element.closest("form"));
+        },
+        rules: {
+          concept: {
+            required: true
+          }
+        }
+      });
     });
 
     $("#concept-modal").modal();
   };
 
   var induceRules = function() {
-    var conceptIndex = $("input[name='concept-choice']:checked").val();
+    if (!$("#concept-modal-form").valid()) {
+      return;
+    }
+
+    var conceptIndex = $("input[name='concept']:checked").val();
     var ruleset = LEM2.executeProcedure(LEM2.concepts[conceptIndex]);
     displayRules(ruleset.rules);
     $("#concept-modal").modal('hide');
