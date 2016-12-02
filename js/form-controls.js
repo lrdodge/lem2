@@ -6,37 +6,27 @@ var FormController = (function () {
   };
 
   var parseData = function() {
-    var parseResultMessage = $("#data-parse-result-message");
-    var rulesContainer = $("#rules-div");
+    var dataInputErrorAlert = $("#data-input-error-alert");
+    var dataInputErrorMessage = $("#data-input-error-message");
 
-    rulesContainer.hide();
-    parseResultMessage.empty();
-    $("#data-parse-error-list").remove();
-    $("#rules-list").remove();
+    dataInputErrorAlert.hide();
+    dataInputErrorMessage.empty();
 
     var csv = $("#data-input").val();
     var data = Papa.parse(csv);
-
-    parseResultMessage.toggleClass("text-danger", data.errors.length > 0);
-    parseResultMessage.toggleClass("text-success", !data.errors.length);
 
     if (!data.errors.length) {
       return data;
     }
 
-    rulesContainer.hide();
-    parseResultMessage.text("Data Input Errors");
-
-    var errorList = $("<ul/>", {
-      "id": "data-parse-error-list"
-    });
+    var errorList = $("<ul/>");
     data.errors.forEach(function(error) {
         console.error(error);
         var row = $("<span/>", {
           "text": error.row,
           "class": "badge"
         })
-        var errorMessage = error.code + ": " + error.message;
+        var errorMessage = " " + error.code + ": " + error.message;
 
         var errorItem = $("<li />", {
           "text": errorMessage
@@ -44,7 +34,8 @@ var FormController = (function () {
         errorItem.prepend(row);
         errorList.append(errorItem);
     })
-    $("#data-parse-result").append(errorList);
+    dataInputErrorMessage.append(errorList);
+    dataInputErrorAlert.show();
 
     return false;
   };
@@ -75,6 +66,9 @@ var FormController = (function () {
   };
 
   var loadData = function() {
+    $("#rules-div").hide();
+    $("#rules-list").remove();
+
     var csv = parseData();
     if (!csv) {
       return;

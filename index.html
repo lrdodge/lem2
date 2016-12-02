@@ -22,10 +22,17 @@
           <textarea id="data-input" rows="10" class="form-control"></textarea>
           <span class="help-block">First row should be the column labels. Last column should be the decision value. Omit case numbers.</span>
         </div>
-        <button type="button" class="btn btn-primary" id="process-data-button" >Process</button>
-
-        <div id="data-parse-result">
-          <p id="data-parse-result-message"></p>
+        <div class="row">
+          <div class="col-md-2">
+            <button type="button" class="btn btn-primary" id="process-data-button">Process</button>
+          </div>
+          <div class="col-md-10">
+            <div id="data-input-error-alert" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <strong>Data Input Error</strong>
+              <div id="data-input-error-message"></div>
+            </div>
+          </div>
         </div>
       </form>
 
