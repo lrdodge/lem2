@@ -3,7 +3,23 @@ var FormController = (function () {
   var _addEventHandlers = function () {
     $("#process-data-button").click(loadData);
     $("#induce-rules-button").click(induceRules);
+    $("input[name='dataset-options']").change(updateDataInputField);
   };
+
+  var updateDataInputField = function() {
+    var dataInputField = $("#data-input");
+
+    switch(this.id) {
+      case "dataset-1":
+        dataInputField.val("temperature,headache,weakness,nausea,flu\nvery_high,yes,yes,no,yes\nhigh,yes,no,yes,yes\nnormal,no,no,no,no\nnormal,yes,yes,yes,yes\nhigh,no,yes,no,yes\nhigh,no,no,no,no\nnormal,no,yes,no,no")
+        break;
+      case "dataset-2":
+        dataInputField.val("temperature,headache,nausea,cough,flu\nhigh,yes,no,yes,yes\nvery_high,yes,yes,no,yes\nhigh,no,no,no,no\nhigh,yes,yes,yes,yes\nnormal,yes,no,no,no\nnormal,no,yes,yes,no")
+        break;
+      default:
+      dataInputField.val("");
+    }
+  }
 
   var parseData = function() {
     var dataInputErrorAlert = $("#data-input-error-alert");
