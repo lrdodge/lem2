@@ -63,17 +63,25 @@ var FormController = (function () {
       "id": "rules-list"
     });
     rules.forEach(function(rule) {
-      var ruleText = "";
-      rule.conditions.forEach(function(condition) {
-        ruleText += "(" + condition.attribute + ", " + condition.value + ") && ";
+      var conditions = "";
+      var rightArrow = $("<i/>", {
+        "class": "fa fa-long-arrow-right",
+        "aria-hidden": true
       });
-      ruleText = ruleText.substring(0, ruleText.length - 3);
-      ruleText += "-> ";
-      ruleText += "(" + rule.decision.name + ", " + rule.decision.value + ")"
 
-      var ruleItem = $("<li/>", {
-        "text": ruleText
+      rule.conditions.forEach(function(condition) {
+        conditions += "(" + condition.attribute + ", " + condition.value + ") && ";
       });
+      conditions = conditions.substring(0, conditions.length - 3);
+
+      var decision = " (" + rule.decision.name + ", " + rule.decision.value + ")";
+
+      var ruleItem = $("<li/>");
+
+      ruleItem.append(conditions);
+      ruleItem.append(rightArrow);
+      ruleItem.append(decision);
+
       ruleList.append(ruleItem);
       rulesContainer.append(ruleList);
     });
