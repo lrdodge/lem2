@@ -165,6 +165,25 @@ describe('LEM2 Module', function () {
       coveredCases = new Set([3, 6]);
       actual = LEM2.getCasesCoveredByRule(rulesetFluNo1.rules[1]);
       expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+
+      // Example 2
+      LEM2.dataset = dataSet2;
+      LEM2.newAttributeValueBlocks();
+      coveredCases = new Set([1, 4]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluYes2.rules[0]);
+      expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+
+      coveredCases = new Set([2]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluYes2.rules[1]);
+      expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+
+      coveredCases = new Set([3, 6]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluNo2.rules[0]);
+      expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+
+      coveredCases = new Set([5, 6]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluNo2.rules[1]);
+      expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
     });
   });
 
