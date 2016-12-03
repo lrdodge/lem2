@@ -6,8 +6,8 @@ const LEM2 = require('./lem2.js');
 // Data Example 1
 
 const dataSet1 = [["temperature", "headache", "weakness", "nausea", "flu"], ["very_high", "yes", "yes", "no", "yes"], ["high", "yes", "no", "yes", "yes"], ["normal", "no", "no", "no", "no"], ["normal", "yes", "yes", "yes", "yes"], ["high", "no", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["normal", "no", "yes", "no", "no"]];
-const rulesetFluYes1 = { "rules": [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }] };
-const rulesetFluNo1 = { "rules": [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }] };
+const rulesetFluYes1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
+const rulesetFluNo1 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
 const blocks1 = { "temperature": { "very_high": [1], "high": [2, 5, 6], "normal": [3, 4, 7] }, "headache": { "yes": [1, 2, 4], "no": [3, 5, 6, 7] }, "weakness": { "yes": [1, 4, 5, 7], "no": [2, 3, 6] }, "nausea": { "yes": [2, 4], "no": [1, 3, 5, 6, 7] } };
 const conceptFluYes1 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4, 5]) };
 const conceptFluNo1 = { "decision": "flu", "value": "no", "cases": new Set([3, 6, 7]) };
@@ -15,8 +15,8 @@ const conceptFluNo1 = { "decision": "flu", "value": "no", "cases": new Set([3, 6
 // Data Example 2
 
 const dataSet2 = [["temperature", "headache", "nausea", "cough", "flu"], ["high", "yes", "no", "yes", "yes"], ["very_high", "yes", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["high", "yes", "yes", "yes", "yes"], ["normal", "yes", "no", "no", "no"], ["normal", "no", "yes", "yes", "no"]];
-const rulesetFluYes2 = { "rules": [{ "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "very_high" }], "decision": { "name": "flu", "value": "yes" } }] };
-const rulesetFluNo2 = { "rules": [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }] };
+const rulesetFluYes2 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "very_high" }], "decision": { "name": "flu", "value": "yes" } }];
+const rulesetFluNo2 = [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }];
 const blocks2 = { "temperature": { "very_high": [2], "high": [1, 3, 4], "normal": [5, 6] }, "headache": { "yes": [1, 2, 4, 5], "no": [3, 6] }, "nausea": { "yes": [2, 4, 6], "no": [1, 3, 5] }, "cough": { "yes": [1, 4, 6], "no": [2, 3, 5] } };
 const conceptFluYes2 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4]) };
 const conceptFluNo2 = { "decision": "flu", "value": "no", "cases": new Set([3, 5, 6]) };
@@ -132,9 +132,9 @@ describe('LEM2 Module', function () {
   });
 
   describe('#executeProcedure()', function () {
-    it('should take a set (concept) and return a ruleset object (single local covering of the data set)', function () {
+    it('should take a set (concept) and return an array of rules (single local covering of the data set)', function () {
       // Example 1
-      LEM2.ruleset = dataSet1;
+      LEM2.dataset = dataSet1;
       let actual = LEM2.executeProcedure(conceptFluYes1);
       expect(actual).to.be.eql(rulesetFluYes1);
 
@@ -142,7 +142,7 @@ describe('LEM2 Module', function () {
       expect(actual).to.be.eql(rulesetFluNo1);
 
       // Example 2
-      LEM2.ruleset = dataSet2;
+      LEM2.dataset = dataSet2;
       actual = LEM2.executeProcedure(conceptFluYes2);
       expect(actual).to.be.eql(rulesetFluYes2);
 
@@ -157,44 +157,44 @@ describe('LEM2 Module', function () {
       LEM2.dataset = dataSet1;
       LEM2.newAttributeValueBlocks();
       let coveredCases = new Set([1, 2, 4]);
-      let actual = LEM2.getCasesCoveredByRule(rulesetFluYes1.rules[0]);
+      let actual = LEM2.getCasesCoveredByRule(rulesetFluYes1[0]);
       expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
 
       coveredCases = new Set([5]);
-      actual = LEM2.getCasesCoveredByRule(rulesetFluYes1.rules[1]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluYes1[1]);
       expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
 
       coveredCases = new Set([3, 7]);
-      actual = LEM2.getCasesCoveredByRule(rulesetFluNo1.rules[0]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluNo1[0]);
       expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
 
       coveredCases = new Set([3, 6]);
-      actual = LEM2.getCasesCoveredByRule(rulesetFluNo1.rules[1]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluNo1[1]);
       expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
 
       // Example 2
       LEM2.dataset = dataSet2;
       LEM2.newAttributeValueBlocks();
       coveredCases = new Set([1, 4]);
-      actual = LEM2.getCasesCoveredByRule(rulesetFluYes2.rules[0]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluYes2[0]);
       expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
 
       coveredCases = new Set([2]);
-      actual = LEM2.getCasesCoveredByRule(rulesetFluYes2.rules[1]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluYes2[1]);
       expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
 
       coveredCases = new Set([3, 6]);
-      actual = LEM2.getCasesCoveredByRule(rulesetFluNo2.rules[0]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluNo2[0]);
       expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
 
       coveredCases = new Set([5, 6]);
-      actual = LEM2.getCasesCoveredByRule(rulesetFluNo2.rules[1]);
+      actual = LEM2.getCasesCoveredByRule(rulesetFluNo2[1]);
       expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
     });
   });
 
   describe('#reduceRuleset()', function () {
-    it('should take a ruleset object and return a minimal ruleset object', function () {
+    it('should take an array of rules and return a minimal array of rules', function () {
       // Example 1 (already minimal)
       LEM2.dataset = dataSet1;
       let actual = LEM2.reduceRuleset(rulesetFluYes1);
@@ -204,11 +204,11 @@ describe('LEM2 Module', function () {
       expect(actual).to.be.eql(rulesetFluNo1);
 
       // Example 1 (not minimal)
-      const expandedRulesetFluYes1 = { "rules": [{ "conditions": [{ "headache": "yes" }], "decision": { "flu": "yes" } }, { "conditions": [{ "headache": "yes" }, { "weakness": "yes" }, { "nausea": "yes" }], "decision": { "flu": "yes" } }, { "conditions": [{ "temperature": "high", "weakness": "yes" }], "decision": { "flu": "yes" } }] };
+      const expandedRulesetFluYes1 = [{ "conditions": [{ "headache": "yes" }], "decision": { "flu": "yes" } }, { "conditions": [{ "headache": "yes" }, { "weakness": "yes" }, { "nausea": "yes" }], "decision": { "flu": "yes" } }, { "conditions": [{ "temperature": "high", "weakness": "yes" }], "decision": { "flu": "yes" } }];
       actual = LEM2.reduceRuleset(expandedRulesetFluYes1);
       expect(actual).to.be.eql(rulesetFluYes1);
 
-      const expandedRulesetFluNo1 = { "rules": [{ "conditions": [{ "temperature": "normal", "headache": "no" }], "decision": { "flu": "no" } }, { "conditions": [{ "temperature": "normal", "headache": "no", "weakness": "yes" }], "decision": { "flu": "no" } }, { "conditions": [{ "headache": "no", "weakness": "no" }], "decision": { "flu": "no" } }, { "conditions": [{ "temperature": "normal", "headache": "no", "weakness": "no" }], "decision": { "flu": "no" } }] };
+      const expandedRulesetFluNo1 = [{ "conditions": [{ "temperature": "normal", "headache": "no" }], "decision": { "flu": "no" } }, { "conditions": [{ "temperature": "normal", "headache": "no", "weakness": "yes" }], "decision": { "flu": "no" } }, { "conditions": [{ "headache": "no", "weakness": "no" }], "decision": { "flu": "no" } }, { "conditions": [{ "temperature": "normal", "headache": "no", "weakness": "no" }], "decision": { "flu": "no" } }];
       actual = LEM2.reduceRuleset(expandedRulesetFluNo1);
       expect(actual).to.be.eql(rulesetFluNo1);
     });
