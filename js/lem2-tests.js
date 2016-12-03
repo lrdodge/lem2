@@ -21,55 +21,55 @@ const blocks2 = { "temperature": { "very_high": [2], "high": [1, 3, 4], "normal"
 const conceptFluYes2 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4]) };
 const conceptFluNo2 = { "decision": "flu", "value": "no", "cases": new Set([3, 5, 6]) };
 
-describe('LEM2 Module', function() {
-    it('should exist', function() {
+describe('LEM2 Module', function () {
+    it('should exist', function () {
         expect(LEM2).to.not.be.undefined;
     });
 
     // Objects
 
-    it('should have a dataset object', function() {
+    it('should have a dataset object', function () {
         expect(LEM2.dataset).to.be.a('object');
     });
 
-    it('should have a blocks object', function() {
+    it('should have a blocks object', function () {
         expect(LEM2.blocks).to.be.a('object');
     });
 
-    it('should have a concepts array', function() {
+    it('should have a concepts array', function () {
         expect(LEM2.concepts).to.be.a('array');
     });
 
     // Functions
 
-    it('should have an executeProcedure function', function() {
+    it('should have an executeProcedure function', function () {
         expect(LEM2.executeProcedure).to.be.a('function');
     });
 
-    it('should have a newConcepts function', function() {
+    it('should have a newConcepts function', function () {
         expect(LEM2.newConcepts).to.be.a('function');
     });
 
-    it('should have an newAttributeValueBlocks function', function() {
+    it('should have an newAttributeValueBlocks function', function () {
         expect(LEM2.newAttributeValueBlocks).to.be.a('function');
     });
 
-    it('should have an getCasesCoveredByRule function', function() {
+    it('should have an getCasesCoveredByRule function', function () {
         expect(LEM2.getCasesCoveredByRule).to.be.a('function');
     });
 
-    it('should have an getCasesCoveredByRuleset function', function() {
+    it('should have an getCasesCoveredByRuleset function', function () {
         expect(LEM2.getCasesCoveredByRuleset).to.be.a('function');
     });
 
-    it('should have an reduceRuleset function', function() {
+    it('should have an reduceRuleset function', function () {
         expect(LEM2.reduceRuleset).to.be.a('function');
     });
 
     // Function Tests
 
-    describe('#newConcepts()', function() {
-        it('should create an array of concepts object from the data set', function() {
+    describe('#newConcepts()', function () {
+        it('should create an array of concepts object from the data set', function () {
             // Example 1
             LEM2.dataset = dataSet1;
             LEM2.newConcepts();
@@ -83,7 +83,7 @@ describe('LEM2 Module', function() {
             expect(LEM2.concepts).to.be.eql(expected);
         });
 
-        it('should not modify the input array (data set)', function() {
+        it('should not modify the input array (data set)', function () {
             // Example 1
             LEM2.dataset = dataSet1;
             LEM2.newConcepts();
@@ -98,8 +98,8 @@ describe('LEM2 Module', function() {
         })
     });
 
-    describe('#newAttributeValueBlocks()', function() {
-        it('should create a blocks object (attribute-value blocks) from the data set', function() {
+    describe('#newAttributeValueBlocks()', function () {
+        it('should create a blocks object (attribute-value blocks) from the data set', function () {
             LEM2.dataset = [["A1", "A2", "D"], ["N", "N", "False"], ["N", "Y", "True"], ["Y", "N", "False"], ["Y", "Y", "True"]];
             const blocks = { "A1": { "Y": [3, 4], "N": [1, 2] }, "A2": { "Y": [2, 4], "N": [1, 3] } };
             LEM2.newAttributeValueBlocks();
@@ -116,7 +116,7 @@ describe('LEM2 Module', function() {
             expect(LEM2.blocks).to.be.eql(blocks2);
         });
 
-        it('should not modify the input array (data set)', function() {
+        it('should not modify the input array (data set)', function () {
             // Example 1
             LEM2.dataset = dataSet1;
             LEM2.newAttributeValueBlocks();
@@ -131,8 +131,8 @@ describe('LEM2 Module', function() {
         })
     });
 
-    describe('#executeProcedure()', function() {
-        it('should take a set (concept) and return an array of rules (single local covering of the data set)', function() {
+    describe('#executeProcedure()', function () {
+        it('should take a set (concept) and return an array of rules (single local covering of the data set)', function () {
             // Example 1
             LEM2.dataset = dataSet1;
             let actual = LEM2.executeProcedure(conceptFluYes1);
@@ -151,8 +151,8 @@ describe('LEM2 Module', function() {
         });
     });
 
-    describe('#getCasesCoveredByRuleset()', function() {
-        it('should take an array of rules and return a set (cases covered by ruleset)', function() {
+    describe('#getCasesCoveredByRuleset()', function () {
+        it('should take an array of rules and return a set (cases covered by ruleset)', function () {
             // Example 1
             LEM2.dataset = dataSet1;
             LEM2.newAttributeValueBlocks();
@@ -161,7 +161,7 @@ describe('LEM2 Module', function() {
 
             actual = LEM2.getCasesCoveredByRuleset(rulesetFluNo1);
             expect(Array.from(actual)).to.be.eql(Array.from(conceptFluNo1.cases));
-            
+
             // Example 2
             LEM2.dataset = dataSet2;
             LEM2.newAttributeValueBlocks();
@@ -173,8 +173,8 @@ describe('LEM2 Module', function() {
         });
     });
 
-    describe('#getCasesCoveredByRule()', function() {
-        it('should take a rule object and return a set (cases covered of data set)', function() {
+    describe('#getCasesCoveredByRule()', function () {
+        it('should take a rule object and return a set (cases covered of data set)', function () {
             // Example 1
             LEM2.dataset = dataSet1;
             LEM2.newAttributeValueBlocks();
@@ -215,10 +215,11 @@ describe('LEM2 Module', function() {
         });
     });
 
-    describe('#reduceRuleset()', function() {
-        it('should take an array of rules and return a minimal array of rules', function() {
+    describe('#reduceRuleset()', function () {
+        it('should take an array of rules and return a minimal array of rules', function () {
             // Example 1 (already minimal)
             LEM2.dataset = dataSet1;
+            LEM2.newAttributeValueBlocks();
             let actual = LEM2.reduceRuleset(rulesetFluYes1);
             expect(actual).to.be.eql(rulesetFluYes1);
 
@@ -226,11 +227,11 @@ describe('LEM2 Module', function() {
             expect(actual).to.be.eql(rulesetFluNo1);
 
             // Example 1 (not minimal)
-            const expandedRulesetFluYes1 = [{ "conditions": [{ "headache": "yes" }], "decision": { "flu": "yes" } }, { "conditions": [{ "headache": "yes" }, { "weakness": "yes" }, { "nausea": "yes" }], "decision": { "flu": "yes" } }, { "conditions": [{ "temperature": "high", "weakness": "yes" }], "decision": { "flu": "yes" } }];
+            const expandedRulesetFluYes1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
             actual = LEM2.reduceRuleset(expandedRulesetFluYes1);
             expect(actual).to.be.eql(rulesetFluYes1);
 
-            const expandedRulesetFluNo1 = [{ "conditions": [{ "temperature": "normal", "headache": "no" }], "decision": { "flu": "no" } }, { "conditions": [{ "temperature": "normal", "headache": "no", "weakness": "yes" }], "decision": { "flu": "no" } }, { "conditions": [{ "headache": "no", "weakness": "no" }], "decision": { "flu": "no" } }, { "conditions": [{ "temperature": "normal", "headache": "no", "weakness": "no" }], "decision": { "flu": "no" } }];
+            const expandedRulesetFluNo1 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
             actual = LEM2.reduceRuleset(expandedRulesetFluNo1);
             expect(actual).to.be.eql(rulesetFluNo1);
         });
