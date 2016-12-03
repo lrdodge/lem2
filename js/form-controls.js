@@ -6,10 +6,10 @@ var FormController = (function () {
     $("input[name='dataset-options']").change(updateDataInputField);
   };
 
-  var updateDataInputField = function() {
+  var updateDataInputField = function () {
     var dataInputField = $("#data-input");
 
-    switch(this.id) {
+    switch (this.id) {
       case "dataset-1":
         dataInputField.val("temperature,headache,weakness,nausea,flu\nvery_high,yes,yes,no,yes\nhigh,yes,no,yes,yes\nnormal,no,no,no,no\nnormal,yes,yes,yes,yes\nhigh,no,yes,no,yes\nhigh,no,no,no,no\nnormal,no,yes,no,no")
         break;
@@ -17,11 +17,11 @@ var FormController = (function () {
         dataInputField.val("temperature,headache,nausea,cough,flu\nhigh,yes,no,yes,yes\nvery_high,yes,yes,no,yes\nhigh,no,no,no,no\nhigh,yes,yes,yes,yes\nnormal,yes,no,no,no\nnormal,no,yes,yes,no")
         break;
       default:
-      dataInputField.val("");
+        dataInputField.val("");
     }
   }
 
-  var parseData = function() {
+  var parseData = function () {
     var dataInputErrorAlert = $("#data-input-error-alert");
     var dataInputErrorMessage = $("#data-input-error-message");
 
@@ -36,19 +36,19 @@ var FormController = (function () {
     }
 
     var errorList = $("<ul/>");
-    data.errors.forEach(function(error) {
-        console.error(error);
-        var row = $("<span/>", {
-          "text": error.row,
-          "class": "badge"
-        })
-        var errorMessage = " " + error.code + ": " + error.message;
+    data.errors.forEach(function (error) {
+      console.error(error);
+      var row = $("<span/>", {
+        "text": error.row,
+        "class": "badge"
+      })
+      var errorMessage = " " + error.code + ": " + error.message;
 
-        var errorItem = $("<li />", {
-          "text": errorMessage
-        });
-        errorItem.prepend(row);
-        errorList.append(errorItem);
+      var errorItem = $("<li />", {
+        "text": errorMessage
+      });
+      errorItem.prepend(row);
+      errorList.append(errorItem);
     })
     dataInputErrorMessage.append(errorList);
     dataInputErrorAlert.show();
@@ -56,16 +56,16 @@ var FormController = (function () {
     return false;
   };
 
-  var displayRules = function(rules) {
+  var displayRules = function (rules) {
     var rulesContainer = $("#rules-div");
     var ruleList = $("<ol/>", {
       "id": "rules-list"
     });
 
-    rules.forEach(function(rule) {
+    rules.forEach(function (rule) {
       var ruleItem = $("<li/>");
 
-      rule.conditions.forEach(function(condition, conditionIndex) {
+      rule.conditions.forEach(function (condition, conditionIndex) {
         var condition = " (" + condition.attribute + ", " + condition.value + ") ";
         ruleItem.append(condition);
 
@@ -96,7 +96,7 @@ var FormController = (function () {
     rulesContainer.show();
   };
 
-  var loadData = function() {
+  var loadData = function () {
     $("#rules-div").hide();
     $("#rules-list").remove();
 
@@ -115,7 +115,7 @@ var FormController = (function () {
     // Build Concept Chooser Modal
     var conceptModalBody = $("#concept-modal-form");
     conceptModalBody.empty();
-    LEM2.concepts.forEach(function(concept, conceptIndex) {
+    LEM2.concepts.forEach(function (concept, conceptIndex) {
 
       var radioButtonContainer = $("<div/>", {
         "class": "radio"
@@ -135,7 +135,7 @@ var FormController = (function () {
       conceptModalBody.append(radioButtonContainer);
       conceptModalBody.validate({
         errorClass: "text-danger",
-        errorPlacement: function(error, element) {
+        errorPlacement: function (error, element) {
           error.appendTo(element.closest("form"));
         },
         rules: {
@@ -149,7 +149,7 @@ var FormController = (function () {
     $("#concept-modal").modal();
   };
 
-  var induceRules = function() {
+  var induceRules = function () {
     if (!$("#concept-modal-form").valid()) {
       return;
     }

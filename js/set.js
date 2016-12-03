@@ -1,4 +1,4 @@
-Set.prototype.isSuperset = function(subset) {
+Set.prototype.isSuperset = function (subset) {
     for (var elem of subset) {
         if (!this.has(elem)) {
             return false;
@@ -7,7 +7,7 @@ Set.prototype.isSuperset = function(subset) {
     return true;
 }
 
-Set.prototype.union = function(setB) {
+Set.prototype.union = function (setB) {
     var union = new Set(this);
     for (var elem of setB) {
         union.add(elem);
@@ -15,7 +15,7 @@ Set.prototype.union = function(setB) {
     return union;
 }
 
-Set.prototype.intersection = function(setB) {
+Set.prototype.intersection = function (setB) {
     var intersection = new Set();
     for (var elem of setB) {
         if (this.has(elem)) {
@@ -25,7 +25,7 @@ Set.prototype.intersection = function(setB) {
     return intersection;
 }
 
-Set.prototype.difference = function(setB) {
+Set.prototype.difference = function (setB) {
     var difference = new Set(this);
     for (var elem of setB) {
         difference.delete(elem);
@@ -33,11 +33,11 @@ Set.prototype.difference = function(setB) {
     return difference;
 }
 
-Set.prototype.sort = function() {
-  var setArray = Array.from(this);
-  return new Set(setArray.sort());
+Set.prototype.sort = function () {
+    var setArray = Array.from(this);
+    return new Set(setArray.sort());
 }
 
-Set.prototype.toString = function() {
-  return "{" + [...this] + "}"
+Set.prototype.toString = function () {
+    return "{" + [...this] + "}"
 }
