@@ -58,28 +58,35 @@ var FormController = (function () {
 
   var displayRules = function(rules) {
     var rulesContainer = $("#rules-div");
-
     var ruleList = $("<ol/>", {
       "id": "rules-list"
     });
+
     rules.forEach(function(rule) {
-      var conditions = "";
+      var ruleItem = $("<li/>");
+
+      rule.conditions.forEach(function(condition, conditionIndex) {
+        var condition = " (" + condition.attribute + ", " + condition.value + ") ";
+        ruleItem.append(condition);
+
+        if (conditionIndex === rule.conditions.length - 1) {
+          return false;
+        }
+
+        var upArrow = $("<i/>", {
+          "class": "fa fa-chevron-up",
+          "aria-hidden": true
+        });
+        ruleItem.append(upArrow);
+      });
+
       var rightArrow = $("<i/>", {
         "class": "fa fa-long-arrow-right",
         "aria-hidden": true
       });
-
-      rule.conditions.forEach(function(condition) {
-        conditions += "(" + condition.attribute + ", " + condition.value + ") && ";
-      });
-      conditions = conditions.substring(0, conditions.length - 3);
+      ruleItem.append(rightArrow);
 
       var decision = " (" + rule.decision.name + ", " + rule.decision.value + ")";
-
-      var ruleItem = $("<li/>");
-
-      ruleItem.append(conditions);
-      ruleItem.append(rightArrow);
       ruleItem.append(decision);
 
       ruleList.append(ruleItem);
