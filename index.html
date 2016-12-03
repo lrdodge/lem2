@@ -1,24 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Luke Dodge">
 
-    <title>LEM2</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Luke Dodge">
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  </head>
+  <title>LEM2</title>
 
-  <body>
-    <div class="container">
-      <h1>LEM2</h1>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <h1>LEM2</h1>
+    <form>
+      <div class="form-group">
+        <div class="radio">
+          <label>
+              <input type="radio" name="dataset-options" id="dataset-custom" value="dataset-custom" checked>
+              Custom Data Set
+            </label>
+        </div>
+        <div class="radio">
+          <label>
+              <input type="radio" name="dataset-options" id="dataset-1" value="dataset-1" >
+              Example Data Set #1
+            </label>
+        </div>
+        <div class="radio">
+          <label>
+              <input type="radio" name="dataset-options" id="dataset-2" value="dataset-2">
+              Example Data Set #2
+            </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="data-input">Comma separated value (CSV) data</label>
+        <textarea id="data-input" rows="10" class="form-control"></textarea>
+        <span class="help-block">First row should be the column labels. Last column should be the decision value. Omit case numbers.</span>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <button type="button" class="btn btn-primary" id="process-data-button">Process</button>
+        </div>
+        <div class="col-md-10">
+          <div id="data-input-error-alert" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Data Input Error</strong>
+            <div id="data-input-error-message"></div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div id="rules-div" style="display: none;">
+      <h2>Rules</h2>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  </body>
+    <!-- Modal -->
+    <div class="modal fade" id="concept-modal" tabindex="-1" role="dialog" aria-labelledby="concept-model-title">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="concept-model-title">Choose Concept</h4>
+          </div>
+          <form id="concept-modal-form" class="modal-body">
+            ...
+          </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="induce-rules-button">Induce Rules</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/jquery.validate.min.js"></script>
+  <script src="https://use.fontawesome.com/30c06c13bf.js"></script>
+  <script src="js/papaparse.min.js"></script>
+  <script src="js/form-controls.js"></script>
+  <script src="js/set.js"></script>
+  <script src="js/lem2.js"></script>
+</body>
+
 </html>
