@@ -58,9 +58,15 @@ describe('LEM2 Module', function () {
     expect(LEM2.getCasesCoveredByRule).to.be.a('function');
   });
 
+  it('should have an getCasesCoveredByRuleset function', function () {
+    expect(LEM2.getCasesCoveredByRuleset).to.be.a('function');
+  });
+
   it('should have an reduceRuleset function', function () {
     expect(LEM2.reduceRuleset).to.be.a('function');
   });
+
+  // Function Tests
 
   describe('#newConcepts()', function () {
     it('should create an array of concepts object from the data set', function () {

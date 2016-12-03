@@ -92,6 +92,10 @@ LEM2 = {
     });
   },
 
+  getCasesCoveredByRuleset: function() {
+
+  },
+
   getCasesCoveredByRule: function (rule) {
     var attributes = LEM2.dataset[0];
     var coveredCases = new Set();
