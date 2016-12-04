@@ -40,7 +40,7 @@ describe('LEM2 Module', function () {
         expect(LEM2.concepts).to.be.a('array');
     });
 
-    it('should have a goal set', function() {
+    it('should have a goal set', function () {
         expect(LEM2.goal).to.be.a('set');
     });
 
@@ -190,6 +190,24 @@ describe('LEM2 Module', function () {
 
             actual = LEM2.executeProcedure(conceptFluNo2);
             expect(Array.from(actual)).to.be.eql(Array.from(rulesetFluNo2));
+        });
+
+        it('should take a set (concept) and set the goal equal to the concept', function () {
+            // Example 1
+            LEM2.initialize(dataSet1);
+            LEM2.executeProcedure(conceptFluYes1);
+            expect(LEM2.goal).to.be.eql(conceptFluYes1);
+
+            LEM2.executeProcedure(conceptFluNo1);
+            expect(LEM2.goal).to.be.eql(conceptFluNo1);
+
+            // Example 2
+            LEM2.initialize(dataSet2);
+            LEM2.executeProcedure(conceptFluYes2);
+            expect(LEM2.goal).to.be.eql(conceptFluYes2);
+
+            LEM2.executeProcedure(conceptFluNo2);
+            expect(LEM2.goal).to.be.eql(conceptFluNo2);
         });
     });
 

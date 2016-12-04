@@ -81,6 +81,8 @@ LEM2 = {
 
     // TODO: Refactor
     executeProcedure: function (concept) {
+        LEM2.goal = concept;
+
         if (concept.cases.size === 4 && concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4) && concept.cases.has(5)) {
             var ruleset1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
             return LEM2.compressRuleset(ruleset1);
