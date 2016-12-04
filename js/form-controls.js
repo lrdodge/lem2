@@ -113,7 +113,7 @@ var FormController = (function () {
     // Build Concept Chooser Modal
     var conceptModalBody = $("#concept-modal-form");
     conceptModalBody.empty();
-    LEM2.concepts.forEach(function (concept, conceptIndex) {
+    LEM2.datasetConcepts.forEach(function (concept, conceptIndex) {
 
       var radioButtonContainer = $("<div/>", {
         "class": "radio"
@@ -153,8 +153,8 @@ var FormController = (function () {
     }
 
     var conceptIndex = $("input[name='concept']:checked").val();
-    var ruleset = LEM2.executeProcedure(LEM2.concepts[conceptIndex]);
-    displayRules(ruleset);
+    LEM2.invokeProcedure(LEM2.datasetConcepts[conceptIndex]);
+    displayRules(LEM2.singleLocalCovering);
     $("#concept-modal").modal('hide');
   };
 

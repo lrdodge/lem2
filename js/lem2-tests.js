@@ -54,8 +54,8 @@ describe('LEM2 Module', function () {
 
     // Functions
 
-    it('should have an executeProcedure function', function () {
-        expect(LEM2.executeProcedure).to.be.a('function');
+    it('should have an invokeProcedure function', function () {
+        expect(LEM2.invokeProcedure).to.be.a('function');
     });
 
     it('should have a newConcepts function', function () {
@@ -126,23 +126,23 @@ describe('LEM2 Module', function () {
         it('should create an array of rules (ruleset) from the data set', function () {
             // Example 1
             LEM2.initialize(dataset1);
-            LEM2.executeProcedure(conceptFluYes1);
+            LEM2.invokeProcedure(conceptFluYes1);
             LEM2.newRuleset();
-            expect(LEM2.singeLocalCovering).to.be.eql(rulesetFluYes1);
+            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes1);
             
-            LEM2.executeProcedure(conceptFluNo1);
+            LEM2.invokeProcedure(conceptFluNo1);
             LEM2.newRuleset();
-            expect(LEM2.singeLocalCovering).to.be.eql(rulesetFluNo1);
+            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
             
             // Example 2
             LEM2.initialize(dataset2);
-            LEM2.executeProcedure(conceptFluYes2);
+            LEM2.invokeProcedure(conceptFluYes2);
             LEM2.newRuleset();
-            expect(LEM2.singeLocalCovering).to.be.eql(rulesetFluYes2);
+            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes2);
             
-            LEM2.executeProcedure(conceptFluNo2);
+            LEM2.invokeProcedure(conceptFluNo2);
             LEM2.newRuleset();
-            expect(LEM2.singeLocalCovering).to.be.eql(rulesetFluNo2);
+            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo2);
         });
     });
 
@@ -209,58 +209,58 @@ describe('LEM2 Module', function () {
         })
     });
 
-    describe('#executeProcedure()', function () {
-        it('should take a set (concept) and set singeLocalCovering to an array of rules (single local covering of the data set)', function () {
+    describe('#invokeProcedure()', function () {
+        it('should take a set (concept) and set singleLocalCovering to an array of rules (single local covering of the data set)', function () {
             // Example 1
             LEM2.initialize(dataset1);
-            LEM2.executeProcedure(conceptFluYes1);
-            expect(Array.from(LEM2.singeLocalCovering)).to.be.eql(Array.from(rulesetFluYes1));
+            LEM2.invokeProcedure(conceptFluYes1);
+            expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluYes1));
 
-            LEM2.executeProcedure(conceptFluNo1);
-            expect(Array.from(LEM2.singeLocalCovering)).to.be.eql(Array.from(rulesetFluNo1));
+            LEM2.invokeProcedure(conceptFluNo1);
+            expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluNo1));
 
             // Example 2
             LEM2.initialize(dataset2);
-            LEM2.executeProcedure(conceptFluYes2);
-            expect(Array.from(LEM2.singeLocalCovering)).to.be.eql(Array.from(rulesetFluYes2));
+            LEM2.invokeProcedure(conceptFluYes2);
+            expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluYes2));
 
-            LEM2.executeProcedure(conceptFluNo2);
-            expect(Array.from(LEM2.singeLocalCovering)).to.be.eql(Array.from(rulesetFluNo2));
+            LEM2.invokeProcedure(conceptFluNo2);
+            expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluNo2));
         });
 
         it('should take a set (concept) and set the goal equal to the concept', function () {
             // Example 1
             LEM2.initialize(dataset1);
-            LEM2.executeProcedure(conceptFluYes1);
+            LEM2.invokeProcedure(conceptFluYes1);
             expect(LEM2.goal).to.be.eql(conceptFluYes1);
 
-            LEM2.executeProcedure(conceptFluNo1);
+            LEM2.invokeProcedure(conceptFluNo1);
             expect(LEM2.goal).to.be.eql(conceptFluNo1);
 
             // Example 2
             LEM2.initialize(dataset2);
-            LEM2.executeProcedure(conceptFluYes2);
+            LEM2.invokeProcedure(conceptFluYes2);
             expect(LEM2.goal).to.be.eql(conceptFluYes2);
 
-            LEM2.executeProcedure(conceptFluNo2);
+            LEM2.invokeProcedure(conceptFluNo2);
             expect(LEM2.goal).to.be.eql(conceptFluNo2);
         });
         
         it('should take a set (concept) and set the module concept equal to the set', function () {
             // Example 1
             LEM2.initialize(dataset1);
-            LEM2.executeProcedure(conceptFluYes1);
+            LEM2.invokeProcedure(conceptFluYes1);
             expect(LEM2.concept).to.be.eql(conceptFluYes1.cases);
 
-            LEM2.executeProcedure(conceptFluNo1);
+            LEM2.invokeProcedure(conceptFluNo1);
             expect(LEM2.concept).to.be.eql(conceptFluNo1.cases);
 
             // Example 2
             LEM2.initialize(dataset2);
-            LEM2.executeProcedure(conceptFluYes2);
+            LEM2.invokeProcedure(conceptFluYes2);
             expect(LEM2.concept).to.be.eql(conceptFluYes2.cases);
 
-            LEM2.executeProcedure(conceptFluNo2);
+            LEM2.invokeProcedure(conceptFluNo2);
             expect(LEM2.concept).to.be.eql(conceptFluNo2.cases);
         });
     });
