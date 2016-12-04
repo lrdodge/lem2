@@ -58,19 +58,19 @@ describe('LEM2 Module', function () {
         expect(LEM2.newConcepts).to.be.a('function');
     });
 
-    it('should have an newAttributeValueBlocks function', function () {
+    it('should have a newAttributeValueBlocks function', function () {
         expect(LEM2.newAttributeValueBlocks).to.be.a('function');
     });
 
-    it('should have an getCasesCoveredByRule function', function () {
+    it('should have a getCasesCoveredByRule function', function () {
         expect(LEM2.getCasesCoveredByRule).to.be.a('function');
     });
 
-    it('should have an getCasesCoveredByRuleset function', function () {
+    it('should have a getCasesCoveredByRuleset function', function () {
         expect(LEM2.getCasesCoveredByRuleset).to.be.a('function');
     });
 
-    it('should have an compressRuleset function', function () {
+    it('should have a compressRuleset function', function () {
         expect(LEM2.compressRuleset).to.be.a('function');
     });
 
