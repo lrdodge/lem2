@@ -47,6 +47,10 @@ describe('LEM2 Module', function () {
     it('should have a single local covering set', function () {
         expect(LEM2.goal).to.be.a('set');
     });
+    
+    it('should have a concept set', function () {
+        expect(LEM2.concept).to.be.a('set');
+    });
 
     // Functions
 
@@ -225,6 +229,24 @@ describe('LEM2 Module', function () {
 
             LEM2.executeProcedure(conceptFluNo2);
             expect(LEM2.goal).to.be.eql(conceptFluNo2);
+        });
+        
+        it('should take a set (concept) and set the module concept equal to the set', function () {
+            // Example 1
+            LEM2.initialize(dataset1);
+            LEM2.executeProcedure(conceptFluYes1);
+            expect(LEM2.concept).to.be.eql(conceptFluYes1.cases);
+
+            LEM2.executeProcedure(conceptFluNo1);
+            expect(LEM2.concept).to.be.eql(conceptFluNo1.cases);
+
+            // Example 2
+            LEM2.initialize(dataset2);
+            LEM2.executeProcedure(conceptFluYes2);
+            expect(LEM2.concept).to.be.eql(conceptFluYes2.cases);
+
+            LEM2.executeProcedure(conceptFluNo2);
+            expect(LEM2.concept).to.be.eql(conceptFluNo2.cases);
         });
     });
 

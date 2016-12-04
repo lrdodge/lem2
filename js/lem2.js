@@ -6,6 +6,7 @@ LEM2 = {
     datasetConcepts: [],
     goal: new Set(),
     singeLocalCovering: new Set(),
+    concept: new Set(),
 
     newConcepts: function () {
         LEM2.datasetConcepts = [];
@@ -84,6 +85,7 @@ LEM2 = {
     executeProcedure: function (concept) {
         LEM2.goal = concept;
         LEM2.singeLocalCovering = new Set();
+        LEM2.concept = concept.cases;
 
         if (concept.cases.size === 4 && concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4) && concept.cases.has(5)) {
             var ruleset1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
