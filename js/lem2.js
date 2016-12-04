@@ -136,7 +136,6 @@ LEM2 = {
     },
 
     compressRuleset: function (ruleset) {
-        var coveredCases = LEM2.getCasesCoveredByRuleset(ruleset);
         var minimalRuleset = [];
         var removedRules = [];
 
@@ -147,7 +146,7 @@ LEM2 = {
                 rulesetMinusRule.splice(removedIndex, 1);
             });
             var coveredCasesMinusRule = LEM2.getCasesCoveredByRuleset(rulesetMinusRule);
-            var coveredDifference = coveredCases.difference(coveredCasesMinusRule);
+            var coveredDifference = LEM2.concept.difference(coveredCasesMinusRule);
 
             // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to minimalRuleset
             if (coveredDifference.size > 0) {
