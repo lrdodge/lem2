@@ -172,30 +172,27 @@ describe('LEM2 Module', function () {
     describe('#executeProcedure()', function () {
         it('should take a set (concept) and return an array of rules (single local covering of the data set)', function () {
             // Example 1
-            LEM2.dataset = dataSet1;
-            LEM2.newAttributeValueBlocks();
+            LEM2.initialize(dataSet1);
             let actual = LEM2.executeProcedure(conceptFluYes1);
-            expect(actual).to.be.eql(rulesetFluYes1);
+            expect(Array.from(actual)).to.be.eql(Array.from(rulesetFluYes1));
 
             actual = LEM2.executeProcedure(conceptFluNo1);
-            expect(actual).to.be.eql(rulesetFluNo1);
+            expect(Array.from(actual)).to.be.eql(Array.from(rulesetFluNo1));
 
             // Example 2
-            LEM2.dataset = dataSet2;
-            LEM2.newAttributeValueBlocks();
+            LEM2.initialize(dataSet2);
             actual = LEM2.executeProcedure(conceptFluYes2);
-            expect(actual).to.be.eql(rulesetFluYes2);
+            expect(Array.from(actual)).to.be.eql(Array.from(rulesetFluYes2));
 
             actual = LEM2.executeProcedure(conceptFluNo2);
-            expect(actual).to.be.eql(rulesetFluNo2);
+            expect(Array.from(actual)).to.be.eql(Array.from(rulesetFluNo2));
         });
     });
 
     describe('#getCasesCoveredByRuleset()', function () {
         it('should take an array of rules and return a set (cases covered by ruleset)', function () {
             // Example 1
-            LEM2.dataset = dataSet1;
-            LEM2.newAttributeValueBlocks();
+            LEM2.initialize(dataSet1);
             let actual = LEM2.getCasesCoveredByRuleset(rulesetFluYes1);
             expect(Array.from(actual)).to.be.eql(Array.from(conceptFluYes1.cases));
 
@@ -203,8 +200,7 @@ describe('LEM2 Module', function () {
             expect(Array.from(actual)).to.be.eql(Array.from(conceptFluNo1.cases));
 
             // Example 2
-            LEM2.dataset = dataSet2;
-            LEM2.newAttributeValueBlocks();
+            LEM2.initialize(dataSet2);
             actual = LEM2.getCasesCoveredByRuleset(rulesetFluYes2);
             expect(Array.from(actual)).to.be.eql(Array.from(conceptFluYes2.cases));
 
@@ -216,8 +212,7 @@ describe('LEM2 Module', function () {
     describe('#getCasesCoveredByRule()', function () {
         it('should take a rule object and return a set (cases covered of data set)', function () {
             // Example 1
-            LEM2.dataset = dataSet1;
-            LEM2.newAttributeValueBlocks();
+            LEM2.initialize(dataSet1);
             let coveredCases = new Set([1, 2, 4]);
             let actual = LEM2.getCasesCoveredByRule(rulesetFluYes1[0]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
@@ -235,8 +230,7 @@ describe('LEM2 Module', function () {
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
 
             // Example 2
-            LEM2.dataset = dataSet2;
-            LEM2.newAttributeValueBlocks();
+            LEM2.initialize(dataSet2);
             coveredCases = new Set([1, 4]);
             actual = LEM2.getCasesCoveredByRule(rulesetFluYes2[0]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
@@ -258,8 +252,7 @@ describe('LEM2 Module', function () {
     describe('#reduceRuleset()', function () {
         it('should take an array of rules and return a minimal array of rules', function () {
             // Example 1 (already minimal)
-            LEM2.dataset = dataSet1;
-            LEM2.newAttributeValueBlocks();
+            LEM2.initialize(dataSet1);
             let actual = LEM2.reduceRuleset(rulesetFluYes1);
             expect(actual).to.be.eql(rulesetFluYes1);
 
