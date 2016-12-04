@@ -367,6 +367,13 @@ describe('LEM2 Module', function () {
             LEM2.compressRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
 
+            // Example 1 (single rule)
+            LEM2.concept = conceptFluYes1.cases;
+            LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
+            let ruleset = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
+            LEM2.compressRuleset();
+            expect(LEM2.singleLocalCovering).to.be.eql(ruleset);
+
             // Example 1 (not minimal)
             LEM2.concept = conceptFluYes1.cases;
             LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];

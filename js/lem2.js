@@ -142,10 +142,6 @@ LEM2 = {
             "decision": rule.decision
         }
         
-        if (rule.conditions.length <= 1) {
-            return rule;
-        }
-        
         rule.conditions.forEach(function(condition, conditionIndex) {
             var conditionsMinusCondition = rule.conditions.slice(0);
             conditionsMinusCondition.splice(conditionIndex, 1);
@@ -168,7 +164,7 @@ LEM2 = {
                 minimalConditions.push(condition);
             }
         });
-        
+
         minimalRule.conditions = minimalConditions;
         return minimalRule;
     },
@@ -183,6 +179,12 @@ LEM2 = {
             removedRules.forEach(function (removedIndex) {
                 rulesetMinusRule.splice(removedIndex, 1);
             });
+
+            if (rulesetMinusRule.length === 0) {
+                minimalRuleset.push(rule);
+                return false;
+            }
+
             var coveredCasesMinusRule = LEM2.getCasesCoveredByRuleset(rulesetMinusRule);
             var coveredDifference = LEM2.concept.difference(coveredCasesMinusRule);
 
