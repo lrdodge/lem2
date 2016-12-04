@@ -28,7 +28,7 @@ describe('LEM2 Module', function () {
 
     // Objects
 
-    it('should have a dataset object', function () {
+    it('should have a dataset array', function () {
         expect(LEM2.dataset).to.be.a('array');
     });
 
@@ -66,7 +66,45 @@ describe('LEM2 Module', function () {
         expect(LEM2.reduceRuleset).to.be.a('function');
     });
 
+    it('should have an initialize function', function () {
+        expect(LEM2.initialize).to.be.a('function');
+    })
+
     // Function Tests
+
+    describe('#initialize()', function () {
+        it('should take an array (dataset) and set the LEM2 dataset object', function () {
+            // Example 1
+            LEM2.initialize(dataSet1);
+            expect(LEM2.dataset).to.be.eql(dataSet1);
+
+            // Example 2
+            LEM2.initialize(dataSet2);
+            expect(LEM2.dataset).to.be.eql(dataSet2);
+        });
+
+        it('should take an array (dataset) and create the concepts', function () {
+            // Example 1
+            LEM2.initialize(dataSet1);
+            expect(LEM2.blocks).to.be.eql(blocks1);
+
+            // Example 1
+            LEM2.initialize(dataSet2);
+            expect(LEM2.blocks).to.be.eql(blocks2);
+        });
+
+        it('should take an array (dataset) and create the blocks', function () {
+            // Example 1
+            LEM2.initialize(dataSet1);
+            let concepts1 = [conceptFluYes1, conceptFluNo1];
+            expect(LEM2.concepts).to.be.eql(concepts1);
+
+            // Example 1
+            LEM2.initialize(dataSet2);
+            let concepts2 = [conceptFluYes2, conceptFluNo2];
+            expect(LEM2.concepts).to.be.eql(concepts2);
+        });
+    });
 
     describe('#newConcepts()', function () {
         it('should create an array of concepts object from the data set', function () {

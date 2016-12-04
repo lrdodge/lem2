@@ -72,6 +72,12 @@ LEM2 = {
         });
     },
 
+    initialize: function (dataset) {
+        LEM2.dataset = dataset;
+        LEM2.newConcepts();
+        LEM2.newAttributeValueBlocks();
+    },
+
     // TODO: Refactor
     executeProcedure: function (concept) {
 
