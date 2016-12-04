@@ -108,9 +108,7 @@ var FormController = (function () {
     var data = csv.data;
 
     // Initialize
-    LEM2.dataset = data;
-    LEM2.newAttributeValueBlocks();
-    LEM2.newConcepts();
+    LEM2.initialize(data);
 
     // Build Concept Chooser Modal
     var conceptModalBody = $("#concept-modal-form");
