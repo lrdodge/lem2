@@ -112,8 +112,8 @@ LEM2 = {
 
         var coveredCases = new Set();
         ruleset.forEach(function (rule) {
-            var c = LEM2.getCasesCoveredByRule(rule);
-            coveredCases = coveredCases.union(c);
+            var coveredCasesByRule = LEM2.getCasesCoveredByRule(rule);
+            coveredCases = coveredCases.union(coveredCasesByRule);
         });
         return coveredCases.sort();
     },
@@ -123,7 +123,6 @@ LEM2 = {
         var coveredCases = new Set();
 
         rule.conditions.forEach(function (condition) {
-            var attributeIndex = attributes.indexOf(condition.attribute);
             var block = new Set(LEM2.blocks[condition.attribute][condition.value]);
             if (coveredCases.size === 0) {
                 coveredCases = block;
