@@ -82,22 +82,22 @@ LEM2 = {
     executeProcedure: function (concept) {
         if (concept.cases.size === 4 && concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4) && concept.cases.has(5)) {
             var ruleset1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-            return LEM2.reduceRuleset(ruleset1);
+            return LEM2.compressRuleset(ruleset1);
         }
 
         if (concept.cases.size === 3 && concept.cases.has(3) && concept.cases.has(6) && concept.cases.has(7)) {
             var ruleset2 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }]
-            return LEM2.reduceRuleset(ruleset2);
+            return LEM2.compressRuleset(ruleset2);
         }
 
         if (concept.cases.size === 3 && concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4)) {
             var ruleset3 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "very_high" }], "decision": { "name": "flu", "value": "yes" } }];
-            return LEM2.reduceRuleset(ruleset3);
+            return LEM2.compressRuleset(ruleset3);
         }
 
         if (concept.cases.size === 3 && concept.cases.has(3) && concept.cases.has(5) && concept.cases.has(6)) {
             var ruleset4 = [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }];
-            return LEM2.reduceRuleset(ruleset4);
+            return LEM2.compressRuleset(ruleset4);
         }
     },
 
@@ -128,9 +128,9 @@ LEM2 = {
         return coveredCases.sort();
     },
 
-    reduceRuleset: function (ruleset) {
+    compressRuleset: function (ruleset) {
         var coveredCases = LEM2.getCasesCoveredByRuleset(ruleset);
-        var reducedRuleset = [];
+        var minimalRuleset = [];
         var removedRules = [];
 
         ruleset.forEach(function (rule, ruleIndex) {
@@ -142,16 +142,16 @@ LEM2 = {
             var coveredCasesMinusRule = LEM2.getCasesCoveredByRuleset(rulesetMinusRule);
             var coveredDifference = coveredCases.difference(coveredCasesMinusRule);
 
-            // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to reducedRuleset
+            // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to minimalRuleset
             if (coveredDifference.size > 0) {
-                reducedRuleset.push(rule);
+                minimalRuleset.push(rule);
             }
             else {
                 removedRules.push(ruleIndex);
             }
         });
 
-        return reducedRuleset;
+        return minimalRuleset;
     }
 };
 

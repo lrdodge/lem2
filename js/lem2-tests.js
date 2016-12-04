@@ -62,8 +62,8 @@ describe('LEM2 Module', function () {
         expect(LEM2.getCasesCoveredByRuleset).to.be.a('function');
     });
 
-    it('should have an reduceRuleset function', function () {
-        expect(LEM2.reduceRuleset).to.be.a('function');
+    it('should have an compressRuleset function', function () {
+        expect(LEM2.compressRuleset).to.be.a('function');
     });
 
     it('should have an initialize function', function () {
@@ -249,23 +249,23 @@ describe('LEM2 Module', function () {
         });
     });
 
-    describe('#reduceRuleset()', function () {
+    describe('#compressRuleset()', function () {
         it('should take an array of rules and return a minimal array of rules', function () {
             // Example 1 (already minimal)
             LEM2.initialize(dataSet1);
-            let actual = LEM2.reduceRuleset(rulesetFluYes1);
+            let actual = LEM2.compressRuleset(rulesetFluYes1);
             expect(actual).to.be.eql(rulesetFluYes1);
 
-            actual = LEM2.reduceRuleset(rulesetFluNo1);
+            actual = LEM2.compressRuleset(rulesetFluNo1);
             expect(actual).to.be.eql(rulesetFluNo1);
 
             // Example 1 (not minimal)
             const expandedRulesetFluYes1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-            actual = LEM2.reduceRuleset(expandedRulesetFluYes1);
+            actual = LEM2.compressRuleset(expandedRulesetFluYes1);
             expect(actual).to.be.eql(rulesetFluYes1);
 
             const expandedRulesetFluNo1 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
-            actual = LEM2.reduceRuleset(expandedRulesetFluNo1);
+            actual = LEM2.compressRuleset(expandedRulesetFluNo1);
             expect(actual).to.be.eql(rulesetFluNo1);
         });
     });
