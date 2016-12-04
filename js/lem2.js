@@ -106,6 +106,10 @@ LEM2 = {
         }
     },
 
+    newRuleset: function () {
+        LEM2.singeLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
+    },
+
     getCasesCoveredByRuleset: function (ruleset) {
 
         var coveredCases = new Set();

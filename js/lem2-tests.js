@@ -78,6 +78,10 @@ describe('LEM2 Module', function () {
         expect(LEM2.initialize).to.be.a('function');
     })
 
+    it('should have a newRuleset function', function () {
+        expect(LEM2.newRuleset).to.be.a('function');
+    });
+
     // Function Tests
 
     describe('#initialize()', function () {
@@ -111,6 +115,15 @@ describe('LEM2 Module', function () {
             LEM2.initialize(dataset2);
             let concepts2 = [conceptFluYes2, conceptFluNo2];
             expect(LEM2.concepts).to.be.eql(concepts2);
+        });
+    });
+
+    describe('#newRuleset()', function () {
+        it('should create an array of rules (ruleset) from the data set', function () {
+            // Example 1
+            LEM2.initialize(dataset1);
+            LEM2.newRuleset();
+            expect(LEM2.singeLocalCovering).to.be.eql(rulesetFluYes1);
         });
     });
 
