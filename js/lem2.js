@@ -80,7 +80,7 @@ LEM2 = {
         LEM2.newConcepts();
         LEM2.newAttributeValueBlocks();
     },
-    
+
     invokeProcedure: function (concept) {
         LEM2.goal = concept;
         LEM2.singleLocalCovering = new Set();
@@ -92,7 +92,7 @@ LEM2 = {
     // TODO: Refactor
     newRuleset: function () {
         if (LEM2.concept.size === 4 && LEM2.concept.has(1) && LEM2.concept.has(2) && LEM2.concept.has(4) && LEM2.concept.has(5)) {
-            LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];            
+            LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
         }
 
         if (LEM2.concept.size === 3 && LEM2.concept.has(3) && LEM2.concept.has(6) && LEM2.concept.has(7)) {
@@ -104,7 +104,7 @@ LEM2 = {
         }
 
         if (LEM2.concept.size === 3 && LEM2.concept.has(3) && LEM2.concept.has(5) && LEM2.concept.has(6)) {
-            LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }];            
+            LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }];
         }
     },
 
@@ -141,22 +141,22 @@ LEM2 = {
             "conditions": [],
             "decision": rule.decision
         }
-        
-        rule.conditions.forEach(function(condition, conditionIndex) {
+
+        rule.conditions.forEach(function (condition, conditionIndex) {
             var conditionsMinusCondition = rule.conditions.slice(0);
             conditionsMinusCondition.splice(conditionIndex, 1);
             removedConditions.forEach(function (removedIndex) {
                 conditionsMinusCondition.splice(removedIndex, 1);
             });
-            
+
             if (conditionsMinusCondition.length === 0) {
                 minimalConditions.push(condition);
                 return false;
             }
-            
+
             minimalRule.conditions = conditionsMinusCondition;
             var coveredCasesMinusCondition = LEM2.getCasesCoveredByRule(minimalRule);
-            
+
             if (LEM2.concept.isSuperset(coveredCasesMinusCondition)) {
                 removedConditions.push(conditionIndex);
             }
