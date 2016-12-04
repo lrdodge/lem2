@@ -326,23 +326,29 @@ describe('LEM2 Module', function () {
     });
 
     describe('#compressRuleset()', function () {
-        it('should take an array of rules and return a minimal array of rules', function () {
+        it('should remove unnecessary rules from the ruleset', function () {
             // Example 1 (already minimal)
             LEM2.initialize(dataset1);
-            let actual = LEM2.compressRuleset(rulesetFluYes1);
-            expect(actual).to.be.eql(rulesetFluYes1);
+            LEM2.concept = conceptFluYes1.cases;
+            LEM2.singleLocalCovering = rulesetFluYes1;
+            LEM2.compressRuleset();
+            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes1);
 
-            actual = LEM2.compressRuleset(rulesetFluNo1);
-            expect(actual).to.be.eql(rulesetFluNo1);
+            LEM2.concept = conceptFluNo1.cases;
+            LEM2.singleLocalCovering = rulesetFluNo1;
+            LEM2.compressRuleset();
+            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
 
             // Example 1 (not minimal)
-            const expandedRulesetFluYes1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-            actual = LEM2.compressRuleset(expandedRulesetFluYes1);
-            expect(actual).to.be.eql(rulesetFluYes1);
+            LEM2.concept = conceptFluYes1.cases;
+            LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
+            LEM2.compressRuleset();
+            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes1);
 
-            const expandedRulesetFluNo1 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
-            actual = LEM2.compressRuleset(expandedRulesetFluNo1);
-            expect(actual).to.be.eql(rulesetFluNo1);
+            LEM2.concept = conceptFluNo1.cases;
+            LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
+            LEM2.compressRuleset();
+            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
         });
     });
 });

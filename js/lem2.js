@@ -86,7 +86,7 @@ LEM2 = {
         LEM2.singleLocalCovering = new Set();
         LEM2.concept = concept.cases;
         LEM2.newRuleset();
-        LEM2.singleLocalCovering = LEM2.compressRuleset(LEM2.singleLocalCovering);
+        LEM2.compressRuleset();
     },
 
     // TODO: Refactor
@@ -139,8 +139,8 @@ LEM2 = {
         var minimalRuleset = [];
         var removedRules = [];
 
-        ruleset.forEach(function (rule, ruleIndex) {
-            var rulesetMinusRule = ruleset.slice(0);
+        LEM2.singleLocalCovering.forEach(function (rule, ruleIndex) {
+            var rulesetMinusRule = LEM2.singleLocalCovering.slice(0);
             rulesetMinusRule.splice(ruleIndex, 1);
             removedRules.forEach(function (removedIndex) {
                 rulesetMinusRule.splice(removedIndex, 1);
@@ -157,7 +157,7 @@ LEM2 = {
             }
         });
 
-        return minimalRuleset;
+        LEM2.singleLocalCovering = minimalRuleset;
     }
 };
 
