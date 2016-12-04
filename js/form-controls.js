@@ -154,7 +154,7 @@ var FormController = (function () {
 
     var conceptIndex = $("input[name='concept']:checked").val();
     var ruleset = LEM2.executeProcedure(LEM2.concepts[conceptIndex]);
-    displayRules(ruleset.rules);
+    displayRules(ruleset);
     $("#concept-modal").modal('hide');
   };
 
