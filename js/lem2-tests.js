@@ -36,8 +36,8 @@ describe('LEM2 Module', function () {
         expect(LEM2.blocks).to.be.a('object');
     });
 
-    it('should have a concepts array', function () {
-        expect(LEM2.concepts).to.be.a('array');
+    it('should have a datasetConcepts array', function () {
+        expect(LEM2.datasetConcepts).to.be.a('array');
     });
 
     it('should have a goal set', function () {
@@ -95,7 +95,7 @@ describe('LEM2 Module', function () {
             expect(LEM2.dataset).to.be.eql(dataset2);
         });
 
-        it('should take an array (dataset) and create the concepts', function () {
+        it('should take an array (dataset) and create the dataset concepts', function () {
             // Example 1
             LEM2.initialize(dataset1);
             expect(LEM2.blocks).to.be.eql(blocks1);
@@ -108,13 +108,13 @@ describe('LEM2 Module', function () {
         it('should take an array (dataset) and create the blocks', function () {
             // Example 1
             LEM2.initialize(dataset1);
-            let concepts1 = [conceptFluYes1, conceptFluNo1];
-            expect(LEM2.concepts).to.be.eql(concepts1);
+            let datasetConcepts1 = [conceptFluYes1, conceptFluNo1];
+            expect(LEM2.datasetConcepts).to.be.eql(datasetConcepts1);
 
             // Example 1
             LEM2.initialize(dataset2);
-            let concepts2 = [conceptFluYes2, conceptFluNo2];
-            expect(LEM2.concepts).to.be.eql(concepts2);
+            let datasetConcepts2 = [conceptFluYes2, conceptFluNo2];
+            expect(LEM2.datasetConcepts).to.be.eql(datasetConcepts2);
         });
     });
 
@@ -133,13 +133,13 @@ describe('LEM2 Module', function () {
             LEM2.dataset = dataset1;
             LEM2.newConcepts();
             let expected = [conceptFluYes1, conceptFluNo1];
-            expect(LEM2.concepts).to.be.eql(expected);
+            expect(LEM2.datasetConcepts).to.be.eql(expected);
 
             // Example 2
             LEM2.dataset = dataset2;
             LEM2.newConcepts();
             expected = [conceptFluYes2, conceptFluNo2];
-            expect(LEM2.concepts).to.be.eql(expected);
+            expect(LEM2.datasetConcepts).to.be.eql(expected);
         });
 
         it('should not modify the input array (data set)', function () {

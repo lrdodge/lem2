@@ -3,12 +3,12 @@ var LEM2;
 LEM2 = {
     dataset: [],
     blocks: {},
-    concepts: [],
+    datasetConcepts: [],
     goal: new Set(),
     singeLocalCovering: new Set(),
 
     newConcepts: function () {
-        LEM2.concepts = [];
+        LEM2.datasetConcepts = [];
 
         var decisionIndex = LEM2.dataset[0].length - 1;
         var dataset = LEM2.dataset.slice(0);
@@ -38,7 +38,7 @@ LEM2 = {
                 "cases": new Set(cases)
             };
 
-            LEM2.concepts.push(concept);
+            LEM2.datasetConcepts.push(concept);
         });
     },
 
