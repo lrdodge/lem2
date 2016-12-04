@@ -43,6 +43,10 @@ describe('LEM2 Module', function () {
     it('should have a goal set', function () {
         expect(LEM2.goal).to.be.a('set');
     });
+    
+    it('should have a single local covering set', function () {
+        expect(LEM2.goal).to.be.a('set');
+    });
 
     // Functions
 
@@ -174,22 +178,22 @@ describe('LEM2 Module', function () {
     });
 
     describe('#executeProcedure()', function () {
-        it('should take a set (concept) and return an array of rules (single local covering of the data set)', function () {
+        it('should take a set (concept) and set singeLocalCovering to an array of rules (single local covering of the data set)', function () {
             // Example 1
             LEM2.initialize(dataset1);
-            let actual = LEM2.executeProcedure(conceptFluYes1);
-            expect(Array.from(actual)).to.be.eql(Array.from(rulesetFluYes1));
+            LEM2.executeProcedure(conceptFluYes1);
+            expect(Array.from(LEM2.singeLocalCovering)).to.be.eql(Array.from(rulesetFluYes1));
 
-            actual = LEM2.executeProcedure(conceptFluNo1);
-            expect(Array.from(actual)).to.be.eql(Array.from(rulesetFluNo1));
+            LEM2.executeProcedure(conceptFluNo1);
+            expect(Array.from(LEM2.singeLocalCovering)).to.be.eql(Array.from(rulesetFluNo1));
 
             // Example 2
             LEM2.initialize(dataset2);
-            actual = LEM2.executeProcedure(conceptFluYes2);
-            expect(Array.from(actual)).to.be.eql(Array.from(rulesetFluYes2));
+            LEM2.executeProcedure(conceptFluYes2);
+            expect(Array.from(LEM2.singeLocalCovering)).to.be.eql(Array.from(rulesetFluYes2));
 
-            actual = LEM2.executeProcedure(conceptFluNo2);
-            expect(Array.from(actual)).to.be.eql(Array.from(rulesetFluNo2));
+            LEM2.executeProcedure(conceptFluNo2);
+            expect(Array.from(LEM2.singeLocalCovering)).to.be.eql(Array.from(rulesetFluNo2));
         });
 
         it('should take a set (concept) and set the goal equal to the concept', function () {

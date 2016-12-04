@@ -5,6 +5,7 @@ LEM2 = {
     blocks: {},
     concepts: [],
     goal: new Set(),
+    singeLocalCovering: new Set(),
 
     newConcepts: function () {
         LEM2.concepts = [];
@@ -82,25 +83,26 @@ LEM2 = {
     // TODO: Refactor
     executeProcedure: function (concept) {
         LEM2.goal = concept;
+        LEM2.singeLocalCovering = new Set();
 
         if (concept.cases.size === 4 && concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4) && concept.cases.has(5)) {
             var ruleset1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-            return LEM2.compressRuleset(ruleset1);
+            LEM2.singeLocalCovering = LEM2.compressRuleset(ruleset1);
         }
 
         if (concept.cases.size === 3 && concept.cases.has(3) && concept.cases.has(6) && concept.cases.has(7)) {
             var ruleset2 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }]
-            return LEM2.compressRuleset(ruleset2);
+            LEM2.singeLocalCovering = LEM2.compressRuleset(ruleset2);
         }
 
         if (concept.cases.size === 3 && concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4)) {
             var ruleset3 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "very_high" }], "decision": { "name": "flu", "value": "yes" } }];
-            return LEM2.compressRuleset(ruleset3);
+            LEM2.singeLocalCovering = LEM2.compressRuleset(ruleset3);
         }
 
         if (concept.cases.size === 3 && concept.cases.has(3) && concept.cases.has(5) && concept.cases.has(6)) {
             var ruleset4 = [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }];
-            return LEM2.compressRuleset(ruleset4);
+            LEM2.singeLocalCovering = LEM2.compressRuleset(ruleset4);
         }
     },
 
