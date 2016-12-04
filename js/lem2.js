@@ -80,34 +80,16 @@ LEM2 = {
         LEM2.newConcepts();
         LEM2.newAttributeValueBlocks();
     },
-
-    // TODO: Refactor
+    
     executeProcedure: function (concept) {
         LEM2.goal = concept;
         LEM2.singeLocalCovering = new Set();
         LEM2.concept = concept.cases;
-
-        if (concept.cases.size === 4 && concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4) && concept.cases.has(5)) {
-            var ruleset1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-            LEM2.singeLocalCovering = LEM2.compressRuleset(ruleset1);
-        }
-
-        if (concept.cases.size === 3 && concept.cases.has(3) && concept.cases.has(6) && concept.cases.has(7)) {
-            var ruleset2 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }]
-            LEM2.singeLocalCovering = LEM2.compressRuleset(ruleset2);
-        }
-
-        if (concept.cases.size === 3 && concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4)) {
-            var ruleset3 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "very_high" }], "decision": { "name": "flu", "value": "yes" } }];
-            LEM2.singeLocalCovering = LEM2.compressRuleset(ruleset3);
-        }
-
-        if (concept.cases.size === 3 && concept.cases.has(3) && concept.cases.has(5) && concept.cases.has(6)) {
-            var ruleset4 = [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }];
-            LEM2.singeLocalCovering = LEM2.compressRuleset(ruleset4);
-        }
+        LEM2.newRuleset();
+        LEM2.singeLocalCovering = LEM2.compressRuleset(LEM2.singeLocalCovering);
     },
 
+    // TODO: Refactor
     newRuleset: function () {
         if (LEM2.concept.size === 4 && LEM2.concept.has(1) && LEM2.concept.has(2) && LEM2.concept.has(4) && LEM2.concept.has(5)) {
             LEM2.singeLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];            
