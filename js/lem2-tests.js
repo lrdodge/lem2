@@ -29,7 +29,7 @@ describe('LEM2 Module', function () {
     // Objects
 
     it('should have a dataset object', function () {
-        expect(LEM2.dataset).to.be.a('object');
+        expect(LEM2.dataset).to.be.a('array');
     });
 
     it('should have a blocks object', function () {

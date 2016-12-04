@@ -1,7 +1,7 @@
 var LEM2;
 
 LEM2 = {
-    dataset: {},
+    dataset: [],
     blocks: {},
     concepts: [],
 
