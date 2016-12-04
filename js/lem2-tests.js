@@ -135,6 +135,7 @@ describe('LEM2 Module', function () {
         it('should take a set (concept) and return an array of rules (single local covering of the data set)', function () {
             // Example 1
             LEM2.dataset = dataSet1;
+            LEM2.newAttributeValueBlocks();
             let actual = LEM2.executeProcedure(conceptFluYes1);
             expect(actual).to.be.eql(rulesetFluYes1);
 
@@ -143,6 +144,7 @@ describe('LEM2 Module', function () {
 
             // Example 2
             LEM2.dataset = dataSet2;
+            LEM2.newAttributeValueBlocks();
             actual = LEM2.executeProcedure(conceptFluYes2);
             expect(actual).to.be.eql(rulesetFluYes2);
 
