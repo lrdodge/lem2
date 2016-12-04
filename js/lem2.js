@@ -134,7 +134,46 @@ LEM2 = {
         return coveredCases.sort();
     },
 
-    compressRuleset: function (ruleset) {
+    compressRule: function (rule) {
+        var minimalConditions = [];
+        var removedConditions = [];
+        var minimalRule = {
+            "conditions": [],
+            "decision": rule.decision
+        }
+        
+        if (rule.conditions.length <= 1) {
+            return rule;
+        }
+        
+        rule.conditions.forEach(function(condition, conditionIndex) {
+            var conditionsMinusCondition = rule.conditions.slice(0);
+            conditionsMinusCondition.splice(conditionIndex, 1);
+            removedConditions.forEach(function (removedIndex) {
+                conditionsMinusCondition.splice(removedIndex, 1);
+            });
+            
+            if (conditionsMinusCondition.length === 0) {
+                minimalConditions.push(condition);
+                return false;
+            }
+            
+            minimalRule.conditions = conditionsMinusCondition;
+            var coveredCasesMinusCondition = LEM2.getCasesCoveredByRule(minimalRule);
+            
+            if (LEM2.concept.isSuperset(coveredCasesMinusCondition)) {
+                removedConditions.push(conditionIndex);
+            }
+            else {
+                minimalConditions.push(condition);
+            }
+        });
+        
+        minimalRule.conditions = minimalConditions;
+        return minimalRule;
+    },
+
+    compressRuleset: function () {
         var minimalRuleset = [];
         var removedRules = [];
 

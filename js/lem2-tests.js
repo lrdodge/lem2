@@ -86,6 +86,10 @@ describe('LEM2 Module', function () {
         expect(LEM2.newRuleset).to.be.a('function');
     });
 
+    it('should have a compressRule function', function () {
+        expect(LEM2.compressRule).to.be.a('function');
+    });
+
     // Function Tests
 
     describe('#initialize()', function () {
@@ -322,6 +326,30 @@ describe('LEM2 Module', function () {
             coveredCases = new Set([5, 6]);
             actual = LEM2.getCasesCoveredByRule(rulesetFluNo2[1]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+        });
+    });
+
+    describe('#compressRule()', function() {
+        it('should take a rule and return a minimal rule', function() {
+            // Example 1 (already minimal)
+            LEM2.initialize(dataset1);
+            LEM2.concept = conceptFluYes1.cases;
+            let rule1 = { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+            let actual = LEM2.compressRule(rule1);
+            expect(actual).to.be.eql(rule1);
+            
+            let rule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+            actual = LEM2.compressRule(rule2);
+            expect(actual).to.be.eql(rule2);
+
+            // Example 1 (not minimal)
+            let expandedRule1 = { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+            actual = LEM2.compressRule(expandedRule1);
+            expect(actual).to.be.eql(rule1);
+
+            let expandedRule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+            actual = LEM2.compressRule(rule2);
+            expect(actual).to.be.eql(rule2);
         });
     });
 
