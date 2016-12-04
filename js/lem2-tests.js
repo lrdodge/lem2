@@ -126,8 +126,23 @@ describe('LEM2 Module', function () {
         it('should create an array of rules (ruleset) from the data set', function () {
             // Example 1
             LEM2.initialize(dataset1);
+            LEM2.executeProcedure(conceptFluYes1);
             LEM2.newRuleset();
             expect(LEM2.singeLocalCovering).to.be.eql(rulesetFluYes1);
+            
+            LEM2.executeProcedure(conceptFluNo1);
+            LEM2.newRuleset();
+            expect(LEM2.singeLocalCovering).to.be.eql(rulesetFluNo1);
+            
+            // Example 2
+            LEM2.initialize(dataset2);
+            LEM2.executeProcedure(conceptFluYes2);
+            LEM2.newRuleset();
+            expect(LEM2.singeLocalCovering).to.be.eql(rulesetFluYes2);
+            
+            LEM2.executeProcedure(conceptFluNo2);
+            LEM2.newRuleset();
+            expect(LEM2.singeLocalCovering).to.be.eql(rulesetFluNo2);
         });
     });
 
