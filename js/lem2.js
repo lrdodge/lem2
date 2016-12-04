@@ -4,6 +4,7 @@ LEM2 = {
     dataset: [],
     blocks: {},
     concepts: [],
+    goal: new Set(),
 
     newConcepts: function () {
         LEM2.concepts = [];

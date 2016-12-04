@@ -26,7 +26,7 @@ describe('LEM2 Module', function () {
         expect(LEM2).to.not.be.undefined;
     });
 
-    // Objects
+    // Properties
 
     it('should have a dataset array', function () {
         expect(LEM2.dataset).to.be.a('array');
@@ -38,6 +38,10 @@ describe('LEM2 Module', function () {
 
     it('should have a concepts array', function () {
         expect(LEM2.concepts).to.be.a('array');
+    });
+
+    it('should have a goal set', function() {
+        expect(LEM2.goal).to.be.a('set');
     });
 
     // Functions
