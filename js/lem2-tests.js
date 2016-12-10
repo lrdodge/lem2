@@ -335,4 +335,18 @@ describe('LEM2 Module Functions', function() {
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
         });
     });
+
+    describe('#newGoalBlockIntersections()', function () {
+        it('should create an array of non-empty sets', function () {            
+            const emptyArray = [];
+            const emptySet = new Set();
+
+            LEM2.newGoalBlockIntersections();
+            expect(LEM2.goalBlockIntersections).to.be.not.eql(emptyArray);
+            LEM2.goalBlockIntersections.forEach(function (intersection) {
+                expect(intersection).to.be.a('set');
+                expect(intersection).to.be.not.eql(emptySet);
+            });
+        });
+    });
 });

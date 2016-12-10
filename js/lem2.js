@@ -7,6 +7,7 @@ LEM2 = {
     goal: new Set(),
     singleLocalCovering: new Set(),
     concept: new Set(),
+    goalBlockIntersections: [],
 
     newConcepts: function () {
         LEM2.datasetConcepts = [];
@@ -204,6 +205,10 @@ LEM2 = {
         });
 
         LEM2.singleLocalCovering = minimalRuleset;
+    },
+
+    newGoalBlockIntersections: function() {
+        LEM2.goalBlockIntersections = [new Set([1,2,3])];
     }
 };
 
