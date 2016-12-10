@@ -81,10 +81,14 @@ LEM2 = {
         LEM2.newAttributeValueBlocks();
     },
 
-    invokeProcedure: function (concept) {
+    initializeProcedure: function (concept) {
         LEM2.goal = concept;
-        LEM2.singleLocalCovering = new Set();
         LEM2.concept = concept.cases;
+        LEM2.singleLocalCovering = new Set();
+    },
+
+    invokeProcedure: function (concept) {        
+        LEM2.initializeProcedure(concept);
         LEM2.newRuleset();
         LEM2.compressRuleset();
     },
