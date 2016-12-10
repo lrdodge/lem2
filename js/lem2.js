@@ -95,6 +95,8 @@ LEM2 = {
 
     // TODO: Refactor
     newRuleset: function () {
+        LEM2.goal = new Set();
+
         if (LEM2.concept.size === 4 && LEM2.concept.has(1) && LEM2.concept.has(2) && LEM2.concept.has(4) && LEM2.concept.has(5)) {
             LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
         }

@@ -197,6 +197,15 @@ describe('LEM2 Module', function() {
             LEM2.newRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo2);
         });
+
+        it('should finish when the goal is the empty set', function() {
+            // Example 1
+            LEM2.initialize(dataset1);
+            LEM2.initializeProcedure(conceptFluYes1);
+            LEM2.newRuleset();
+            const emptySet = new Set();
+            expect(LEM2.goal).to.be.eql(emptySet);
+        });
     });
 
     describe('#newConcepts()', function() {
