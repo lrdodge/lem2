@@ -208,7 +208,7 @@ LEM2 = {
     },
 
     newGoalBlockIntersections: function() {
-        LEM2.goalBlockIntersections = [new Set([1,2,3])];
+        LEM2.goalBlockIntersections = [{"attribute": "", "value": "", "set": new Set([1])}];
     }
 };
 

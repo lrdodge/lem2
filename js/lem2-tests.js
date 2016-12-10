@@ -337,15 +337,17 @@ describe('LEM2 Module Functions', function() {
     });
 
     describe('#newGoalBlockIntersections()', function () {
-        it('should create an array of non-empty sets', function () {            
-            const emptyArray = [];
+        it('should create an array of objects (intersections), each with an attribute string, a value string, and a non-empty set', function () {
             const emptySet = new Set();
-
+            
             LEM2.newGoalBlockIntersections();
-            expect(LEM2.goalBlockIntersections).to.be.not.eql(emptyArray);
+
+            expect(LEM2.goalBlockIntersections.length).to.be.not.eql(0);
             LEM2.goalBlockIntersections.forEach(function (intersection) {
-                expect(intersection).to.be.a('set');
-                expect(intersection).to.be.not.eql(emptySet);
+                expect(intersection.attribute).to.be.a('string');
+                expect(intersection.value).to.be.a('string');
+                expect(intersection.set).to.be.a('set');
+                expect(intersection.set).to.be.not.eql(emptySet);
             });
         });
     });
