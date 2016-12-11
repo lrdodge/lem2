@@ -342,10 +342,10 @@ describe('LEM2 Module Functions', function() {
 
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
-            LEM2.newGoalBlockIntersections();
+            const intersections = LEM2.newGoalBlockIntersections();
 
-            expect(LEM2.goalBlockIntersections.length).to.be.not.eql(0);
-            LEM2.goalBlockIntersections.forEach(function (intersection) {
+            expect(intersections.length).to.be.not.eql(0);
+            intersections.forEach(function (intersection) {
                 expect(intersection.attribute).to.be.a('string');
                 expect(intersection.value).to.be.a('string');
                 expect(intersection.cases).to.be.a('set');
@@ -357,16 +357,16 @@ describe('LEM2 Module Functions', function() {
             // Example 1
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
-            LEM2.newGoalBlockIntersections();
+            let intersections = LEM2.newGoalBlockIntersections();
 
-            let intersections = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
-            expect(LEM2.goalBlockIntersections).to.be.eql(intersections);
+            const intersectionsFluYes1 = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
+            expect(intersections).to.be.eql(intersectionsFluYes1);
 
             LEM2.initializeProcedure(conceptFluNo1);
-            LEM2.newGoalBlockIntersections();
+            intersections = LEM2.newGoalBlockIntersections();
 
-            intersections = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
-            expect(LEM2.goalBlockIntersections).to.be.eql(intersections);
+            const intersectionsFluNo1 = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
+            expect(intersections).to.be.eql(intersectionsFluNo1);
         });
     });
 });

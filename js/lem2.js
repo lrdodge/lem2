@@ -7,7 +7,6 @@ LEM2 = {
     goal: new Set(),
     singleLocalCovering: new Set(),
     concept: new Set(),
-    goalBlockIntersections: [],
 
     newConcepts: function () {
         LEM2.datasetConcepts = [];
@@ -208,7 +207,7 @@ LEM2 = {
     },
 
     newGoalBlockIntersections: function () {
-        LEM2.goalBlockIntersections = [];
+        var intersections = [];
 
         for (var attribute in LEM2.blocks) {
             var attributeBlocks = LEM2.blocks[attribute];
@@ -220,10 +219,12 @@ LEM2 = {
                     "cases": blockCases.intersection(LEM2.goal.cases)
                 }
                 if (intersection.cases.size) {
-                    LEM2.goalBlockIntersections.push(intersection);
+                   intersections.push(intersection);
                 }
             }
         }
+
+        return intersections;
     }
 };
 

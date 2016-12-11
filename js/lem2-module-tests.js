@@ -33,10 +33,6 @@ describe('LEM2 Module', function() {
         expect(LEM2.concept).to.be.a('set');
     });
 
-    it('should have a goalBlockIntersections array', function() {
-        expect(LEM2.goalBlockIntersections).to.be.a('array');
-    });
-
     // Functions
 
     it('should have an invokeProcedure function', function() {
