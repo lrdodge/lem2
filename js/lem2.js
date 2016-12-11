@@ -225,6 +225,23 @@ LEM2 = {
         }
 
         return intersections;
+    },
+
+    selectBestBlock: function(intersections) {
+        var bestBlock = intersections[0];
+
+        intersections.forEach(function(intersection) {
+            if (intersection.cases.size < bestBlock.cases.size) {
+                return;
+            }
+
+            if (intersection.cases.size > bestBlock.cases.size) {
+                bestBlock = intersection;
+                return;
+            }
+        });
+
+        return bestBlock;
     }
 };
 

@@ -369,4 +369,20 @@ describe('LEM2 Module Functions', function() {
             expect(intersections).to.be.eql(intersectionsFluNo1);
         });
     });
+
+    describe('#selectBestBlock()', function() {
+        it('should take an array (intersections) and return an object (intersection) according to LEM2 selection criteria', function exampleOneFluYes(){
+            const intersectionsFluYes1 = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
+            const bestIntersectionFluYes1 = { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) };
+            const actual = LEM2.selectBestBlock(intersectionsFluYes1);
+            expect(actual).to.be.eql(bestIntersectionFluYes1);
+        });
+
+        it('should take an array (intersections) and return an object (intersection) according to LEM2 selection criteria', function exampleOneFluNo(){
+            const intersectionsFluNo1 = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
+            const bestIntersectionFluNo1 = { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) };
+            const actual = LEM2.selectBestBlock(intersectionsFluNo1);
+            expect(actual).to.be.eql(bestIntersectionFluNo1);
+        });
+    });
 });

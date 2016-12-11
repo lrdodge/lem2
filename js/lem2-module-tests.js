@@ -78,4 +78,8 @@ describe('LEM2 Module', function() {
     it('should have a newGoalBlockIntersections function', function() {
         expect(LEM2.newGoalBlockIntersections).to.be.a('function');
     });
+
+    it('should have a selectBestBlock function', function() {
+        expect(LEM2.selectBestBlock).to.be.a('function');
+    });
 });
