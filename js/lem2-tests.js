@@ -21,7 +21,7 @@ const blocks2 = { "temperature": { "very_high": [2], "high": [1, 3, 4], "normal"
 const conceptFluYes2 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4]) };
 const conceptFluNo2 = { "decision": "flu", "value": "no", "cases": new Set([3, 5, 6]) };
 
-describe('LEM2 Module Functions', function () {
+describe('LEM2 Module', function () {
 
     describe('#initialize()', function () {
         it('should take an array (dataset) and set the LEM2 dataset object', function () {
@@ -58,22 +58,28 @@ describe('LEM2 Module Functions', function () {
     });
 
     describe('#initializeProcedure()', function () {
-        it('should take a set (concept) and set the goal equal to the concept', function () {
-            // Example 1
+        it('should take a set (concept) and set the goal equal to the concept', function exampleOne_InitializeGoal_FluYes() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
-            expect(LEM2.goal).to.be.eql(conceptFluYes1);
+            expect(LEM2.goal).to.be.eql(conceptFluYes1.cases);
+        });
 
+        it('should take a set (concept) and set the goal equal to the concept', function exampleOne_InitializeGoal_FluNo() {
+            LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluNo1);
-            expect(LEM2.goal).to.be.eql(conceptFluNo1);
+            expect(LEM2.goal).to.be.eql(conceptFluNo1.cases);
+        });
 
-            // Example 2
+        it('should take a set (concept) and set the goal equal to the concept', function exampleTwo_InitializeGoal_FluYes() {
             LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluYes2);
-            expect(LEM2.goal).to.be.eql(conceptFluYes2);
+            expect(LEM2.goal).to.be.eql(conceptFluYes2.cases);
+        });
 
+        it('should take a set (concept) and set the goal equal to the concept', function exampleTwo_InitializeGoal_FluNo() {
+            LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluNo2);
-            expect(LEM2.goal).to.be.eql(conceptFluNo2);
+            expect(LEM2.goal).to.be.eql(conceptFluNo2.cases);
         });
 
         it('should take a set (concept) and set the module concept equal to the set', function () {

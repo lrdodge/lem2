@@ -82,9 +82,9 @@ LEM2 = {
     },
 
     initializeProcedure: function (concept) {
-        LEM2.goal = concept;
-        LEM2.concept = concept.cases;
+        LEM2.concept = concept.cases;        
         LEM2.singleLocalCovering = new Set();
+        LEM2.updateGoal();
     },
 
     invokeProcedure: function (concept) {        
@@ -216,7 +216,7 @@ LEM2 = {
                 var intersection = {
                     "attribute": attribute,
                     "value": attributeValue,
-                    "cases": blockCases.intersection(LEM2.goal.cases)
+                    "cases": blockCases.intersection(LEM2.goal)
                 }
                 if (intersection.cases.size) {
                    intersections.push(intersection);
