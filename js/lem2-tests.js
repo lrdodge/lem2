@@ -337,7 +337,7 @@ describe('LEM2 Module Functions', function() {
     });
 
     describe('#newGoalBlockIntersections()', function () {
-        it('should create an array of objects (intersections), each with an attribute string, a value string, and a non-empty set (cases)', function () {
+        it('should create an array of objects (intersections), each with an attribute string, a value string, and a non-empty set (cases)', function intersectionStructure() {
             const emptySet = new Set();
 
             LEM2.initialize(dataset1);
@@ -353,43 +353,53 @@ describe('LEM2 Module Functions', function() {
             });
         });
 
-        it('should create an array of intersections between the each attribute value block and the goal', function () {
-            // Example 1
+        it('should create an array of intersections between the each attribute value block and the goal', function exampleOneFluYes() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
-            let intersections = LEM2.newGoalBlockIntersections();
 
-            const intersectionsFluYes1 = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
-            expect(intersections).to.be.eql(intersectionsFluYes1);
+            const actual = LEM2.newGoalBlockIntersections();
+            const intersections = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
 
+            expect(actual).to.be.eql(intersections);
+        });
+
+        it('should create an array of intersections between the each attribute value block and the goal', function exampleOneFluNo() {            
+            LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluNo1);
-            intersections = LEM2.newGoalBlockIntersections();
 
-            const intersectionsFluNo1 = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
-            expect(intersections).to.be.eql(intersectionsFluNo1);
+            const actual = LEM2.newGoalBlockIntersections();
+            const intersections = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
+
+            expect(actual).to.be.eql(intersections);
         });
     });
 
     describe('#selectBestBlock()', function() {
         it('should take an array (intersections) and return an object (intersection) with maximam intersection size', function exampleOneFluYesMaxSize(){
             const intersectionsFluYes1 = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
-            const bestIntersectionFluYes1 = { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) };
+
+            const bestIntersections = { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) };
             const actual = LEM2.selectBestBlock(intersectionsFluYes1);
-            expect(actual).to.be.eql(bestIntersectionFluYes1);
+
+            expect(actual).to.be.eql(bestIntersections);
         });
 
         it('should take an array (intersections) and return an object (intersection) with maximam intersection size', function exampleOneFluNoMaxSize(){
             const intersectionsFluNo1 = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
-            const bestIntersectionFluNo1 = { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) };
+            
+            const bestIntersections = { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) };
             const actual = LEM2.selectBestBlock(intersectionsFluNo1);
-            expect(actual).to.be.eql(bestIntersectionFluNo1);
+            
+            expect(actual).to.be.eql(bestIntersections);
         });
 
         it('should take an array (intersections) and return an object (intersection) with maximam intersection size and minimal cardinality', function exampleOneFluNoMinCardinality(){
             const intersectionsFluNo1 = [{ "attribute": "headache", "value": "no", "cases": new Set([6]) }, { "attribute": "weakness", "value": "no", "cases": new Set([6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([6]) }];
-            const bestIntersectionFluNo1 = { "attribute": "weakness", "value": "no", "cases": new Set([6]) };
+            
+            const bestIntersections = { "attribute": "weakness", "value": "no", "cases": new Set([6]) };
             const actual = LEM2.selectBestBlock(intersectionsFluNo1);
-            expect(actual).to.be.eql(bestIntersectionFluNo1);
+            
+            expect(actual).to.be.eql(bestIntersections);
         });
     });
 });
