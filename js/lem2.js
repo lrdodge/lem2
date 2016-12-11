@@ -5,7 +5,7 @@ LEM2 = {
     blocks: {},
     datasetConcepts: [],
     goal: new Set(),
-    singleLocalCovering: new Set(),
+    singleLocalCovering: [],
     concept: new Set(),
 
     newConcepts: function () {

@@ -25,8 +25,8 @@ describe('LEM2 Module', function() {
         expect(LEM2.goal).to.be.a('set');
     });
 
-    it('should have a single local covering set', function() {
-        expect(LEM2.goal).to.be.a('set');
+    it('should have a single local covering array', function() {
+        expect(LEM2.singleLocalCovering).to.be.a('array');
     });
 
     it('should have a concept set', function() {
