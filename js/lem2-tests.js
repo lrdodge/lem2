@@ -82,29 +82,37 @@ describe('LEM2 Module', function () {
             expect(LEM2.goal).to.be.eql(conceptFluNo2.cases);
         });
 
-        it('should take a set (concept) and set the module concept equal to the set', function () {
-            // Example 1
+        it('should take a set (concept) and set the module concept equal to the set', function exampleOne_InitializeConcept_FluYes() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
             expect(LEM2.concept).to.be.eql(conceptFluYes1.cases);
+        });
 
+        it('should take a set (concept) and set the module concept equal to the set', function exampleOne_InitializeConcept_FluNo() {
+            LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluNo1);
             expect(LEM2.concept).to.be.eql(conceptFluNo1.cases);
+        });
 
-            // Example 2
+        it('should take a set (concept) and set the module concept equal to the set', function exampleTwo_InitializeConcept_FluYes() {
             LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluYes2);
             expect(LEM2.concept).to.be.eql(conceptFluYes2.cases);
+        });
 
+        it('should take a set (concept) and set the module concept equal to the set', function exampleTwo_InitializeConcept_FluYes() {
+            LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluNo2);
             expect(LEM2.concept).to.be.eql(conceptFluNo2.cases);
         });
 
-        it('should set the singleLocalCovering to the empty set', function () {
+        it('should set the singleLocalCovering to an empty array', function initializeSingleLocalCovering() {
             LEM2.goal = new Set([1, 2, 3]);
+            const emptyArray = [];
+
             LEM2.initializeProcedure(conceptFluYes1);
-            const emptySet = new Set();
-            expect(LEM2.singleLocalCovering).to.be.eql(emptySet);
+            
+            expect(LEM2.singleLocalCovering).to.be.eql(emptyArray);
         });
     });
 

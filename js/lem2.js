@@ -1,11 +1,11 @@
 var LEM2;
 
 LEM2 = {
-    dataset: [],
     blocks: {},
-    datasetConcepts: [],
-    goal: new Set(),
+    dataset: [],    
+    datasetConcepts: [],    
     singleLocalCovering: [],
+    goal: new Set(),
     concept: new Set(),
 
     newConcepts: function () {
@@ -83,7 +83,7 @@ LEM2 = {
 
     initializeProcedure: function (concept) {
         LEM2.concept = concept.cases;        
-        LEM2.singleLocalCovering = new Set();
+        LEM2.singleLocalCovering = [];
         LEM2.updateGoal();
     },
 
