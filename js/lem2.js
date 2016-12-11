@@ -207,8 +207,23 @@ LEM2 = {
         LEM2.singleLocalCovering = minimalRuleset;
     },
 
-    newGoalBlockIntersections: function() {
-        LEM2.goalBlockIntersections = [{"attribute": "", "value": "", "set": new Set([1])}];
+    newGoalBlockIntersections: function () {
+        LEM2.goalBlockIntersections = [];
+
+        for (var attribute in LEM2.blocks) {
+            var attributeBlocks = LEM2.blocks[attribute];
+            for (var attributeValue in attributeBlocks) {
+                var blockCases = new Set(LEM2.blocks[attribute][attributeValue]);
+                var intersection = {
+                    "attribute": attribute,
+                    "value": attributeValue,
+                    "cases": blockCases.intersection(LEM2.goal.cases)
+                }
+                if (intersection.cases.size) {
+                    LEM2.goalBlockIntersections.push(intersection);
+                }
+            }
+        }
     }
 };
 
