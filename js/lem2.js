@@ -95,8 +95,6 @@ LEM2 = {
 
     // TODO: Refactor
     newRuleset: function () {
-        LEM2.goal = new Set();
-
         if (LEM2.concept.size === 4 && LEM2.concept.has(1) && LEM2.concept.has(2) && LEM2.concept.has(4) && LEM2.concept.has(5)) {
             LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
         }
@@ -112,6 +110,8 @@ LEM2 = {
         if (LEM2.concept.size === 3 && LEM2.concept.has(3) && LEM2.concept.has(5) && LEM2.concept.has(6)) {
             LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }];
         }
+
+        LEM2.updateGoal();
     },
 
     getCasesCoveredByRuleset: function (ruleset) {
@@ -259,7 +259,8 @@ LEM2 = {
     },
 
     updateGoal: function () {
-        LEM2.goal = LEM2.concept.difference(LEM2.singleLocalCovering);
+        var coveredCases = LEM2.getCasesCoveredByRuleset(LEM2.singleLocalCovering);
+        LEM2.goal = LEM2.concept.difference(coveredCases);
     }
 };
 
