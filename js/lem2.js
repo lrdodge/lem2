@@ -227,16 +227,30 @@ LEM2 = {
         return intersections;
     },
 
-    selectBestBlock: function(intersections) {
+    selectBestBlock: function (intersections) {
         var bestBlock = intersections[0];
+        var bestCardinality = LEM2.blocks[intersections[0].attribute][intersections[0].value].length;
 
-        intersections.forEach(function(intersection) {
+        intersections.forEach(function (intersection) {
+            var cardinality = LEM2.blocks[intersection.attribute][intersection.value].length;
+
             if (intersection.cases.size < bestBlock.cases.size) {
                 return;
             }
 
             if (intersection.cases.size > bestBlock.cases.size) {
                 bestBlock = intersection;
+                bestCardinality = cardinality;
+                return;
+            }
+
+            if (cardinality > bestCardinality) {
+                return;
+            }
+
+            if (cardinality < bestCardinality) {
+                bestBlock = intersection;
+                bestCardinality = cardinality;
                 return;
             }
         });
