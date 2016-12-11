@@ -435,4 +435,25 @@ describe('LEM2 Module Functions', function () {
             expect(actual).to.be.eql(bestIntersection);
         });
     });
+
+    describe('#updateGoal()', function () {
+        it('should set the goal to the concept minus the single local covering', function goalInitialization() {
+            LEM2.goal = new Set();
+            LEM2.singleLocalCovering = new Set();
+            LEM2.concept = new Set([1, 2, 3]);
+
+            LEM2.updateGoal();
+            expect(LEM2.goal).to.be.eql(LEM2.concept);
+        });
+
+        it('should set the goal to the concept minus the single local covering', function subtractCoveringFromConcept() {
+            LEM2.goal = new Set();
+            LEM2.singleLocalCovering = new Set([1]);
+            LEM2.concept = new Set([1, 2, 3]);
+            const newGoal = new Set([2, 3])
+
+            LEM2.updateGoal();
+            expect(LEM2.goal).to.be.eql(newGoal);
+        });
+    });
 });

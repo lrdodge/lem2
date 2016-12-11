@@ -82,4 +82,8 @@ describe('LEM2 Module', function() {
     it('should have a selectBestBlock function', function() {
         expect(LEM2.selectBestBlock).to.be.a('function');
     });
+
+    it('should have an updateGoal function', function() {
+        expect(LEM2.updateGoal).to.be.a('function');
+    });
 });

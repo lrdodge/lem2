@@ -256,6 +256,10 @@ LEM2 = {
         });
 
         return bestBlock;
+    },
+
+    updateGoal: function () {
+        LEM2.goal = LEM2.concept.difference(LEM2.singleLocalCovering);
     }
 };
 
