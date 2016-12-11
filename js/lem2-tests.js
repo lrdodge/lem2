@@ -109,29 +109,35 @@ describe('LEM2 Module', function () {
     });
 
     describe('#newRuleset()', function () {
-        it('should create an array of rules (ruleset) from the data set', function () {
-            // Example 1
+        it('should create an array of rules (ruleset) from the data set', function exampleOne_CreateRuleset_FluYes() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
             LEM2.newRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes1);
+        });
 
+        it('should create an array of rules (ruleset) from the data set', function exampleOne_CreateRuleset_FluNo() {
+            LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluNo1);
             LEM2.newRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
+        });
 
-            // Example 2
+        it('should create an array of rules (ruleset) from the data set', function exampleTwo_CreateRuleset_FluYes() {
             LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluYes2);
             LEM2.newRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes2);
+        });
 
+        it('should create an array of rules (ruleset) from the data set', function exampleTwo_CreateRuleset_FluNo() {
+            LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluNo2);
             LEM2.newRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo2);
         });
 
-        it('should finish when the goal is the empty set', function () {
+        it('should finish when the goal is the empty set', function endOnGoalEmptySet() {
             // Example 1
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
