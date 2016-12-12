@@ -24,33 +24,46 @@ const conceptFluNo2 = { "decision": "flu", "value": "no", "cases": new Set([3, 5
 describe('LEM2 Module', function () {
 
     describe('#initialize()', function () {
-        it('should take an array (dataset) and set the LEM2 dataset object', function () {
-            // Example 1
+
+        // Dataset
+
+        const initializeDataset = 'should take a dataset and set the LEM2 dataset';
+
+        it(initializeDataset, function exampleOne() {
             LEM2.initialize(dataset1);
             expect(LEM2.dataset).to.be.eql(dataset1);
+        });
 
-            // Example 2
+        it(initializeDataset, function exampleTwo() {
             LEM2.initialize(dataset2);
             expect(LEM2.dataset).to.be.eql(dataset2);
         });
 
-        it('should take an array (dataset) and create the dataset concepts', function () {
-            // Example 1
+        // Blocks
+
+        const initializeBlocks = 'should take a dataset and create the dataset blocks';
+
+        it(initializeBlocks, function exampleOne() {
             LEM2.initialize(dataset1);
             expect(LEM2.blocks).to.be.eql(blocks1);
+        });
 
-            // Example 1
+        it(initializeBlocks, function exampleTwo() {
             LEM2.initialize(dataset2);
             expect(LEM2.blocks).to.be.eql(blocks2);
         });
 
-        it('should take an array (dataset) and create the blocks', function () {
-            // Example 1
+        // Concept
+
+        const initializeConcepts = 'should take a dataset and create the dataset concepts';
+
+        it(initializeConcepts, function exampleOneFluNo() {
             LEM2.initialize(dataset1);
             let datasetConcepts1 = [conceptFluYes1, conceptFluNo1];
             expect(LEM2.datasetConcepts).to.be.eql(datasetConcepts1);
+        });
 
-            // Example 1
+        it(initializeConcepts, function exampleTwoFluNo() {
             LEM2.initialize(dataset2);
             let datasetConcepts2 = [conceptFluYes2, conceptFluNo2];
             expect(LEM2.datasetConcepts).to.be.eql(datasetConcepts2);
@@ -58,95 +71,112 @@ describe('LEM2 Module', function () {
     });
 
     describe('#initializeProcedure()', function () {
-        it('should take a set (concept) and set the goal equal to the concept', function exampleOne_InitializeGoal_FluYes() {
+
+        // Goal
+
+        const initializeGoal = 'should take a concept and set the goal equal to the input concept';
+
+        it(initializeGoal, function exampleOneFluYes() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
             expect(LEM2.goal).to.be.eql(conceptFluYes1.cases);
         });
 
-        it('should take a set (concept) and set the goal equal to the concept', function exampleOne_InitializeGoal_FluNo() {
+        it(initializeGoal, function exampleOneFluNo() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluNo1);
             expect(LEM2.goal).to.be.eql(conceptFluNo1.cases);
         });
 
-        it('should take a set (concept) and set the goal equal to the concept', function exampleTwo_InitializeGoal_FluYes() {
+        it(initializeGoal, function exampleTwoFluYes() {
             LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluYes2);
             expect(LEM2.goal).to.be.eql(conceptFluYes2.cases);
         });
 
-        it('should take a set (concept) and set the goal equal to the concept', function exampleTwo_InitializeGoal_FluNo() {
+        it(initializeGoal, function exampleTwo_InitializeGoal_FluNo() {
             LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluNo2);
             expect(LEM2.goal).to.be.eql(conceptFluNo2.cases);
         });
 
-        it('should take a set (concept) and set the module concept equal to the set', function exampleOne_InitializeConcept_FluYes() {
+        // Concept
+
+        const initializeConcept = 'should take a concept and set the module concept equal to the input set';
+
+        it(initializeConcept, function exampleOne_InitializeConcept_FluYes() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
             expect(LEM2.concept).to.be.eql(conceptFluYes1.cases);
         });
 
-        it('should take a set (concept) and set the module concept equal to the set', function exampleOne_InitializeConcept_FluNo() {
+        it(initializeConcept, function exampleOne_InitializeConcept_FluNo() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluNo1);
             expect(LEM2.concept).to.be.eql(conceptFluNo1.cases);
         });
 
-        it('should take a set (concept) and set the module concept equal to the set', function exampleTwo_InitializeConcept_FluYes() {
+        it(initializeConcept, function exampleTwo_InitializeConcept_FluYes() {
             LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluYes2);
             expect(LEM2.concept).to.be.eql(conceptFluYes2.cases);
         });
 
-        it('should take a set (concept) and set the module concept equal to the set', function exampleTwo_InitializeConcept_FluYes() {
+        it(initializeConcept, function exampleTwo_InitializeConcept_FluYes() {
             LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluNo2);
             expect(LEM2.concept).to.be.eql(conceptFluNo2.cases);
         });
 
-        it('should set the singleLocalCovering to an empty array', function initializeSingleLocalCovering() {
+        // Single Local Covering
+
+        it('should set singleLocalCovering to an empty array', function initializeSingleLocalCovering() {
             LEM2.goal = new Set([1, 2, 3]);
             const emptyArray = [];
 
             LEM2.initializeProcedure(conceptFluYes1);
-            
+
             expect(LEM2.singleLocalCovering).to.be.eql(emptyArray);
         });
     });
 
     describe('#newRuleset()', function () {
-        it('should create an array of rules (ruleset) from the data set', function exampleOne_CreateRuleset_FluYes() {
+
+        // Rules
+
+        const createRules = 'should create an array of rules from the dataset';
+
+        it(createRules, function exampleOne_CreateRuleset_FluYes() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
             LEM2.newRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes1);
         });
 
-        it('should create an array of rules (ruleset) from the data set', function exampleOne_CreateRuleset_FluNo() {
+        it(createRules, function exampleOne_CreateRuleset_FluNo() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluNo1);
             LEM2.newRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
         });
 
-        it('should create an array of rules (ruleset) from the data set', function exampleTwo_CreateRuleset_FluYes() {
+        it(createRules, function exampleTwo_CreateRuleset_FluYes() {
             LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluYes2);
             LEM2.newRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes2);
         });
 
-        it('should create an array of rules (ruleset) from the data set', function exampleTwo_CreateRuleset_FluNo() {
+        it(createRules, function exampleTwo_CreateRuleset_FluNo() {
             LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluNo2);
             LEM2.newRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo2);
         });
 
+        // Empty Set Goal
+
         it('should finish when the goal is the empty set', function endOnGoalEmptySet() {
-            // Example 1
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
             LEM2.newRuleset();
@@ -156,199 +186,293 @@ describe('LEM2 Module', function () {
     });
 
     describe('#newConcepts()', function () {
-        it('should create an array of concepts object from the data set', function () {
-            // Example 1
+
+        // Concepts
+
+        const createConcepts = 'should create an array of concept objects from the dataset';
+
+        it(createConcepts, function exampleOne() {
             LEM2.dataset = dataset1;
             LEM2.newConcepts();
-            let expected = [conceptFluYes1, conceptFluNo1];
-            expect(LEM2.datasetConcepts).to.be.eql(expected);
-
-            // Example 2
-            LEM2.dataset = dataset2;
-            LEM2.newConcepts();
-            expected = [conceptFluYes2, conceptFluNo2];
-            expect(LEM2.datasetConcepts).to.be.eql(expected);
+            const concepts = [conceptFluYes1, conceptFluNo1];
+            expect(LEM2.datasetConcepts).to.be.eql(concepts);
         });
 
-        it('should not modify the input array (data set)', function () {
-            // Example 1
-            LEM2.dataset = dataset1;
-            LEM2.newConcepts();
-            let expected = [["temperature", "headache", "weakness", "nausea", "flu"], ["very_high", "yes", "yes", "no", "yes"], ["high", "yes", "no", "yes", "yes"], ["normal", "no", "no", "no", "no"], ["normal", "yes", "yes", "yes", "yes"], ["high", "no", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["normal", "no", "yes", "no", "no"]];
-            expect(dataset1).to.be.eql(expected);
-
-            // Example 2
+        it(createConcepts, function exampleTwo() {
             LEM2.dataset = dataset2;
             LEM2.newConcepts();
-            expected = [["temperature", "headache", "nausea", "cough", "flu"], ["high", "yes", "no", "yes", "yes"], ["very_high", "yes", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["high", "yes", "yes", "yes", "yes"], ["normal", "yes", "no", "no", "no"], ["normal", "no", "yes", "yes", "no"]];
-            expect(dataset2).to.be.eql(expected);
-        })
+            const concepts = [conceptFluYes2, conceptFluNo2];
+            expect(LEM2.datasetConcepts).to.be.eql(concepts);
+        });
+
+        // Does Not Modify Dataset
+
+        const doesNotModifyDataset = 'should not modify the input dataset';
+
+        it(doesNotModifyDataset, function exampleOneDatasetUnmodified() {
+            LEM2.dataset = dataset1;
+            LEM2.newConcepts();
+            const originalDataset = [["temperature", "headache", "weakness", "nausea", "flu"], ["very_high", "yes", "yes", "no", "yes"], ["high", "yes", "no", "yes", "yes"], ["normal", "no", "no", "no", "no"], ["normal", "yes", "yes", "yes", "yes"], ["high", "no", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["normal", "no", "yes", "no", "no"]];
+            expect(dataset1).to.be.eql(originalDataset);
+        });
+
+        it(doesNotModifyDataset, function exampleTwoDatasetUnmodified() {
+            LEM2.dataset = dataset2;
+            LEM2.newConcepts();
+            const originalDataset = [["temperature", "headache", "nausea", "cough", "flu"], ["high", "yes", "no", "yes", "yes"], ["very_high", "yes", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["high", "yes", "yes", "yes", "yes"], ["normal", "yes", "no", "no", "no"], ["normal", "no", "yes", "yes", "no"]];
+            expect(dataset2).to.be.eql(originalDataset);
+        });
     });
 
     describe('#newAttributeValueBlocks()', function () {
-        it('should create a blocks object (attribute-value blocks) from the data set', function () {
+
+        // Create Blocks
+
+        const createBlocks = 'should create attribute-value blocks from the dataset';
+
+        it(createBlocks, function exampleAdHoc() {
             LEM2.dataset = [["A1", "A2", "D"], ["N", "N", "False"], ["N", "Y", "True"], ["Y", "N", "False"], ["Y", "Y", "True"]];
             const blocks = { "A1": { "Y": [3, 4], "N": [1, 2] }, "A2": { "Y": [2, 4], "N": [1, 3] } };
             LEM2.newAttributeValueBlocks();
             expect(LEM2.blocks).to.be.eql(blocks);
+        });
 
-            // Example 1
+        it(createBlocks, function exampleOne() {
             LEM2.dataset = dataset1;
             LEM2.newAttributeValueBlocks();
             expect(LEM2.blocks).to.be.eql(blocks1);
+        });
 
-            // Example 2
+        it(createBlocks, function exampleTwo() {
+
             LEM2.dataset = dataset2;
             LEM2.newAttributeValueBlocks();
             expect(LEM2.blocks).to.be.eql(blocks2);
         });
 
-        it('should not modify the input array (data set)', function () {
-            // Example 1
+        // Does Not Modify Dataset
+
+        const doesNotModifyDataset = 'should not modify the input dataset';
+
+        it(doesNotModifyDataset, function exampleOneDatasetUnmodified() {
             LEM2.dataset = dataset1;
             LEM2.newAttributeValueBlocks();
-            let expected = [["temperature", "headache", "weakness", "nausea", "flu"], ["very_high", "yes", "yes", "no", "yes"], ["high", "yes", "no", "yes", "yes"], ["normal", "no", "no", "no", "no"], ["normal", "yes", "yes", "yes", "yes"], ["high", "no", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["normal", "no", "yes", "no", "no"]];
-            expect(dataset1).to.be.eql(expected);
+            const originalDataset = [["temperature", "headache", "weakness", "nausea", "flu"], ["very_high", "yes", "yes", "no", "yes"], ["high", "yes", "no", "yes", "yes"], ["normal", "no", "no", "no", "no"], ["normal", "yes", "yes", "yes", "yes"], ["high", "no", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["normal", "no", "yes", "no", "no"]];
+            expect(dataset1).to.be.eql(originalDataset);
+        });
 
-            // Example 2
+        it(doesNotModifyDataset, function exampleOneDatasetUnmodified() {
             LEM2.dataset = dataset2;
             LEM2.newAttributeValueBlocks();
-            expected = [["temperature", "headache", "nausea", "cough", "flu"], ["high", "yes", "no", "yes", "yes"], ["very_high", "yes", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["high", "yes", "yes", "yes", "yes"], ["normal", "yes", "no", "no", "no"], ["normal", "no", "yes", "yes", "no"]];
-            expect(dataset2).to.be.eql(expected);
-        })
+            const originalDataset = [["temperature", "headache", "nausea", "cough", "flu"], ["high", "yes", "no", "yes", "yes"], ["very_high", "yes", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["high", "yes", "yes", "yes", "yes"], ["normal", "yes", "no", "no", "no"], ["normal", "no", "yes", "yes", "no"]];
+            expect(dataset2).to.be.eql(originalDataset);
+        });
     });
 
     describe('#invokeProcedure()', function () {
-        it('should take a set (concept) and set singleLocalCovering to an array of rules (single local covering of the data set)', function () {
-            // Example 1
+
+        // Single Local Covering
+
+        const singleLocalCovering = 'should take a concept and set singleLocalCovering to an array of rules';
+
+        it(singleLocalCovering, function exampleOneFluYes() {
             LEM2.initialize(dataset1);
             LEM2.invokeProcedure(conceptFluYes1);
             expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluYes1));
+        });
 
+        it(singleLocalCovering, function exampleOneFluNo() {
+            LEM2.initialize(dataset1);
             LEM2.invokeProcedure(conceptFluNo1);
             expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluNo1));
+        });
 
-            // Example 2
+        it(singleLocalCovering, function exampleTwoFluYes() {
             LEM2.initialize(dataset2);
             LEM2.invokeProcedure(conceptFluYes2);
             expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluYes2));
+        });
 
+        it(singleLocalCovering, function exampleTwoFluNo() {
+            LEM2.initialize(dataset2);
             LEM2.invokeProcedure(conceptFluNo2);
             expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluNo2));
         });
     });
 
     describe('#getCasesCoveredByRuleset()', function () {
-        it('should take an array of rules and return a set (cases covered by ruleset)', function () {
-            // Example 1
+
+        // Covered Cases
+
+        const coveredCases = 'should take an array of rules and return the set of cases covered by ruleset';
+
+        it(coveredCases, function exmpleOneFluYes() {
             LEM2.initialize(dataset1);
-            let actual = LEM2.getCasesCoveredByRuleset(rulesetFluYes1);
+            const actual = LEM2.getCasesCoveredByRuleset(rulesetFluYes1);
             expect(Array.from(actual)).to.be.eql(Array.from(conceptFluYes1.cases));
+        });
 
-            actual = LEM2.getCasesCoveredByRuleset(rulesetFluNo1);
+        it(coveredCases, function exmpleOneFluNo() {
+            LEM2.initialize(dataset1);
+            const actual = LEM2.getCasesCoveredByRuleset(rulesetFluNo1);
             expect(Array.from(actual)).to.be.eql(Array.from(conceptFluNo1.cases));
+        });
 
-            // Example 2
+        it(coveredCases, function exmpleTwoFluYes() {
             LEM2.initialize(dataset2);
-            actual = LEM2.getCasesCoveredByRuleset(rulesetFluYes2);
+            const actual = LEM2.getCasesCoveredByRuleset(rulesetFluYes2);
             expect(Array.from(actual)).to.be.eql(Array.from(conceptFluYes2.cases));
+        });
 
-            actual = LEM2.getCasesCoveredByRuleset(rulesetFluNo2);
+        it(coveredCases, function exmpleTwoFluNo() {
+            LEM2.initialize(dataset2);
+            const actual = LEM2.getCasesCoveredByRuleset(rulesetFluNo2);
             expect(Array.from(actual)).to.be.eql(Array.from(conceptFluNo2.cases));
         });
     });
 
     describe('#getCasesCoveredByRule()', function () {
-        it('should take a rule object and return a set (cases covered of data set)', function () {
-            // Example 1
+
+        // Covered Cases
+
+        const coveredCases = 'should take a rule and return a set of cases covered';
+
+        it(coveredCases, function exampleOneFluYesRule1() {
             LEM2.initialize(dataset1);
-            let coveredCases = new Set([1, 2, 4]);
-            let actual = LEM2.getCasesCoveredByRule(rulesetFluYes1[0]);
+            const coveredCases = new Set([1, 2, 4]);
+            const actual = LEM2.getCasesCoveredByRule(rulesetFluYes1[0]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+        });
 
-            coveredCases = new Set([5]);
-            actual = LEM2.getCasesCoveredByRule(rulesetFluYes1[1]);
+        it(coveredCases, function exampleOneFluYesRule2() {
+            LEM2.initialize(dataset1);
+            const coveredCases = new Set([5]);
+            const actual = LEM2.getCasesCoveredByRule(rulesetFluYes1[1]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+        });
 
-            coveredCases = new Set([3, 7]);
-            actual = LEM2.getCasesCoveredByRule(rulesetFluNo1[0]);
+        it(coveredCases, function exampleOneFluNoRule1() {
+            LEM2.initialize(dataset1);
+            const coveredCases = new Set([3, 7]);
+            const actual = LEM2.getCasesCoveredByRule(rulesetFluNo1[0]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+        });
 
-            coveredCases = new Set([3, 6]);
-            actual = LEM2.getCasesCoveredByRule(rulesetFluNo1[1]);
+        it(coveredCases, function exampleOneFluNoRule2() {
+            LEM2.initialize(dataset1);
+            const coveredCases = new Set([3, 6]);
+            const actual = LEM2.getCasesCoveredByRule(rulesetFluNo1[1]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+        });
 
-            // Example 2
+        it(coveredCases, function exampleTwoFluYesRule1() {
             LEM2.initialize(dataset2);
-            coveredCases = new Set([1, 4]);
-            actual = LEM2.getCasesCoveredByRule(rulesetFluYes2[0]);
+            const coveredCases = new Set([1, 4]);
+            const actual = LEM2.getCasesCoveredByRule(rulesetFluYes2[0]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+        });
 
-            coveredCases = new Set([2]);
-            actual = LEM2.getCasesCoveredByRule(rulesetFluYes2[1]);
+        it(coveredCases, function exampleTwoFluYesRule2() {
+            LEM2.initialize(dataset2);
+            const coveredCases = new Set([2]);
+            const actual = LEM2.getCasesCoveredByRule(rulesetFluYes2[1]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+        });
 
-            coveredCases = new Set([3, 6]);
-            actual = LEM2.getCasesCoveredByRule(rulesetFluNo2[0]);
+        it(coveredCases, function exampleTwoFluNoRule1() {
+            LEM2.initialize(dataset2);
+            const coveredCases = new Set([3, 6]);
+            const actual = LEM2.getCasesCoveredByRule(rulesetFluNo2[0]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
+        });
 
-            coveredCases = new Set([5, 6]);
-            actual = LEM2.getCasesCoveredByRule(rulesetFluNo2[1]);
+        it(coveredCases, function exampleTwoFluNoRule2() {
+            LEM2.initialize(dataset2);
+            const coveredCases = new Set([5, 6]);
+            const actual = LEM2.getCasesCoveredByRule(rulesetFluNo2[1]);
             expect(Array.from(actual)).to.be.eql(Array.from(coveredCases));
         });
     });
 
     describe('#compressRule()', function () {
-        it('should take a rule and return a minimal rule', function () {
-            // Example 1 (already minimal)
+
+        // Minimal Rule
+
+        const minimalRule = 'should take a rule and return a minimal rule';
+        const rule1 = { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+        const rule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+
+        it(minimalRule, function minimalRule1() {
             LEM2.initialize(dataset1);
             LEM2.concept = conceptFluYes1.cases;
-            let rule1 = { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
-            let actual = LEM2.compressRule(rule1);
+            const actual = LEM2.compressRule(rule1);
             expect(actual).to.be.eql(rule1);
+        });
 
-            let rule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
-            actual = LEM2.compressRule(rule2);
+        it(minimalRule, function minimalRule2() {
+            LEM2.initialize(dataset1);
+            LEM2.concept = conceptFluYes1.cases;
+            const actual = LEM2.compressRule(rule2);
             expect(actual).to.be.eql(rule2);
+        });
 
-            // Example 1 (not minimal)
-            let expandedRule1 = { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
-            actual = LEM2.compressRule(expandedRule1);
+        // Non-Minimal Rule
+
+        it(minimalRule, function expandedRule1() {
+            const expandedRule1 = { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+            const actual = LEM2.compressRule(expandedRule1);
             expect(actual).to.be.eql(rule1);
+        });
 
-            let expandedRule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
-            actual = LEM2.compressRule(rule2);
+        it(minimalRule, function expandedRule2() {
+            const expandedRule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+            const actual = LEM2.compressRule(expandedRule2);
             expect(actual).to.be.eql(rule2);
         });
     });
 
     describe('#compressRuleset()', function () {
-        it('should remove unnecessary rules from the ruleset', function () {
-            // Example 1 (already minimal)
+
+        const compressRuleset = 'should remove unnecessary rules from the ruleset';
+
+        // Minimal Ruleset
+
+        it(compressRuleset, function minimalRulesetFluYes() {
             LEM2.initialize(dataset1);
             LEM2.concept = conceptFluYes1.cases;
             LEM2.singleLocalCovering = rulesetFluYes1;
             LEM2.compressRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes1);
+        });
 
+        it(compressRuleset, function minimalRulesetFluNo() {
+            LEM2.initialize(dataset1);
             LEM2.concept = conceptFluNo1.cases;
             LEM2.singleLocalCovering = rulesetFluNo1;
             LEM2.compressRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
+        });
 
-            // Example 1 (single rule)
+        // Single Rule
+
+        it(compressRuleset, function singleRule() {
             LEM2.concept = conceptFluYes1.cases;
             LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
             let ruleset = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
             LEM2.compressRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(ruleset);
+        });
 
-            // Example 1 (not minimal)
+        // Non-Minimal Ruleset
+
+        it(compressRuleset, function expandedRulesetFluYes() {
             LEM2.concept = conceptFluYes1.cases;
             LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
             LEM2.compressRuleset();
             expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes1);
+        });
 
+        it(compressRuleset, function expandedRulesetFluNo() {
             LEM2.concept = conceptFluNo1.cases;
             LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
             LEM2.compressRuleset();
@@ -357,7 +481,10 @@ describe('LEM2 Module', function () {
     });
 
     describe('#newGoalBlockIntersections()', function () {
-        it('should create an array of objects (intersections), each with an attribute string, a value string, and a non-empty set (cases)', function intersectionStructure() {
+
+        // Intersection Structure
+
+        it('should create an array of intersections, each with an attribute string, a value string, and a non-empty set', function intersectionStructure() {
             const emptySet = new Set();
 
             LEM2.initialize(dataset1);
@@ -373,7 +500,11 @@ describe('LEM2 Module', function () {
             });
         });
 
-        it('should create an array of intersections between the each attribute value block and the goal', function exampleOneFluYes() {
+        // Create Intersections
+
+        const createIntersections = 'should create an array of intersections between each attribute value block and the goal';
+
+        it(createIntersections, function exampleOneFluYes() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
 
@@ -383,7 +514,7 @@ describe('LEM2 Module', function () {
             expect(actual).to.be.eql(intersections);
         });
 
-        it('should create an array of intersections between the each attribute value block and the goal', function exampleOneFluNo() {
+        it(createIntersections, function exampleOneFluNo() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluNo1);
 
@@ -393,7 +524,7 @@ describe('LEM2 Module', function () {
             expect(actual).to.be.eql(intersections);
         });
 
-        it('should create an array of intersections between the each attribute value block and the goal', function exampleTwoFluYes() {
+        it(createIntersections, function exampleTwoFluYes() {
             LEM2.initialize(dataset2);
             LEM2.initializeProcedure(conceptFluYes2);
 
@@ -405,7 +536,12 @@ describe('LEM2 Module', function () {
     });
 
     describe('#selectBestBlock()', function () {
-        it('should take an array (intersections) and return an object (intersection) with maximam intersection size', function exampleOneFluYesMaxSize() {
+
+        // Intersection Maximimum
+
+        const intersectionMaximum = 'should take an array of intersections and return the largest intersection';
+
+        it(intersectionMaximum, function exampleOneFluYes() {
             LEM2.initialize(dataset1);
             const intersectionsFluYes1 = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
 
@@ -415,7 +551,7 @@ describe('LEM2 Module', function () {
             expect(actual).to.be.eql(bestIntersection);
         });
 
-        it('should take an array (intersections) and return an object (intersection) with maximam intersection size', function exampleOneFluNoMaxSize() {
+        it(intersectionMaximum, function exampleOneFluNo() {
             LEM2.initialize(dataset1);
             const intersectionsFluNo1 = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
 
@@ -425,17 +561,7 @@ describe('LEM2 Module', function () {
             expect(actual).to.be.eql(bestIntersection);
         });
 
-        it('should take an array (intersections) and return an object (intersection) with maximam intersection size and minimal cardinality', function exampleOneFluNoMinCardinality() {
-            LEM2.initialize(dataset1);
-            const intersectionsFluNo1 = [{ "attribute": "headache", "value": "no", "cases": new Set([6]) }, { "attribute": "weakness", "value": "no", "cases": new Set([6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([6]) }];
-
-            const bestIntersection = { "attribute": "weakness", "value": "no", "cases": new Set([6]) };
-            const actual = LEM2.selectBestBlock(intersectionsFluNo1);
-
-            expect(actual).to.be.eql(bestIntersection);
-        });
-
-        it('should take an array (intersections) and return an object (intersection) with maximam intersection size', function exampleTwoFluYesMaxSize() {
+        it(intersectionMaximum, function exampleTwoFluYes() {
             LEM2.initialize(dataset2);
             const intersectionsFluYes2 = [{ "attribute": "temperature", "value": "high", "cases": new Set([1, 4]) }, { "attribute": "temperature", "value": "very_high", "cases": new Set([2]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }, { "attribute": "cough", "value": "yes", "cases": new Set([1, 4]) }, { "attribute": "cough", "value": "no", "cases": new Set([2]) }];
 
@@ -445,7 +571,21 @@ describe('LEM2 Module', function () {
             expect(actual).to.be.eql(bestIntersection);
         });
 
-        it('should take an array (intersections) and return an object (intersection) with maximam intersection size and minimal cardinality', function exampleTwoFluNoMinCardinality() {
+        // Minimal Cardinality
+
+        const minimalCardinality = 'should take an array of intersections and return the largerst intersection with minimum cardinality';
+
+        it(minimalCardinality, function exampleOneFluNo() {
+            LEM2.initialize(dataset1);
+            const intersectionsFluNo1 = [{ "attribute": "headache", "value": "no", "cases": new Set([6]) }, { "attribute": "weakness", "value": "no", "cases": new Set([6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([6]) }];
+
+            const bestIntersection = { "attribute": "weakness", "value": "no", "cases": new Set([6]) };
+            const actual = LEM2.selectBestBlock(intersectionsFluNo1);
+
+            expect(actual).to.be.eql(bestIntersection);
+        });
+
+        it(minimalCardinality, function exampleTwoFluNo() {
             LEM2.initialize(dataset2);
             const intersectionsFluNo2 = [{ "attribute": "temperature", "value": "high", "cases": new Set([3]) }, { "attribute": "headache", "value": "no", "cases": new Set([3]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3]) }, { "attribute": "cough", "value": "no", "cases": new Set([3]) }];
 
@@ -457,7 +597,12 @@ describe('LEM2 Module', function () {
     });
 
     describe('#updateGoal()', function () {
-        it('should set the goal to the concept minus the single local covering', function goalInitialization() {
+
+        // Update Goal
+
+        const updateGoal = 'should set the goal to the concept minus the single local covering';
+
+        it(updateGoal, function goalInitialization() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
 
@@ -466,7 +611,7 @@ describe('LEM2 Module', function () {
             expect(LEM2.goal).to.be.eql(LEM2.concept);
         });
 
-        it('should set the goal to the concept minus the single local covering', function subtractCoveringFromConcept() {
+        it(updateGoal, function subtractCoveringFromConcept() {
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
 
