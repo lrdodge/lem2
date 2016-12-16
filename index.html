@@ -18,62 +18,77 @@
   <div class="container">
     <h1>LEM2</h1>
     <form>
-      <div class="form-group">
-        <div class="radio">
-          <label>
-              <input type="radio" name="dataset-options" id="dataset-custom" value="dataset-custom" checked>
-              Custom Data Set
-            </label>
-        </div>
-        <div class="radio">
-          <label>
-              <input type="radio" name="dataset-options" id="dataset-1" value="dataset-1" >
-              Example Data Set #1
-            </label>
-        </div>
-        <div class="radio">
-          <label>
-              <input type="radio" name="dataset-options" id="dataset-2" value="dataset-2">
-              Example Data Set #2
-            </label>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="data-input">Comma separated value (CSV) data</label>
-        <textarea id="data-input" rows="10" class="form-control"></textarea>
-        <span class="help-block">First row should be the column labels. Last column should be the decision value. Omit case numbers.</span>
-      </div>
-
       <div class="row">
-        <div class="col-md-2">
-          <button type="button" class="btn btn-primary" id="process-data-button">Process</button>
+        <div class="col-md-4">
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                  <input type="radio" name="dataset-options" id="dataset-1" value="dataset-1" >
+                  Example Data Set #1
+                </label>
+            </div>
+            <div class="radio">
+              <label>
+                  <input type="radio" name="dataset-options" id="dataset-2" value="dataset-2">
+                  Example Data Set #2
+                </label>
+            </div>
+            <div class="radio">
+              <label>
+                  <input type="radio" name="dataset-options" id="dataset-custom" value="dataset-custom">
+                  Manual Data Set Entry
+                </label>
+            </div>
+            <div class="radio">
+              <label>
+                  <input type="radio" name="dataset-options" id="dataset-file" value="dataset-file" checked>
+                  Load Data Set from File
+                </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="file" id="input-file">
+          </div>
+
+          <button type="button" class="btn btn-primary" id="load-data-button">Load Data</button>
         </div>
-        <div class="col-md-10">
-          <div id="data-input-error-alert" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Data Input Error</strong>
-            <div id="data-input-error-message"></div>
+
+        <div class="col-md-8">
+          <div class="form-group">
+            <label for="data-input">Comma separated value (CSV) data</label>
+            <textarea id="data-input" rows="10" class="form-control"></textarea>
+            <span class="help-block">First row should be the column labels. Last column should be the decision value. Omit case numbers.</span>
           </div>
         </div>
+
       </div>
     </form>
 
-    <div id="rules-div" style="display: none;">
-      <h2>Rules</h2>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="data-input-error-alert" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>Data Input Error</strong>
+          <div id="data-input-error-message"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div id="rules-div" style="display: none;">
+        <h2>Rules</h2>
+      </div>
     </div>
 
     <!-- Modal -->
     <div class="modal fade" id="concept-modal" tabindex="-1" role="dialog" aria-labelledby="concept-model-title">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="concept-model-title">Choose Concept</h4>
           </div>
-          <form id="concept-modal-form" class="modal-body">
-            ...
-          </form>
+          <form id="concept-modal-form" class="modal-body"></form>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="induce-rules-button">Induce Rules</button>
@@ -88,8 +103,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/jquery.validate.min.js"></script>
   <script src="https://use.fontawesome.com/30c06c13bf.js"></script>
   <script src="js/papaparse.min.js"></script>
-  <script src="js/form-controls.js"></script>
   <script src="js/set.js"></script>
+  <script src="js/form-controls.js"></script>
   <script src="js/lem2.js"></script>
 </body>
 

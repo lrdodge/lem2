@@ -28,7 +28,7 @@ LEM2 = {
         decisionValues.forEach(function (decisionValue) {
             var cases = column.reduce(function (decisionValues, value, index) {
                 if (value === decisionValue) {
-                    decisionValues.push(index + 1);
+                  decisionValues.push(index + 1);
                 }
                 return decisionValues;
             }, []);
