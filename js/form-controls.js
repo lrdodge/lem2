@@ -21,11 +21,11 @@ var FormController = (function () {
     }
   }
 
-  var covnertCsv = function() {
+  var covnertCsv = function () {
     var csvInput = $("input[name='dataset-options']:checked").val();
     var config = {
       skipEmptyLines: true,
-      complete: function(results) {
+      complete: function (results) {
         verifyCsv(results);
       }
     };
@@ -42,7 +42,7 @@ var FormController = (function () {
     }
   };
 
-  var verifyCsv = function(csv) {
+  var verifyCsv = function (csv) {
     if (csv.errors.length) {
       showParseErrors(csv.errors);
       return;
@@ -53,7 +53,7 @@ var FormController = (function () {
     $("#concept-modal").modal();
   };
 
-  var showParseErrors = function(errors) {
+  var showParseErrors = function (errors) {
     var errorList = $("<ul/>");
     errors.forEach(function (error) {
       console.error(error);
@@ -76,7 +76,7 @@ var FormController = (function () {
     $("#data-input-error-alert").show();
   };
 
-  var newConceptRadioButton = function(concept, conceptIndex) {
+  var newConceptRadioButton = function (concept, conceptIndex) {
 
     // Radio Button
 
@@ -108,7 +108,7 @@ var FormController = (function () {
       "style": "display: none; word-wrap: break-word;"
     });
 
-    $(conceptCasesButton).click(function() { conceptCases.toggle(); });
+    $(conceptCasesButton).click(function () { conceptCases.toggle(); });
 
     radioButtonContainer.append(conceptCasesButton);
     radioButtonContainer.append(conceptCases);
@@ -116,7 +116,7 @@ var FormController = (function () {
     return radioButtonContainer;
   };
 
-  var newConceptModal = function() {
+  var newConceptModal = function () {
     var conceptModalBody = $("#concept-modal-form");
     conceptModalBody.empty();
 
