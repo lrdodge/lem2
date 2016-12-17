@@ -48,7 +48,9 @@ var FormController = (function () {
       return;
     }
 
-    selectConcept(csv.data);
+    LEM2.initialize(csv.data);
+    newConceptModal();
+    $("#concept-modal").modal();
   };
 
   var showParseErrors = function(errors) {
@@ -134,66 +136,6 @@ var FormController = (function () {
         }
       }
     });
-  };
-
-  var selectConcept = function(data) {
-    LEM2.initialize(data);
-    newConceptModal();
-    $("#concept-modal").modal();
-    return;
-
-    // Build Concept Chooser Modal
-    var conceptModalBody = $("#concept-modal-form");
-    conceptModalBody.empty();
-    LEM2.datasetConcepts.forEach(function (concept, conceptIndex) {
-
-      var id = concept.decision + "-" + concept.value;
-
-      var radioButtonContainer = $("<div/>", {
-        "class": "radio"
-      });
-      var radioButtonLabel = $("<label/>", {
-        "text": "(" + concept.decision + ", " + concept.value + ")"
-      });
-
-      var conceptCasesButton = $("<span/>", {
-        "class": "badge pull-right",
-        "style": "cursor:pointer;",
-        "text": concept.cases.size
-      });
-      var conceptCases = $("<p/>", {
-        "text": concept.cases.toString(),
-        "style": "display: none; word-wrap: break-word;"
-      });
-
-      $(conceptCasesButton).click(function() { conceptCases.toggle(); });
-
-      var radioButton = $("<input/>", {
-        "type": "radio",
-        "name": "concept",
-        "id": "concept-" + conceptIndex,
-        "value": conceptIndex
-      });
-
-      radioButtonLabel.prepend(radioButton);
-      radioButtonContainer.append(radioButtonLabel);
-      radioButtonContainer.append(conceptCasesButton);
-      radioButtonContainer.append(conceptCases);
-      conceptModalBody.append(radioButtonContainer);
-      conceptModalBody.validate({
-        errorClass: "text-danger",
-        errorPlacement: function (error, element) {
-          error.appendTo(element.closest("form"));
-        },
-        rules: {
-          concept: {
-            required: true
-          }
-        }
-      });
-    });
-
-    $("#concept-modal").modal();
   };
 
   var showRules = function (rules) {
