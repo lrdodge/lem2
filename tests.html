@@ -24,6 +24,7 @@
     mocha.checkLeaks();
     mocha.globals(['jQuery']);
     mocha.run();
+    chai.config.truncateThreshold = 0;
     const expect = chai.expect;
   </script>
 </body>
