@@ -1,87 +1,51 @@
 'use strict';
 
-describe('LEM2 Module', function() {
-    it('should exist', function() {
+describe('LEM2 Module', function () {
+    ("should exist", function () {
         expect(LEM2).to.not.be.undefined;
     });
 
     // Properties
 
-    it('should have a dataset array', function() {
-        expect(LEM2.dataset).to.be.a('array');
-    });
+    const propertyTests = [
+        { "name": "dataset", "type": "array", "value": [] },
+        { "name": "blocks", "type": "object", "value": {} },
+        { "name": "datasetConcepts", "type": "array", "value": [] },
+        { "name": "goal", "type": "set", "value": new Set() },
+        { "name": "singleLocalCovering", "type": "array", "value": [] },
+        { "name": "concept", "type": "set", "value": new Set() }
+    ];
 
-    it('should have a blocks object', function() {
-        expect(LEM2.blocks).to.be.a('object');
-    });
-
-    it('should have a datasetConcepts array', function() {
-        expect(LEM2.datasetConcepts).to.be.a('array');
-    });
-
-    it('should have a goal set', function() {
-        expect(LEM2.goal).to.be.a('set');
-    });
-
-    it('should have a single local covering array', function() {
-        expect(LEM2.singleLocalCovering).to.be.a('array');
-    });
-
-    it('should have a concept set', function() {
-        expect(LEM2.concept).to.be.a('set');
+    propertyTests.forEach(function (property) {
+        it("should have a " + property.name + " " + property.type, function () {
+            expect(LEM2).to.have.property(property.name)
+                .that.is.a(property.type)
+                .that.deep.equals(property.value);
+        });
     });
 
     // Functions
 
-    it('should have an invokeProcedure function', function() {
-        expect(LEM2.invokeProcedure).to.be.a('function');
-    });
+    const functionTests = [
+        { "name": "invokeProcedure" },
+        { "name": "newConcepts" },
+        { "name": "newAttributeValueBlocks" },
+        { "name": "getCasesCoveredByRule" },
+        { "name": "getCasesCoveredByRuleset" },
+        { "name": "compressRuleset" },
+        { "name": "initialize" },
+        { "name": "newRuleset" },
+        { "name": "compressRule" },
+        { "name": "initializeProcedure" },
+        { "name": "newGoalBlockIntersections" },
+        { "name": "selectBestBlock" },
+        { "name": "updateGoal" }
+    ];
 
-    it('should have a newConcepts function', function() {
-        expect(LEM2.newConcepts).to.be.a('function');
-    });
-
-    it('should have a newAttributeValueBlocks function', function() {
-        expect(LEM2.newAttributeValueBlocks).to.be.a('function');
-    });
-
-    it('should have a getCasesCoveredByRule function', function() {
-        expect(LEM2.getCasesCoveredByRule).to.be.a('function');
-    });
-
-    it('should have a getCasesCoveredByRuleset function', function() {
-        expect(LEM2.getCasesCoveredByRuleset).to.be.a('function');
-    });
-
-    it('should have a compressRuleset function', function() {
-        expect(LEM2.compressRuleset).to.be.a('function');
-    });
-
-    it('should have an initialize function', function() {
-        expect(LEM2.initialize).to.be.a('function');
-    })
-
-    it('should have a newRuleset function', function() {
-        expect(LEM2.newRuleset).to.be.a('function');
-    });
-
-    it('should have a compressRule function', function() {
-        expect(LEM2.compressRule).to.be.a('function');
-    });
-
-    it('should have an initializeProcedure function', function() {
-        expect(LEM2.initializeProcedure).to.be.a('function');
-    });
-
-    it('should have a newGoalBlockIntersections function', function() {
-        expect(LEM2.newGoalBlockIntersections).to.be.a('function');
-    });
-
-    it('should have a selectBestBlock function', function() {
-        expect(LEM2.selectBestBlock).to.be.a('function');
-    });
-
-    it('should have an updateGoal function', function() {
-        expect(LEM2.updateGoal).to.be.a('function');
+    functionTests.forEach(function (funct) {
+        it("should have an " + funct.name + " function", function () {
+            expect(LEM2).to.have.property(funct.name)
+                .that.is.a('function');
+        });
     });
 });
