@@ -28,7 +28,7 @@ describe("LEM2 Module", function () {
         ];
 
         tests.forEach(function (test, testIndex) {
-            const example = " (Example #" + (testIndex + 1) + ")";
+            const example = " - Example #" + (testIndex + 1);
 
             it("should take a dataset and set the LEM2 dataset" + example, function () {
                 LEM2.initialize(test.dataset);
@@ -47,71 +47,34 @@ describe("LEM2 Module", function () {
 
     describe('#initializeProcedure()', function () {
 
-        // Goal
+        const tests = [
+            { "concept": conceptFluYes1, "conceptName": " - Example #1 (Flu, Yes)" },
+            { "concept": conceptFluNo1, "conceptName": " - Example #1 (Flu, No)" },
+            { "concept": conceptFluYes2, "conceptName": " - Example #2 (Flu, Yes)" },
+            { "concept": conceptFluNo2, "conceptName": " - Example #2 (Flu, No)" }
+        ];
 
-        const initializeGoal = 'should take a concept and set the goal equal to the input concept';
+        tests.forEach(function (test) {
 
-        it(initializeGoal, function exampleOneFluYes() {
-            LEM2.initialize(dataset1);
-            LEM2.initializeProcedure(conceptFluYes1);
-            expect(LEM2.goal).to.be.eql(conceptFluYes1.cases);
-        });
+            // Goal
 
-        it(initializeGoal, function exampleOneFluNo() {
-            LEM2.initialize(dataset1);
-            LEM2.initializeProcedure(conceptFluNo1);
-            expect(LEM2.goal).to.be.eql(conceptFluNo1.cases);
-        });
+            it("should take a concept and set the goal equal to the input concept" + test.conceptName, function () {
+                LEM2.initializeProcedure(test.concept);
 
-        it(initializeGoal, function exampleTwoFluYes() {
-            LEM2.initialize(dataset2);
-            LEM2.initializeProcedure(conceptFluYes2);
-            expect(LEM2.goal).to.be.eql(conceptFluYes2.cases);
-        });
+                expect(LEM2.goal).to.be.deep.equal(test.concept.cases);
+            });
 
-        it(initializeGoal, function exampleTwo_InitializeGoal_FluNo() {
-            LEM2.initialize(dataset2);
-            LEM2.initializeProcedure(conceptFluNo2);
-            expect(LEM2.goal).to.be.eql(conceptFluNo2.cases);
-        });
+            // Concept
 
-        // Concept
+            it("should take a concept and set the module concept equal to the input set" + test.conceptName, function () {
+                expect(LEM2.concept).to.be.deep.equal(test.concept.cases);
+            });
 
-        const initializeConcept = 'should take a concept and set the module concept equal to the input set';
+            // Single Local Covering
 
-        it(initializeConcept, function exampleOne_InitializeConcept_FluYes() {
-            LEM2.initialize(dataset1);
-            LEM2.initializeProcedure(conceptFluYes1);
-            expect(LEM2.concept).to.be.eql(conceptFluYes1.cases);
-        });
-
-        it(initializeConcept, function exampleOne_InitializeConcept_FluNo() {
-            LEM2.initialize(dataset1);
-            LEM2.initializeProcedure(conceptFluNo1);
-            expect(LEM2.concept).to.be.eql(conceptFluNo1.cases);
-        });
-
-        it(initializeConcept, function exampleTwo_InitializeConcept_FluYes() {
-            LEM2.initialize(dataset2);
-            LEM2.initializeProcedure(conceptFluYes2);
-            expect(LEM2.concept).to.be.eql(conceptFluYes2.cases);
-        });
-
-        it(initializeConcept, function exampleTwo_InitializeConcept_FluYes() {
-            LEM2.initialize(dataset2);
-            LEM2.initializeProcedure(conceptFluNo2);
-            expect(LEM2.concept).to.be.eql(conceptFluNo2.cases);
-        });
-
-        // Single Local Covering
-
-        it('should set singleLocalCovering to an empty array', function initializeSingleLocalCovering() {
-            LEM2.goal = new Set([1, 2, 3]);
-            const emptyArray = [];
-
-            LEM2.initializeProcedure(conceptFluYes1);
-
-            expect(LEM2.singleLocalCovering).to.be.eql(emptyArray);
+            it("should set singleLocalCovering to an empty array" + test.conceptName, function () {
+                expect(LEM2.singleLocalCovering).to.be.deep.equal([]);
+            });
         });
     });
 
