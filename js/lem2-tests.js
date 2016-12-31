@@ -48,17 +48,19 @@ describe("LEM2 Module", function () {
     describe('#initializeProcedure()', function () {
 
         const tests = [
-            { "concept": conceptFluYes1, "conceptName": " - Example #1 (Flu, Yes)" },
-            { "concept": conceptFluNo1, "conceptName": " - Example #1 (Flu, No)" },
-            { "concept": conceptFluYes2, "conceptName": " - Example #2 (Flu, Yes)" },
-            { "concept": conceptFluNo2, "conceptName": " - Example #2 (Flu, No)" }
+            { "concept": conceptFluYes1, "example": 1 },
+            { "concept": conceptFluNo1, "example": 1 },
+            { "concept": conceptFluYes2, "example": 2 },
+            { "concept": conceptFluNo2, "example": 2 }
         ];
 
         tests.forEach(function (test) {
 
+            const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
+
             // Goal
 
-            it("should take a concept and set the goal equal to the input concept" + test.conceptName, function () {
+            it("should take a concept and set the goal equal to the input concept" + example, function () {
                 LEM2.initializeProcedure(test.concept);
 
                 expect(LEM2.goal).to.be.deep.equal(test.concept.cases);
@@ -66,60 +68,46 @@ describe("LEM2 Module", function () {
 
             // Concept
 
-            it("should take a concept and set the module concept equal to the input set" + test.conceptName, function () {
+            it("should take a concept and set the module concept equal to the input set" + example, function () {
                 expect(LEM2.concept).to.be.deep.equal(test.concept.cases);
             });
 
             // Single Local Covering
 
-            it("should set singleLocalCovering to an empty array" + test.conceptName, function () {
-                expect(LEM2.singleLocalCovering).to.be.deep.equal([]);
+            it("should set singleLocalCovering to an empty array" + example, function () {
+                const emptyArray = [];
+                expect(LEM2.singleLocalCovering).to.be.deep.equal(emptyArray);
             });
         });
     });
 
-    describe('#newRuleset()', function () {
+    describe("#newRuleset()", function () {
 
-        // Rules
+        const tests = [
+            { "dataset": dataset1, "concept": conceptFluYes1, "ruleset": rulesetFluYes1, "example": 1 },
+            { "dataset": dataset1, "concept": conceptFluNo1, "ruleset": rulesetFluNo1, "example": 1 },
+            { "dataset": dataset2, "concept": conceptFluYes2, "ruleset": rulesetFluYes2, "example": 2 },
+            { "dataset": dataset2, "concept": conceptFluNo2, "ruleset": rulesetFluNo2, "example": 2 }
+        ];
 
-        const createRules = 'should create an array of rules from the dataset';
+        tests.forEach(function (test) {
 
-        it(createRules, function exampleOne_CreateRuleset_FluYes() {
-            LEM2.initialize(dataset1);
-            LEM2.initializeProcedure(conceptFluYes1);
-            LEM2.newRuleset();
-            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes1);
-        });
+            const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
 
-        it(createRules, function exampleOne_CreateRuleset_FluNo() {
-            LEM2.initialize(dataset1);
-            LEM2.initializeProcedure(conceptFluNo1);
-            LEM2.newRuleset();
-            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
-        });
+            it("should create an array of rules from the dataset" + example, function () {
+                LEM2.initialize(test.dataset);
+                LEM2.initializeProcedure(test.concept);
+                LEM2.newRuleset();
 
-        it(createRules, function exampleTwo_CreateRuleset_FluYes() {
-            LEM2.initialize(dataset2);
-            LEM2.initializeProcedure(conceptFluYes2);
-            LEM2.newRuleset();
-            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes2);
-        });
+                expect(LEM2.singleLocalCovering).to.be.deep.equal(test.ruleset);
+            });
 
-        it(createRules, function exampleTwo_CreateRuleset_FluNo() {
-            LEM2.initialize(dataset2);
-            LEM2.initializeProcedure(conceptFluNo2);
-            LEM2.newRuleset();
-            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo2);
-        });
+            // Empty Set Goal
 
-        // Empty Set Goal
-
-        it('should finish when the goal is the empty set', function endOnGoalEmptySet() {
-            LEM2.initialize(dataset1);
-            LEM2.initializeProcedure(conceptFluYes1);
-            LEM2.newRuleset();
-            const emptySet = new Set();
-            expect(LEM2.goal).to.be.eql(emptySet);
+            it("should finish when the goal is the empty set" + example, function () {
+                const emptySet = new Set();
+                expect(LEM2.goal).to.be.deep.equal(emptySet);
+            });
         });
     });
 
