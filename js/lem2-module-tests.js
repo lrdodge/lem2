@@ -1,6 +1,4 @@
 'use strict';
-const expect = require('chai').expect;
-const LEM2 = require('./lem2.js');
 
 describe('LEM2 Module', function() {
     it('should exist', function() {

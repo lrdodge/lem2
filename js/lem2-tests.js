@@ -1,7 +1,4 @@
-'use strict';
-require('./set.js');
-const expect = require('chai').expect;
-const LEM2 = require('./lem2.js');
+'use strict';  
 
 // Data Example 1
 
