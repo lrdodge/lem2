@@ -55,7 +55,6 @@ describe("LEM2 Module", function () {
         ];
 
         tests.forEach(function (test) {
-
             const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
 
             // Goal
@@ -91,7 +90,6 @@ describe("LEM2 Module", function () {
         ];
 
         tests.forEach(function (test) {
-
             const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
 
             it("should create an array of rules from the dataset" + example, function () {
@@ -177,7 +175,6 @@ describe("LEM2 Module", function () {
         ];
 
         tests.forEach(function (test) {
-
             const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
 
             it("should take a concept and set singleLocalCovering to an array of rules" + example, function () {
@@ -189,34 +186,24 @@ describe("LEM2 Module", function () {
         });
     });
 
-    describe('#getCasesCoveredByRuleset()', function () {
+    describe("#getCasesCoveredByRuleset()", function () {
 
-        // Covered Cases
+        const tests = [
+            { "dataset": dataset1, "concept": conceptFluYes1, "ruleset": rulesetFluYes1, "example": 1 },
+            { "dataset": dataset1, "concept": conceptFluNo1, "ruleset": rulesetFluNo1, "example": 1 },
+            { "dataset": dataset2, "concept": conceptFluYes2, "ruleset": rulesetFluYes2, "example": 2 },
+            { "dataset": dataset2, "concept": conceptFluNo2, "ruleset": rulesetFluNo2, "example": 2 }
+        ];
 
-        const coveredCases = 'should take an array of rules and return the set of cases covered by ruleset';
+        tests.forEach(function (test) {
+            const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
 
-        it(coveredCases, function exmpleOneFluYes() {
-            LEM2.initialize(dataset1);
-            const actual = LEM2.getCasesCoveredByRuleset(rulesetFluYes1);
-            expect(Array.from(actual)).to.be.eql(Array.from(conceptFluYes1.cases));
-        });
-
-        it(coveredCases, function exmpleOneFluNo() {
-            LEM2.initialize(dataset1);
-            const actual = LEM2.getCasesCoveredByRuleset(rulesetFluNo1);
-            expect(Array.from(actual)).to.be.eql(Array.from(conceptFluNo1.cases));
-        });
-
-        it(coveredCases, function exmpleTwoFluYes() {
-            LEM2.initialize(dataset2);
-            const actual = LEM2.getCasesCoveredByRuleset(rulesetFluYes2);
-            expect(Array.from(actual)).to.be.eql(Array.from(conceptFluYes2.cases));
-        });
-
-        it(coveredCases, function exmpleTwoFluNo() {
-            LEM2.initialize(dataset2);
-            const actual = LEM2.getCasesCoveredByRuleset(rulesetFluNo2);
-            expect(Array.from(actual)).to.be.eql(Array.from(conceptFluNo2.cases));
+            it("should take an array of rules and return the set of cases covered by ruleset" + example, function () {
+                LEM2.initialize(test.dataset);
+                const actual = LEM2.getCasesCoveredByRuleset(test.ruleset);
+                
+                expect(actual).to.be.eql(test.concept.cases);
+            });
         });
     });
 
