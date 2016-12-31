@@ -1,4 +1,4 @@
-'use strict';  
+"use strict";
 
 // Data Example 1
 
@@ -18,52 +18,30 @@ const blocks2 = { "temperature": { "very_high": [2], "high": [1, 3, 4], "normal"
 const conceptFluYes2 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4]) };
 const conceptFluNo2 = { "decision": "flu", "value": "no", "cases": new Set([3, 5, 6]) };
 
-describe('LEM2 Module', function () {
+describe("LEM2 Module", function () {
 
-    describe('#initialize()', function () {
+    describe("#initialize()", function () {
 
-        // Dataset
+        const tests = [
+            { "dataset": dataset1, "blocks": blocks1, "concepts": [conceptFluYes1, conceptFluNo1] },
+            { "dataset": dataset2, "blocks": blocks2, "concepts": [conceptFluYes2, conceptFluNo2] }
+        ];
 
-        const initializeDataset = 'should take a dataset and set the LEM2 dataset';
+        tests.forEach(function (test, testIndex) {
+            const example = " (Example #" + (testIndex + 1) + ")";
 
-        it(initializeDataset, function exampleOne() {
-            LEM2.initialize(dataset1);
-            expect(LEM2.dataset).to.be.eql(dataset1);
-        });
+            it("should take a dataset and set the LEM2 dataset" + example, function () {
+                LEM2.initialize(test.dataset);
+                expect(LEM2.dataset).to.be.deep.equal(test.dataset);
+            });
 
-        it(initializeDataset, function exampleTwo() {
-            LEM2.initialize(dataset2);
-            expect(LEM2.dataset).to.be.eql(dataset2);
-        });
+            it("should take a dataset and create the dataset blocks" + example, function () {
+                expect(LEM2.blocks).to.be.deep.equal(test.blocks);
+            });
 
-        // Blocks
-
-        const initializeBlocks = 'should take a dataset and create the dataset blocks';
-
-        it(initializeBlocks, function exampleOne() {
-            LEM2.initialize(dataset1);
-            expect(LEM2.blocks).to.be.eql(blocks1);
-        });
-
-        it(initializeBlocks, function exampleTwo() {
-            LEM2.initialize(dataset2);
-            expect(LEM2.blocks).to.be.eql(blocks2);
-        });
-
-        // Concept
-
-        const initializeConcepts = 'should take a dataset and create the dataset concepts';
-
-        it(initializeConcepts, function exampleOneFluNo() {
-            LEM2.initialize(dataset1);
-            let datasetConcepts1 = [conceptFluYes1, conceptFluNo1];
-            expect(LEM2.datasetConcepts).to.be.eql(datasetConcepts1);
-        });
-
-        it(initializeConcepts, function exampleTwoFluNo() {
-            LEM2.initialize(dataset2);
-            let datasetConcepts2 = [conceptFluYes2, conceptFluNo2];
-            expect(LEM2.datasetConcepts).to.be.eql(datasetConcepts2);
+            it("should take a dataset and create the dataset concepts" + example, function () {
+                expect(LEM2.datasetConcepts).to.be.deep.equal(test.concepts);
+            });
         });
     });
 
