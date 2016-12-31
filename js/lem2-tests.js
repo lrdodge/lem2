@@ -111,42 +111,28 @@ describe("LEM2 Module", function () {
         });
     });
 
-    describe('#newConcepts()', function () {
+    describe("#newConcepts()", function () {
 
-        // Concepts
+        const tests = [
+            { "dataset": dataset1, "concepts": [conceptFluYes1, conceptFluNo1] },
+            { "dataset": dataset2, "concepts": [conceptFluYes2, conceptFluNo2] }
+        ];
 
-        const createConcepts = 'should create an array of concept objects from the dataset';
+        tests.forEach(function (test, testIndex) {
+            // TODO: Create clone function and use across tests and application instead of slice
+            const originalDataset = JSON.parse(JSON.stringify(test.dataset));
+            const example = " - Example #" + (testIndex + 1)
 
-        it(createConcepts, function exampleOne() {
-            LEM2.dataset = dataset1;
-            LEM2.newConcepts();
-            const concepts = [conceptFluYes1, conceptFluNo1];
-            expect(LEM2.datasetConcepts).to.be.eql(concepts);
-        });
+            it("should create an array of concept objects from the dataset" + example, function () {
+                LEM2.dataset = test.dataset;
+                LEM2.newConcepts();
 
-        it(createConcepts, function exampleTwo() {
-            LEM2.dataset = dataset2;
-            LEM2.newConcepts();
-            const concepts = [conceptFluYes2, conceptFluNo2];
-            expect(LEM2.datasetConcepts).to.be.eql(concepts);
-        });
+                expect(LEM2.datasetConcepts).to.be.deep.equal(test.concepts);
+            });
 
-        // Does Not Modify Dataset
-
-        const doesNotModifyDataset = 'should not modify the input dataset';
-
-        it(doesNotModifyDataset, function exampleOneDatasetUnmodified() {
-            LEM2.dataset = dataset1;
-            LEM2.newConcepts();
-            const originalDataset = [["temperature", "headache", "weakness", "nausea", "flu"], ["very_high", "yes", "yes", "no", "yes"], ["high", "yes", "no", "yes", "yes"], ["normal", "no", "no", "no", "no"], ["normal", "yes", "yes", "yes", "yes"], ["high", "no", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["normal", "no", "yes", "no", "no"]];
-            expect(dataset1).to.be.eql(originalDataset);
-        });
-
-        it(doesNotModifyDataset, function exampleTwoDatasetUnmodified() {
-            LEM2.dataset = dataset2;
-            LEM2.newConcepts();
-            const originalDataset = [["temperature", "headache", "nausea", "cough", "flu"], ["high", "yes", "no", "yes", "yes"], ["very_high", "yes", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["high", "yes", "yes", "yes", "yes"], ["normal", "yes", "no", "no", "no"], ["normal", "no", "yes", "yes", "no"]];
-            expect(dataset2).to.be.eql(originalDataset);
+            it("should not modify the input dataset" + example, function () {
+                expect(test.dataset).to.be.deep.equal(originalDataset);
+            });
         });
     });
 
