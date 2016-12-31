@@ -136,48 +136,34 @@ describe("LEM2 Module", function () {
         });
     });
 
-    describe('#newAttributeValueBlocks()', function () {
+    describe("#newAttributeValueBlocks()", function () {
+        const adHocDataset = [["A1", "A2", "D"], ["N", "N", "False"], ["N", "Y", "True"], ["Y", "N", "False"], ["Y", "Y", "True"]];
+        const adHocBlocks = { "A1": { "Y": [3, 4], "N": [1, 2] }, "A2": { "Y": [2, 4], "N": [1, 3] } };
 
-        // Create Blocks
+        const tests = [
+            { "dataset": adHocDataset, "blocks": adHocBlocks },
+            { "dataset": dataset1, "blocks": blocks1 },
+            { "dataset": dataset2, "blocks": blocks2 }
+        ];
 
-        const createBlocks = 'should create attribute-value blocks from the dataset';
+        tests.forEach(function (test, testIndex) {
+            const example = " - Example #" + testIndex;
+            const originalDataset = JSON.parse(JSON.stringify(test.dataset));
 
-        it(createBlocks, function exampleAdHoc() {
-            LEM2.dataset = [["A1", "A2", "D"], ["N", "N", "False"], ["N", "Y", "True"], ["Y", "N", "False"], ["Y", "Y", "True"]];
-            const blocks = { "A1": { "Y": [3, 4], "N": [1, 2] }, "A2": { "Y": [2, 4], "N": [1, 3] } };
-            LEM2.newAttributeValueBlocks();
-            expect(LEM2.blocks).to.be.eql(blocks);
-        });
+            // Create Blocks
 
-        it(createBlocks, function exampleOne() {
-            LEM2.dataset = dataset1;
-            LEM2.newAttributeValueBlocks();
-            expect(LEM2.blocks).to.be.eql(blocks1);
-        });
+            it("should create attribute-value blocks from the dataset" + example, function () {
+                LEM2.dataset = test.dataset;
+                LEM2.newAttributeValueBlocks();
 
-        it(createBlocks, function exampleTwo() {
+                expect(LEM2.blocks).to.be.deep.equal(test.blocks);
+            });
 
-            LEM2.dataset = dataset2;
-            LEM2.newAttributeValueBlocks();
-            expect(LEM2.blocks).to.be.eql(blocks2);
-        });
+            // Does Not Modify Dataset
 
-        // Does Not Modify Dataset
-
-        const doesNotModifyDataset = 'should not modify the input dataset';
-
-        it(doesNotModifyDataset, function exampleOneDatasetUnmodified() {
-            LEM2.dataset = dataset1;
-            LEM2.newAttributeValueBlocks();
-            const originalDataset = [["temperature", "headache", "weakness", "nausea", "flu"], ["very_high", "yes", "yes", "no", "yes"], ["high", "yes", "no", "yes", "yes"], ["normal", "no", "no", "no", "no"], ["normal", "yes", "yes", "yes", "yes"], ["high", "no", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["normal", "no", "yes", "no", "no"]];
-            expect(dataset1).to.be.eql(originalDataset);
-        });
-
-        it(doesNotModifyDataset, function exampleOneDatasetUnmodified() {
-            LEM2.dataset = dataset2;
-            LEM2.newAttributeValueBlocks();
-            const originalDataset = [["temperature", "headache", "nausea", "cough", "flu"], ["high", "yes", "no", "yes", "yes"], ["very_high", "yes", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["high", "yes", "yes", "yes", "yes"], ["normal", "yes", "no", "no", "no"], ["normal", "no", "yes", "yes", "no"]];
-            expect(dataset2).to.be.eql(originalDataset);
+            it("should not modify the input dataset" + example, function () {
+                expect(LEM2.dataset).to.be.deep.equal(originalDataset);
+            });
         });
     });
 
