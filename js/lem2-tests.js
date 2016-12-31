@@ -169,32 +169,23 @@ describe("LEM2 Module", function () {
 
     describe('#invokeProcedure()', function () {
 
-        // Single Local Covering
+        const tests = [
+            { "dataset": dataset1, "concept": conceptFluYes1, "ruleset": rulesetFluYes1, "example": 1 },
+            { "dataset": dataset1, "concept": conceptFluNo1, "ruleset": rulesetFluNo1, "example": 1 },
+            { "dataset": dataset2, "concept": conceptFluYes2, "ruleset": rulesetFluYes2, "example": 2 },
+            { "dataset": dataset2, "concept": conceptFluNo2, "ruleset": rulesetFluNo2, "example": 2 }
+        ];
 
-        const singleLocalCovering = 'should take a concept and set singleLocalCovering to an array of rules';
+        tests.forEach(function (test) {
 
-        it(singleLocalCovering, function exampleOneFluYes() {
-            LEM2.initialize(dataset1);
-            LEM2.invokeProcedure(conceptFluYes1);
-            expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluYes1));
-        });
+            const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
 
-        it(singleLocalCovering, function exampleOneFluNo() {
-            LEM2.initialize(dataset1);
-            LEM2.invokeProcedure(conceptFluNo1);
-            expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluNo1));
-        });
+            it("should take a concept and set singleLocalCovering to an array of rules" + example, function () {
+                LEM2.initialize(test.dataset);
+                LEM2.invokeProcedure(test.concept);
 
-        it(singleLocalCovering, function exampleTwoFluYes() {
-            LEM2.initialize(dataset2);
-            LEM2.invokeProcedure(conceptFluYes2);
-            expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluYes2));
-        });
-
-        it(singleLocalCovering, function exampleTwoFluNo() {
-            LEM2.initialize(dataset2);
-            LEM2.invokeProcedure(conceptFluNo2);
-            expect(Array.from(LEM2.singleLocalCovering)).to.be.eql(Array.from(rulesetFluNo2));
+                expect(LEM2.singleLocalCovering).to.be.deep.equal(test.ruleset);
+            });
         });
     });
 
