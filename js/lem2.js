@@ -1,7 +1,7 @@
 var LEM2 = {
     blocks: {},
-    dataset: [],    
-    datasetConcepts: [],    
+    dataset: [],
+    datasetConcepts: [],
     singleLocalCovering: [],
     goal: new Set(),
     concept: new Set(),
@@ -26,7 +26,7 @@ var LEM2 = {
         decisionValues.forEach(function (decisionValue) {
             var cases = column.reduce(function (decisionValues, value, index) {
                 if (value === decisionValue) {
-                  decisionValues.push(index + 1);
+                    decisionValues.push(index + 1);
                 }
                 return decisionValues;
             }, []);
@@ -80,12 +80,12 @@ var LEM2 = {
     },
 
     initializeProcedure: function (concept) {
-        LEM2.concept = concept.cases;        
+        LEM2.concept = concept.cases;
         LEM2.singleLocalCovering = [];
         LEM2.updateGoal();
     },
 
-    invokeProcedure: function (concept) {        
+    invokeProcedure: function (concept) {
         LEM2.initializeProcedure(concept);
         LEM2.newRuleset();
         LEM2.compressRuleset();
@@ -217,7 +217,7 @@ var LEM2 = {
                     "cases": blockCases.intersection(LEM2.goal)
                 }
                 if (intersection.cases.size) {
-                   intersections.push(intersection);
+                    intersections.push(intersection);
                 }
             }
         }
