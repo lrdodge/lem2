@@ -258,52 +258,32 @@ describe("LEM2 Module", function () {
         });
     });
 
-    describe('#compressRuleset()', function () {
+    describe("#compressRuleset()", function () {
 
-        const compressRuleset = 'should remove unnecessary rules from the ruleset';
+        const singleRuleRuleset = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
+        const expandedRulesetFluYes1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
+        const expandedRulesetFluNo1 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];;
 
-        // Minimal Ruleset
+        const tests = [
+            { "dataset": dataset1, "concept": conceptFluYes1, "rulesetIn": rulesetFluYes1, "rulesetOut": rulesetFluYes1, "display": "Minimal Ruleset", "example": 1 },
+            { "dataset": dataset1, "concept": conceptFluNo1, "rulesetIn": rulesetFluNo1, "rulesetOut": rulesetFluNo1, "display": "Minimal Ruleset", "example": 1 },
+            { "dataset": dataset2, "concept": conceptFluYes2, "rulesetIn": rulesetFluYes2, "rulesetOut": rulesetFluYes2, "display": "Minimal Ruleset", "example": 2 },
+            { "dataset": dataset2, "concept": conceptFluNo2, "rulesetIn": rulesetFluNo2, "rulesetOut": rulesetFluNo2, "display": "Minimal Ruleset", "example": 2 },
+            { "dataset": dataset1, "concept": conceptFluYes1, "rulesetIn": singleRuleRuleset, "rulesetOut": singleRuleRuleset, "display": "Single Rule Ruleset", "example": 1 },
+            { "dataset": dataset1, "concept": conceptFluYes1, "rulesetIn": expandedRulesetFluYes1, "rulesetOut": rulesetFluYes1, "display": "Non-Minimal Ruleset", "example": 1 },
+            { "dataset": dataset1, "concept": conceptFluNo1, "rulesetIn": expandedRulesetFluNo1, "rulesetOut": rulesetFluNo1, "display": "Non-Minimal Ruleset", "example": 1 }
+        ];
 
-        it(compressRuleset, function minimalRulesetFluYes() {
-            LEM2.initialize(dataset1);
-            LEM2.concept = conceptFluYes1.cases;
-            LEM2.singleLocalCovering = rulesetFluYes1;
-            LEM2.compressRuleset();
-            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes1);
-        });
+        tests.forEach(function (test) {
+            const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
+            it("should remove unnecessary rules from a " + test.display + example, function () {
+                LEM2.initialize(test.dataset);
+                LEM2.concept = test.concept.cases;
+                LEM2.singleLocalCovering = test.rulesetIn;
 
-        it(compressRuleset, function minimalRulesetFluNo() {
-            LEM2.initialize(dataset1);
-            LEM2.concept = conceptFluNo1.cases;
-            LEM2.singleLocalCovering = rulesetFluNo1;
-            LEM2.compressRuleset();
-            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
-        });
-
-        // Single Rule
-
-        it(compressRuleset, function singleRule() {
-            LEM2.concept = conceptFluYes1.cases;
-            LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-            let ruleset = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-            LEM2.compressRuleset();
-            expect(LEM2.singleLocalCovering).to.be.eql(ruleset);
-        });
-
-        // Non-Minimal Ruleset
-
-        it(compressRuleset, function expandedRulesetFluYes() {
-            LEM2.concept = conceptFluYes1.cases;
-            LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-            LEM2.compressRuleset();
-            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluYes1);
-        });
-
-        it(compressRuleset, function expandedRulesetFluNo() {
-            LEM2.concept = conceptFluNo1.cases;
-            LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
-            LEM2.compressRuleset();
-            expect(LEM2.singleLocalCovering).to.be.eql(rulesetFluNo1);
+                LEM2.compressRuleset();
+                expect(LEM2.singleLocalCovering).to.be.eql(test.rulesetOut);
+            });
         });
     });
 
