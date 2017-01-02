@@ -253,7 +253,7 @@ describe("LEM2 Module", function () {
                 LEM2.concept = test.concept.cases;
 
                 const actual = LEM2.compressRule(test.ruleIn);
-                expect(actual).to.be.eql(test.ruleOut);
+                expect(actual).to.be.deep.equal(test.ruleOut);
             });
         });
     });
@@ -282,63 +282,53 @@ describe("LEM2 Module", function () {
                 LEM2.singleLocalCovering = test.rulesetIn;
 
                 LEM2.compressRuleset();
-                expect(LEM2.singleLocalCovering).to.be.eql(test.rulesetOut);
+                expect(LEM2.singleLocalCovering).to.be.deep.equal(test.rulesetOut);
             });
         });
     });
 
-    describe('#newGoalBlockIntersections()', function () {
+    describe("#newGoalBlockIntersections()", function () {
 
         // Intersection Structure
 
-        it('should create an array of intersections, each with an attribute string, a value string, and a non-empty set', function intersectionStructure() {
+        it("should create an array of intersections, each with an attribute string, a value string, and a non-empty set", function () {
             const emptySet = new Set();
 
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
             const intersections = LEM2.newGoalBlockIntersections();
 
-            expect(intersections.length).to.be.not.eql(0);
+            expect(intersections.length).to.be.not.equal(0);
             intersections.forEach(function (intersection) {
-                expect(intersection.attribute).to.be.a('string');
-                expect(intersection.value).to.be.a('string');
-                expect(intersection.cases).to.be.a('set');
-                expect(intersection.cases).to.be.not.eql(emptySet);
+                expect(intersection.attribute).to.be.a("string");
+                expect(intersection.value).to.be.a("string");
+                expect(intersection.cases).to.be.a("set");
+                expect(intersection.cases).to.be.not.deep.equal(emptySet);
             });
         });
 
         // Create Intersections
 
-        const createIntersections = 'should create an array of intersections between each attribute value block and the goal';
+        const intersectionsFluYes1 = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
+        const intersectionsFluNo1 = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
+        const intersectionsFluYes2 = [{ "attribute": "temperature", "value": "high", "cases": new Set([1, 4]) }, { "attribute": "temperature", "value": "very_high", "cases": new Set([2]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }, { "attribute": "cough", "value": "yes", "cases": new Set([1, 4]) }, { "attribute": "cough", "value": "no", "cases": new Set([2]) }];
 
-        it(createIntersections, function exampleOneFluYes() {
-            LEM2.initialize(dataset1);
-            LEM2.initializeProcedure(conceptFluYes1);
+        const tests = [
+            { "dataset": dataset1, "concept": conceptFluYes1, "intersections": intersectionsFluYes1, "example": 1 },
+            { "dataset": dataset1, "concept": conceptFluNo1, "intersections": intersectionsFluNo1, "example": 1 },
+            { "dataset": dataset2, "concept": conceptFluYes2, "intersections": intersectionsFluYes2, "example": 2 }
+        ];
 
-            const actual = LEM2.newGoalBlockIntersections();
-            const intersections = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
+        tests.forEach(function (test) {
+            const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
 
-            expect(actual).to.be.eql(intersections);
-        });
+            it("should create an array of intersections between each attribute value block and the goal" + example, function () {
+                LEM2.initialize(test.dataset);
+                LEM2.initializeProcedure(test.concept);
 
-        it(createIntersections, function exampleOneFluNo() {
-            LEM2.initialize(dataset1);
-            LEM2.initializeProcedure(conceptFluNo1);
-
-            const actual = LEM2.newGoalBlockIntersections();
-            const intersections = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
-
-            expect(actual).to.be.eql(intersections);
-        });
-
-        it(createIntersections, function exampleTwoFluYes() {
-            LEM2.initialize(dataset2);
-            LEM2.initializeProcedure(conceptFluYes2);
-
-            const actual = LEM2.newGoalBlockIntersections();
-            const intersections = [{ "attribute": "temperature", "value": "high", "cases": new Set([1, 4]) }, { "attribute": "temperature", "value": "very_high", "cases": new Set([2]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }, { "attribute": "cough", "value": "yes", "cases": new Set([1, 4]) }, { "attribute": "cough", "value": "no", "cases": new Set([2]) }];
-
-            expect(actual).to.be.eql(intersections);
+                const actual = LEM2.newGoalBlockIntersections();
+                expect(actual).to.be.deep.equal(test.intersections);
+            });
         });
     });
 
