@@ -233,40 +233,28 @@ describe("LEM2 Module", function () {
         });
     });
 
-    describe('#compressRule()', function () {
+    describe("#compressRule()", function () {
 
-        // Minimal Rule
-
-        const minimalRule = 'should take a rule and return a minimal rule';
         const rule1 = { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
         const rule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+        const expandedRule1 = { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+        const expandedRule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
 
-        it(minimalRule, function minimalRule1() {
-            LEM2.initialize(dataset1);
-            LEM2.concept = conceptFluYes1.cases;
-            const actual = LEM2.compressRule(rule1);
-            expect(actual).to.be.eql(rule1);
-        });
+        const tests = [
+            { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": rule1, "ruleOut": rule1, "display": "Minimal Rule" },
+            { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": rule2, "ruleOut": rule2, "display": "Minimal Rule" },
+            { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": expandedRule1, "ruleOut": rule1, "display": "Non-Minimal Rule" },
+            { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": expandedRule2, "ruleOut": rule2, "display": "Non-Minimal Rule" },
+        ];
 
-        it(minimalRule, function minimalRule2() {
-            LEM2.initialize(dataset1);
-            LEM2.concept = conceptFluYes1.cases;
-            const actual = LEM2.compressRule(rule2);
-            expect(actual).to.be.eql(rule2);
-        });
+        tests.forEach(function (test) {
+            it("should take a " + test.display + " and return a minimal rule", function () {
+                LEM2.initialize(test.dataset);
+                LEM2.concept = test.concept.cases;
 
-        // Non-Minimal Rule
-
-        it(minimalRule, function expandedRule1() {
-            const expandedRule1 = { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
-            const actual = LEM2.compressRule(expandedRule1);
-            expect(actual).to.be.eql(rule1);
-        });
-
-        it(minimalRule, function expandedRule2() {
-            const expandedRule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
-            const actual = LEM2.compressRule(expandedRule2);
-            expect(actual).to.be.eql(rule2);
+                const actual = LEM2.compressRule(test.ruleIn);
+                expect(actual).to.be.eql(test.ruleOut);
+            });
         });
     });
 
