@@ -1,6 +1,4 @@
-var LEM2;
-
-LEM2 = {
+var LEM2 = {
     blocks: {},
     dataset: [],    
     datasetConcepts: [],    
@@ -264,4 +262,3 @@ LEM2 = {
     }
 };
 
-module.exports = LEM2;
