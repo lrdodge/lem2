@@ -114,6 +114,10 @@ var LEM2 = {
         }
     },
 
+    newRule: function () {
+        return { "conditions": [], "decision": { } };
+    },
+
     getCasesCoveredByRuleset: function (ruleset) {
 
         var coveredCases = new Set();

@@ -360,7 +360,6 @@ describe("LEM2 Module", function () {
     });
 
     describe("#updateGoal()", function () {
-
         const tests = [
             { "dataset": dataset1, "concept": conceptFluYes1, "example": 1 },
             { "dataset": dataset1, "concept": conceptFluNo1, "example": 1 },
@@ -378,6 +377,21 @@ describe("LEM2 Module", function () {
 
                 expect(LEM2.goal).to.be.deep.equal(LEM2.concept);
             });
+        });
+    });
+
+    describe("#newRule()", function () {
+
+        it("should return a rule objcet", function () {
+            const rule = LEM2.newRule();
+
+            expect(rule).to.be.a("object");
+            
+            expect(rule).to.have.property("conditions")
+                .to.be.a("array");
+
+            expect(rule).to.have.property("decision")
+                .to.be.a("object");
         });
     });
 });

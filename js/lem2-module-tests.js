@@ -39,7 +39,8 @@ describe('LEM2 Module', function () {
         { "name": "initializeProcedure" },
         { "name": "newGoalBlockIntersections" },
         { "name": "selectBestBlock" },
-        { "name": "updateGoal" }
+        { "name": "updateGoal" },
+        { "name": "newRule" },
     ];
 
     functionTests.forEach(function (funct) {
