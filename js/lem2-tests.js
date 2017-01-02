@@ -332,64 +332,30 @@ describe("LEM2 Module", function () {
         });
     });
 
-    describe('#selectBestBlock()', function () {
+    describe("#selectBestBlock()", function () {
 
-        // Intersection Maximimum
+        const intersectionsFluYes1 = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
+        const intersectionsFluNo1 = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
+        const intersectionsFluYes2 = [{ "attribute": "temperature", "value": "high", "cases": new Set([1, 4]) }, { "attribute": "temperature", "value": "very_high", "cases": new Set([2]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }, { "attribute": "cough", "value": "yes", "cases": new Set([1, 4]) }, { "attribute": "cough", "value": "no", "cases": new Set([2]) }];
 
-        const intersectionMaximum = 'should take an array of intersections and return the largest intersection';
+        const intersectionsTieFluNo1 = [{ "attribute": "headache", "value": "no", "cases": new Set([6]) }, { "attribute": "weakness", "value": "no", "cases": new Set([6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([6]) }];
+        const intersectionsTieFluNo2 = [{ "attribute": "temperature", "value": "high", "cases": new Set([3]) }, { "attribute": "headache", "value": "no", "cases": new Set([3]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3]) }, { "attribute": "cough", "value": "no", "cases": new Set([3]) }];
 
-        it(intersectionMaximum, function exampleOneFluYes() {
-            LEM2.initialize(dataset1);
-            const intersectionsFluYes1 = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
+        const tests = [
+            { "dataset": dataset1, "intersetcions": intersectionsFluYes1, "bestIntersection": { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, "display": "Intersection Maximimum" },
+            { "dataset": dataset1, "intersetcions": intersectionsFluNo1, "bestIntersection": { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, "display": "Intersection Maximimum" },
+            { "dataset": dataset2, "intersetcions": intersectionsFluYes2, "bestIntersection": { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, "display": "Intersection Maximimum" },
+            { "dataset": dataset1, "intersetcions": intersectionsTieFluNo1, "bestIntersection": { "attribute": "weakness", "value": "no", "cases": new Set([6]) }, "display": "Minimal Cardinality" },
+            { "dataset": dataset2, "intersetcions": intersectionsTieFluNo2, "bestIntersection": { "attribute": "headache", "value": "no", "cases": new Set([3]) }, "display": "Minimal Cardinality" },
+        ];
 
-            const bestIntersection = { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) };
-            const actual = LEM2.selectBestBlock(intersectionsFluYes1);
+        tests.forEach(function (test) {
+            it("should take an array of intersections and return the intersection of " + test.display, function () {
+                LEM2.initialize(test.dataset);
+                const actual = LEM2.selectBestBlock(test.intersetcions);
 
-            expect(actual).to.be.eql(bestIntersection);
-        });
-
-        it(intersectionMaximum, function exampleOneFluNo() {
-            LEM2.initialize(dataset1);
-            const intersectionsFluNo1 = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
-
-            const bestIntersection = { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) };
-            const actual = LEM2.selectBestBlock(intersectionsFluNo1);
-
-            expect(actual).to.be.eql(bestIntersection);
-        });
-
-        it(intersectionMaximum, function exampleTwoFluYes() {
-            LEM2.initialize(dataset2);
-            const intersectionsFluYes2 = [{ "attribute": "temperature", "value": "high", "cases": new Set([1, 4]) }, { "attribute": "temperature", "value": "very_high", "cases": new Set([2]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }, { "attribute": "cough", "value": "yes", "cases": new Set([1, 4]) }, { "attribute": "cough", "value": "no", "cases": new Set([2]) }];
-
-            const bestIntersection = { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) };
-            const actual = LEM2.selectBestBlock(intersectionsFluYes2);
-
-            expect(actual).to.be.eql(bestIntersection);
-        });
-
-        // Minimal Cardinality
-
-        const minimalCardinality = 'should take an array of intersections and return the largerst intersection with minimum cardinality';
-
-        it(minimalCardinality, function exampleOneFluNo() {
-            LEM2.initialize(dataset1);
-            const intersectionsFluNo1 = [{ "attribute": "headache", "value": "no", "cases": new Set([6]) }, { "attribute": "weakness", "value": "no", "cases": new Set([6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([6]) }];
-
-            const bestIntersection = { "attribute": "weakness", "value": "no", "cases": new Set([6]) };
-            const actual = LEM2.selectBestBlock(intersectionsFluNo1);
-
-            expect(actual).to.be.eql(bestIntersection);
-        });
-
-        it(minimalCardinality, function exampleTwoFluNo() {
-            LEM2.initialize(dataset2);
-            const intersectionsFluNo2 = [{ "attribute": "temperature", "value": "high", "cases": new Set([3]) }, { "attribute": "headache", "value": "no", "cases": new Set([3]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3]) }, { "attribute": "cough", "value": "no", "cases": new Set([3]) }];
-
-            const bestIntersection = { "attribute": "headache", "value": "no", "cases": new Set([3]) };
-            const actual = LEM2.selectBestBlock(intersectionsFluNo2);
-
-            expect(actual).to.be.eql(bestIntersection);
+                expect(actual).to.be.deep.equal(test.bestIntersection);
+            });
         });
     });
 
