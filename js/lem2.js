@@ -182,7 +182,7 @@ var LEM2 = {
             minimalRule.conditions = conditionsMinusCondition;
             var coveredCasesMinusCondition = LEM2.getCasesCoveredByRule(minimalRule);
 
-            if (LEM2.concept.isSuperset(coveredCasesMinusCondition)) {
+            if (LEM2.concept.cases.isSuperset(coveredCasesMinusCondition)) {
                 removedConditions.push(conditionIndex);
             }
             else {

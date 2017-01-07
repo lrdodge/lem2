@@ -250,7 +250,7 @@ describe("LEM2 Module", function () {
         tests.forEach(function (test) {
             it("should take a " + test.display + " and return a minimal rule", function () {
                 LEM2.initialize(test.dataset);
-                LEM2.concept = test.concept.cases;
+                LEM2.concept = test.concept;
 
                 const actual = LEM2.compressRule(test.ruleIn);
                 expect(actual).to.be.deep.equal(test.ruleOut);
