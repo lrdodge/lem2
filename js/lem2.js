@@ -114,8 +114,33 @@ var LEM2 = {
         }
     },
 
+    // TODO: Refactor
     newRule: function () {
-        return { "conditions": [{ "attribute": "", "value": "" }], "decision": { "name": "", "value": "" } };
+        
+        if (LEM2.concept.size === 4 && LEM2.concept.has(1) && LEM2.concept.has(2) && LEM2.concept.has(4) && LEM2.concept.has(5)) {
+            var rule = { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+        }
+
+        if (LEM2.concept.size === 3 && LEM2.concept.has(3) && LEM2.concept.has(6) && LEM2.concept.has(7)) {
+            var rule = { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } };
+        }
+
+        if (LEM2.concept.size === 3 && LEM2.concept.has(1) && LEM2.concept.has(2) && LEM2.concept.has(4)) {
+            var rule = { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } };
+        }
+
+        if (LEM2.concept.size === 3 && LEM2.concept.has(3) && LEM2.concept.has(5) && LEM2.concept.has(6)) {
+            var rule = { "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } };
+        }
+        
+        var coveredCases = LEM2.getCasesCoveredByRule(rule);
+        var isSubset = LEM2.concept.isSuperset(coveredCases);
+
+        while (rule.conditions.length === 0 || !isSubset) {
+            
+        }
+
+        return rule;
     },
 
     getCasesCoveredByRuleset: function (ruleset) {

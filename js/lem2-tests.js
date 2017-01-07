@@ -408,5 +408,26 @@ describe("LEM2 Module", function () {
             expect(rule.conditions[0]).to.have.property("value")
                 .to.be.a("string");
         });
+
+        var tests = [
+            { "dataset": dataset1, "concept": conceptFluYes1, "example": 1},
+            { "dataset": dataset1, "concept": conceptFluNo1, "example": 1},
+            { "dataset": dataset2, "concept": conceptFluYes2, "example": 2},
+            { "dataset": dataset2, "concept": conceptFluNo2, "example": 2},
+        ];
+
+        tests.forEach(function(test){
+            const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
+            
+            it("should return a rule which covers a subset of the concept" + example, function() {
+                LEM2.initialize(test.dataset);
+                LEM2.initializeProcedure(test.concept);
+                const rule = LEM2.newRule();
+
+                const coveredCases = LEM2.getCasesCoveredByRule(rule);
+                const isSubset = LEM2.concept.isSuperset(coveredCases);
+                expect(isSubset).to.be.true;
+            });
+        }); 
     });
 });
