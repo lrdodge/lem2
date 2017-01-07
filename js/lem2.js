@@ -4,7 +4,7 @@ var LEM2 = {
     datasetConcepts: [],
     singleLocalCovering: [],
     goal: new Set(),
-    concept: new Set(),
+    concept: { "decision": "", "value": "", "cases": new Set() },
 
     newConcepts: function () {
         LEM2.datasetConcepts = [];
@@ -80,7 +80,7 @@ var LEM2 = {
     },
 
     initializeProcedure: function (concept) {
-        LEM2.concept = concept.cases;
+        LEM2.concept = concept;
         LEM2.singleLocalCovering = [];
         LEM2.updateGoal();
     },
@@ -94,19 +94,23 @@ var LEM2 = {
     // TODO: Refactor
     newRuleset: function () {
         while (LEM2.goal.size) {
-            if (LEM2.concept.size === 4 && LEM2.concept.has(1) && LEM2.concept.has(2) && LEM2.concept.has(4) && LEM2.concept.has(5)) {
+            // new rule
+            // add rule to ruleset
+
+            var conceptCases = (LEM2.concept.cases);
+            if (conceptCases.size === 4 && conceptCases.has(1) && conceptCases.has(2) && conceptCases.has(4) && conceptCases.has(5)) {
                 LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
             }
 
-            if (LEM2.concept.size === 3 && LEM2.concept.has(3) && LEM2.concept.has(6) && LEM2.concept.has(7)) {
+            if (conceptCases.size === 3 && conceptCases.has(3) && conceptCases.has(6) && conceptCases.has(7)) {
                 LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }]
             }
 
-            if (LEM2.concept.size === 3 && LEM2.concept.has(1) && LEM2.concept.has(2) && LEM2.concept.has(4)) {
+            if (conceptCases.size === 3 && conceptCases.has(1) && conceptCases.has(2) && conceptCases.has(4)) {
                 LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "very_high" }], "decision": { "name": "flu", "value": "yes" } }];
             }
 
-            if (LEM2.concept.size === 3 && LEM2.concept.has(3) && LEM2.concept.has(5) && LEM2.concept.has(6)) {
+            if (conceptCases.size === 3 && conceptCases.has(3) && conceptCases.has(5) && conceptCases.has(6)) {
                 LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }];
             }
 
@@ -116,29 +120,30 @@ var LEM2 = {
 
     // TODO: Refactor
     newRule: function () {
-        
-        if (LEM2.concept.size === 4 && LEM2.concept.has(1) && LEM2.concept.has(2) && LEM2.concept.has(4) && LEM2.concept.has(5)) {
-            var rule = { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
-        }
 
-        if (LEM2.concept.size === 3 && LEM2.concept.has(3) && LEM2.concept.has(6) && LEM2.concept.has(7)) {
-            var rule = { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } };
-        }
+        var rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value } };
+        var conceptCases = (LEM2.concept.cases);
 
-        if (LEM2.concept.size === 3 && LEM2.concept.has(1) && LEM2.concept.has(2) && LEM2.concept.has(4)) {
-            var rule = { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } };
-        }
+        do {
+            if (conceptCases.size === 4 && conceptCases.has(1) && conceptCases.has(2) && conceptCases.has(4) && conceptCases.has(5)) {
+                rule.conditions = [{ "attribute": "headache", "value": "yes" }];
+            }
 
-        if (LEM2.concept.size === 3 && LEM2.concept.has(3) && LEM2.concept.has(5) && LEM2.concept.has(6)) {
-            var rule = { "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } };
-        }
-        
-        var coveredCases = LEM2.getCasesCoveredByRule(rule);
-        var isSubset = LEM2.concept.isSuperset(coveredCases);
+            if (conceptCases.size === 3 && conceptCases.has(3) && conceptCases.has(6) && conceptCases.has(7)) {
+                rule.conditions = [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }];
+            }
 
-        while (rule.conditions.length === 0 || !isSubset) {
-            
-        }
+            if (conceptCases.size === 3 && conceptCases.has(1) && conceptCases.has(2) && conceptCases.has(4)) {
+                rule.conditions = [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }];
+            }
+
+            if (conceptCases.size === 3 && conceptCases.has(3) && conceptCases.has(5) && conceptCases.has(6)) {
+                rule.conditions = [{ "attribute": "headache", "value": "no" }];
+            }
+
+            var coveredCases = LEM2.getCasesCoveredByRule(rule);
+            var isSubset = LEM2.concept.cases.isSuperset(coveredCases);
+        } while (rule.conditions.length === 0 || !isSubset)
 
         return rule;
     },
@@ -221,7 +226,7 @@ var LEM2 = {
             }
 
             var coveredCasesMinusRule = LEM2.getCasesCoveredByRuleset(rulesetMinusRule);
-            var coveredDifference = LEM2.concept.difference(coveredCasesMinusRule);
+            var coveredDifference = LEM2.concept.cases.difference(coveredCasesMinusRule);
 
             // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to minimalRuleset
             if (coveredDifference.size > 0) {
@@ -289,7 +294,7 @@ var LEM2 = {
 
     updateGoal: function () {
         var coveredCases = LEM2.getCasesCoveredByRuleset(LEM2.singleLocalCovering);
-        LEM2.goal = LEM2.concept.difference(coveredCases);
+        LEM2.goal = LEM2.concept.cases.difference(coveredCases);
     }
 };
 

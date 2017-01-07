@@ -68,7 +68,7 @@ describe("LEM2 Module", function () {
             // Concept
 
             it("should take a concept and set the module concept equal to the input set" + example, function () {
-                expect(LEM2.concept).to.be.deep.equal(test.concept.cases);
+                expect(LEM2.concept).to.be.deep.equal(test.concept);
             });
 
             // Single Local Covering
@@ -278,7 +278,7 @@ describe("LEM2 Module", function () {
             const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
             it("should remove unnecessary rules from a " + test.display + example, function () {
                 LEM2.initialize(test.dataset);
-                LEM2.concept = test.concept.cases;
+                LEM2.concept = test.concept;
                 LEM2.singleLocalCovering = test.rulesetIn;
 
                 LEM2.compressRuleset();
@@ -375,14 +375,17 @@ describe("LEM2 Module", function () {
                 LEM2.initializeProcedure(test.concept);
                 LEM2.updateGoal();
 
-                expect(LEM2.goal).to.be.deep.equal(LEM2.concept);
+                expect(LEM2.goal).to.be.deep.equal(LEM2.concept.cases);
             });
         });
     });
 
     describe("#newRule()", function () {
+        
 
         it("should return a rule object", function () {
+            LEM2.initialize(dataset1);
+            LEM2.initializeProcedure(conceptFluYes1);
             const rule = LEM2.newRule();
 
             expect(rule).to.be.a("object");
@@ -399,6 +402,8 @@ describe("LEM2 Module", function () {
         });
 
         it("should return a rule with at least one condition", function () {
+            LEM2.initialize(dataset1);
+            LEM2.initializeProcedure(conceptFluYes1);
             const rule = LEM2.newRule();
 
             expect(rule.conditions).to.not.be.empty;
@@ -425,7 +430,7 @@ describe("LEM2 Module", function () {
                 const rule = LEM2.newRule();
 
                 const coveredCases = LEM2.getCasesCoveredByRule(rule);
-                const isSubset = LEM2.concept.isSuperset(coveredCases);
+                const isSubset = LEM2.concept.cases.isSuperset(coveredCases);
                 expect(isSubset).to.be.true;
             });
         }); 

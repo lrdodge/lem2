@@ -13,7 +13,7 @@ describe('LEM2 Module', function () {
         { "name": "datasetConcepts", "type": "array", "value": [] },
         { "name": "goal", "type": "set", "value": new Set() },
         { "name": "singleLocalCovering", "type": "array", "value": [] },
-        { "name": "concept", "type": "set", "value": new Set() }
+        { "name": "concept", "type": "object", "value": { "decision": "", "value": "", "cases": new Set() } }
     ];
 
     propertyTests.forEach(function (property) {
