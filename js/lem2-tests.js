@@ -382,16 +382,31 @@ describe("LEM2 Module", function () {
 
     describe("#newRule()", function () {
 
-        it("should return a rule objcet", function () {
+        it("should return a rule object", function () {
             const rule = LEM2.newRule();
 
             expect(rule).to.be.a("object");
-            
+
             expect(rule).to.have.property("conditions")
                 .to.be.a("array");
-
             expect(rule).to.have.property("decision")
                 .to.be.a("object");
+
+            expect(rule.decision).to.have.property("name")
+                .to.be.a("string");
+            expect(rule.decision).to.have.property("value")
+                .to.be.a("string");
+        });
+
+        it("should return a rule with at least one condition", function () {
+            const rule = LEM2.newRule();
+
+            expect(rule.conditions).to.not.be.empty;
+
+            expect(rule.conditions[0]).to.have.property("attribute")
+                .to.be.a("string");
+            expect(rule.conditions[0]).to.have.property("value")
+                .to.be.a("string");
         });
     });
 });

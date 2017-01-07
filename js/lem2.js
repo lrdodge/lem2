@@ -115,7 +115,7 @@ var LEM2 = {
     },
 
     newRule: function () {
-        return { "conditions": [], "decision": { } };
+        return { "conditions": [{ "attribute": "", "value": "" }], "decision": { "name": "", "value": "" } };
     },
 
     getCasesCoveredByRuleset: function (ruleset) {
