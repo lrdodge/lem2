@@ -91,29 +91,10 @@ var LEM2 = {
         LEM2.compressRuleset();
     },
 
-    // TODO: Refactor
     newRuleset: function () {
         while (LEM2.goal.size) {
-            // new rule
-            // add rule to ruleset
-
-            var conceptCases = (LEM2.concept.cases);
-            if (conceptCases.size === 4 && conceptCases.has(1) && conceptCases.has(2) && conceptCases.has(4) && conceptCases.has(5)) {
-                LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-            }
-
-            if (conceptCases.size === 3 && conceptCases.has(3) && conceptCases.has(6) && conceptCases.has(7)) {
-                LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }]
-            }
-
-            if (conceptCases.size === 3 && conceptCases.has(1) && conceptCases.has(2) && conceptCases.has(4)) {
-                LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "very_high" }], "decision": { "name": "flu", "value": "yes" } }];
-            }
-
-            if (conceptCases.size === 3 && conceptCases.has(3) && conceptCases.has(5) && conceptCases.has(6)) {
-                LEM2.singleLocalCovering = [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }];
-            }
-
+            var rule = LEM2.newRule();
+            LEM2.singleLocalCovering.push(rule);
             LEM2.updateGoal();
         }
     },
