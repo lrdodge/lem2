@@ -126,19 +126,23 @@ var LEM2 = {
 
         do {
             if (conceptCases.size === 4 && conceptCases.has(1) && conceptCases.has(2) && conceptCases.has(4) && conceptCases.has(5)) {
-                rule.conditions = [{ "attribute": "headache", "value": "yes" }];
+                var conditions = [[{ "attribute": "headache", "value": "yes" }], [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }]];
+                rule.conditions = conditions[LEM2.singleLocalCovering.length];
             }
 
             if (conceptCases.size === 3 && conceptCases.has(3) && conceptCases.has(6) && conceptCases.has(7)) {
-                rule.conditions = [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }];
+                var conditions = [[{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }]];
+                rule.conditions = conditions[LEM2.singleLocalCovering.length];
             }
 
             if (conceptCases.size === 3 && conceptCases.has(1) && conceptCases.has(2) && conceptCases.has(4)) {
-                rule.conditions = [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }];
+                var conditions = [[{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], [{ "attribute": "temperature", "value": "very_high" }]];
+                rule.conditions = conditions[LEM2.singleLocalCovering.length];
             }
 
             if (conceptCases.size === 3 && conceptCases.has(3) && conceptCases.has(5) && conceptCases.has(6)) {
-                rule.conditions = [{ "attribute": "headache", "value": "no" }];
+                var conditions = [[{ "attribute": "headache", "value": "no" }], [{ "attribute": "temperature", "value": "normal" }]];
+                rule.conditions = conditions[LEM2.singleLocalCovering.length];
             }
 
             var coveredCases = LEM2.getCasesCoveredByRule(rule);
