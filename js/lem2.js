@@ -225,7 +225,26 @@ var LEM2 = {
         LEM2.singleLocalCovering = minimalRuleset;
     },
 
-    newGoalBlockIntersections: function () {
+    findCondition: function (rule, targetCondition) {
+        var targetIndex = -1;
+
+        rule.conditions.forEach(function (condition, conditionIndex) {
+            console.log(condition);
+            if (condition.attribute !== targetCondition.attribute) {
+                return;
+            }
+
+            if (condition.value !== targetCondition.value) {
+                return;
+            }
+
+            targetIndex = conditionIndex;
+        });
+
+        return targetIndex;
+    },
+
+    newGoalBlockIntersections: function (rule) {
         var intersections = [];
 
         for (var attribute in LEM2.blocks) {

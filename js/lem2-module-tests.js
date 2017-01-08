@@ -41,6 +41,7 @@ describe('LEM2 Module', function () {
         { "name": "selectBestBlock" },
         { "name": "updateGoal" },
         { "name": "newRule" },
+        { "name": "findCondition" },
     ];
 
     functionTests.forEach(function (funct) {

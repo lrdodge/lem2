@@ -433,4 +433,27 @@ describe("LEM2 Module", function () {
             });
         });
     });
+
+    describe("#findCondition()", function () {
+        const tests = [
+            { "rule": rulesetFluYes1[0], "condition": { "attribute": "headache", "value": "yes" }, "index": 0},
+            { "rule": rulesetFluYes1[1], "condition": { "attribute": "headache", "value": "yes" }, "index": -1},
+            { "rule": rulesetFluYes1[1], "condition": { "attribute": "weakness", "value": "yes" }, "index": 1},
+        ];
+
+        tests.forEach(function(test) {
+            it("should return a valid array index value", function () {
+                const conditionIndex = LEM2.findCondition(test.rule, test.condition);
+                expect(conditionIndex).to.be.at.least(-1);
+                expect(conditionIndex).to.be.at.most(test.rule.conditions.length);
+            });
+
+            it("should return the index of a condition with a specific attribute value", function () {
+                const conditionIndex = LEM2.findCondition(test.rule, test.condition);
+                expect(conditionIndex).to.be.equal(test.index);
+            });
+        });
+
+        
+    });
 });
