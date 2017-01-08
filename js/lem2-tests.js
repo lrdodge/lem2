@@ -293,7 +293,7 @@ describe("LEM2 Module", function () {
 
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
-            const intersections = LEM2.newGoalBlockIntersections();
+            const intersections = LEM2.newGoalBlockIntersections(rulesetFluYes1[0]);
 
             expect(intersections.length).to.be.not.equal(0);
             intersections.forEach(function (intersection) {
@@ -310,11 +310,13 @@ describe("LEM2 Module", function () {
         const intersectionsFluYes1 = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
         const intersectionsFluNo1 = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
         const intersectionsFluYes2 = [{ "attribute": "temperature", "value": "high", "cases": new Set([1, 4]) }, { "attribute": "temperature", "value": "very_high", "cases": new Set([2]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }, { "attribute": "cough", "value": "yes", "cases": new Set([1, 4]) }, { "attribute": "cough", "value": "no", "cases": new Set([2]) }];
+        const intersectionsFluYes2a = [{ "attribute": "temperature", "value": "high", "cases": new Set([1, 4]) }, { "attribute": "temperature", "value": "very_high", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }, { "attribute": "cough", "value": "yes", "cases": new Set([1, 4]) }, { "attribute": "cough", "value": "no", "cases": new Set([2]) }];
 
         const tests = [
-            { "dataset": dataset1, "concept": conceptFluYes1, "intersections": intersectionsFluYes1, "example": 1 },
-            { "dataset": dataset1, "concept": conceptFluNo1, "intersections": intersectionsFluNo1, "example": 1 },
-            { "dataset": dataset2, "concept": conceptFluYes2, "intersections": intersectionsFluYes2, "example": 2 }
+            { "dataset": dataset1, "concept": conceptFluYes1, "conditions": [], "intersections": intersectionsFluYes1, "example": 1 },
+            { "dataset": dataset1, "concept": conceptFluNo1, "conditions": [], "intersections": intersectionsFluNo1, "example": 1 },
+            { "dataset": dataset2, "concept": conceptFluYes2, "conditions": [], "intersections": intersectionsFluYes2, "example": 2 },
+            { "dataset": dataset2, "concept": conceptFluYes2, "conditions": [{ "attribute": "headache", "value": "yes" }], "intersections": intersectionsFluYes2a, "example": 2 },
         ];
 
         tests.forEach(function (test) {
@@ -323,8 +325,10 @@ describe("LEM2 Module", function () {
             it("should create an array of intersections between each attribute value block and the goal" + example, function () {
                 LEM2.initialize(test.dataset);
                 LEM2.initializeProcedure(test.concept);
+                const rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value } };
+                rule.conditions = test.conditions;
 
-                const actual = LEM2.newGoalBlockIntersections();
+                const actual = LEM2.newGoalBlockIntersections(rule);
                 expect(actual).to.be.deep.equal(test.intersections);
             });
         });
@@ -379,7 +383,6 @@ describe("LEM2 Module", function () {
     });
 
     describe("#newRule()", function () {
-
 
         it("should return a rule object", function () {
             LEM2.initialize(dataset1);
@@ -436,24 +439,26 @@ describe("LEM2 Module", function () {
 
     describe("#findCondition()", function () {
         const tests = [
-            { "rule": rulesetFluYes1[0], "condition": { "attribute": "headache", "value": "yes" }, "index": 0},
-            { "rule": rulesetFluYes1[1], "condition": { "attribute": "headache", "value": "yes" }, "index": -1},
-            { "rule": rulesetFluYes1[1], "condition": { "attribute": "weakness", "value": "yes" }, "index": 1},
+            { "rule": rulesetFluYes1[0], "condition": { "attribute": "headache", "value": "yes" }, "index": 0 },
+            { "rule": rulesetFluYes1[1], "condition": { "attribute": "headache", "value": "yes" }, "index": -1 },
+            { "rule": rulesetFluYes1[1], "condition": { "attribute": "weakness", "value": "yes" }, "index": 1 },
         ];
 
-        tests.forEach(function(test) {
+        tests.forEach(function (test) {
             it("should return a valid array index value", function () {
                 const conditionIndex = LEM2.findCondition(test.rule, test.condition);
                 expect(conditionIndex).to.be.at.least(-1);
                 expect(conditionIndex).to.be.at.most(test.rule.conditions.length);
             });
 
-            it("should return the index of a condition with a specific attribute value", function () {
+            const condition = "(" + test.condition.attribute + "," + test.condition.value + ")";
+
+            it("should return index " + test.index + " for " + condition, function () {
                 const conditionIndex = LEM2.findCondition(test.rule, test.condition);
                 expect(conditionIndex).to.be.equal(test.index);
             });
         });
 
-        
+
     });
 });

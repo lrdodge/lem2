@@ -229,7 +229,6 @@ var LEM2 = {
         var targetIndex = -1;
 
         rule.conditions.forEach(function (condition, conditionIndex) {
-            console.log(condition);
             if (condition.attribute !== targetCondition.attribute) {
                 return;
             }
@@ -250,6 +249,11 @@ var LEM2 = {
         for (var attribute in LEM2.blocks) {
             var attributeBlocks = LEM2.blocks[attribute];
             for (var attributeValue in attributeBlocks) {
+                var conditionIndex = LEM2.findCondition(rule, { "attribute": attribute, "value": attributeValue });
+                if (conditionIndex !== -1) {
+                    continue;
+                }
+
                 var blockCases = new Set(LEM2.blocks[attribute][attributeValue]);
                 var intersection = {
                     "attribute": attribute,
