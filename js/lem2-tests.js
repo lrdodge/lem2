@@ -289,10 +289,7 @@ describe("LEM2 Module", function () {
 
     describe("#newGoalBlockIntersections()", function () {
 
-        // Intersection Structure
-
         it("should create an array of intersections, each with an attribute string, a value string, and a non-empty set", function () {
-            const emptySet = new Set();
 
             LEM2.initialize(dataset1);
             LEM2.initializeProcedure(conceptFluYes1);
@@ -300,14 +297,15 @@ describe("LEM2 Module", function () {
 
             expect(intersections.length).to.be.not.equal(0);
             intersections.forEach(function (intersection) {
-                expect(intersection.attribute).to.be.a("string");
-                expect(intersection.value).to.be.a("string");
-                expect(intersection.cases).to.be.a("set");
-                expect(intersection.cases).to.be.not.deep.equal(emptySet);
+                expect(intersection).have.property("attribute")
+                    .to.be.a("string");
+                expect(intersection).have.property("value")
+                    .to.be.a("string");
+                expect(intersection).have.property("cases")
+                    .to.be.a("set")
+                    .to.be.not.empty;
             });
         });
-
-        // Create Intersections
 
         const intersectionsFluYes1 = [{ "attribute": "temperature", "value": "very_high", "cases": new Set([1]) }, { "attribute": "temperature", "value": "high", "cases": new Set([2, 5]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([4]) }, { "attribute": "headache", "value": "yes", "cases": new Set([1, 2, 4]) }, { "attribute": "headache", "value": "no", "cases": new Set([5]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([1, 4, 5]) }, { "attribute": "weakness", "value": "no", "cases": new Set([2]) }, { "attribute": "nausea", "value": "no", "cases": new Set([1, 5]) }, { "attribute": "nausea", "value": "yes", "cases": new Set([2, 4]) }];
         const intersectionsFluNo1 = [{ "attribute": "temperature", "value": "high", "cases": new Set([6]) }, { "attribute": "temperature", "value": "normal", "cases": new Set([3, 7]) }, { "attribute": "headache", "value": "no", "cases": new Set([3, 6, 7]) }, { "attribute": "weakness", "value": "yes", "cases": new Set([7]) }, { "attribute": "weakness", "value": "no", "cases": new Set([3, 6]) }, { "attribute": "nausea", "value": "no", "cases": new Set([3, 6, 7]) }];
@@ -381,7 +379,7 @@ describe("LEM2 Module", function () {
     });
 
     describe("#newRule()", function () {
-        
+
 
         it("should return a rule object", function () {
             LEM2.initialize(dataset1);
@@ -415,16 +413,16 @@ describe("LEM2 Module", function () {
         });
 
         var tests = [
-            { "dataset": dataset1, "concept": conceptFluYes1, "example": 1},
-            { "dataset": dataset1, "concept": conceptFluNo1, "example": 1},
-            { "dataset": dataset2, "concept": conceptFluYes2, "example": 2},
-            { "dataset": dataset2, "concept": conceptFluNo2, "example": 2},
+            { "dataset": dataset1, "concept": conceptFluYes1, "example": 1 },
+            { "dataset": dataset1, "concept": conceptFluNo1, "example": 1 },
+            { "dataset": dataset2, "concept": conceptFluYes2, "example": 2 },
+            { "dataset": dataset2, "concept": conceptFluNo2, "example": 2 },
         ];
 
-        tests.forEach(function(test){
+        tests.forEach(function (test) {
             const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
-            
-            it("should return a rule which covers a subset of the concept" + example, function() {
+
+            it("should return a rule which covers a subset of the concept" + example, function () {
                 LEM2.initialize(test.dataset);
                 LEM2.initializeProcedure(test.concept);
                 const rule = LEM2.newRule();
@@ -433,6 +431,6 @@ describe("LEM2 Module", function () {
                 const isSubset = LEM2.concept.cases.isSuperset(coveredCases);
                 expect(isSubset).to.be.true;
             });
-        }); 
+        });
     });
 });
