@@ -4,7 +4,7 @@
 
 const dataset1 = [["temperature", "headache", "weakness", "nausea", "flu"], ["very_high", "yes", "yes", "no", "yes"], ["high", "yes", "no", "yes", "yes"], ["normal", "no", "no", "no", "no"], ["normal", "yes", "yes", "yes", "yes"], ["high", "no", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["normal", "no", "yes", "no", "no"]];
 const rulesetFluYes1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-const rulesetFluNo1 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
+const rulesetFluNo1 = [{ "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "weakness", "value": "no" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
 const blocks1 = { "temperature": { "very_high": [1], "high": [2, 5, 6], "normal": [3, 4, 7] }, "headache": { "yes": [1, 2, 4], "no": [3, 5, 6, 7] }, "weakness": { "yes": [1, 4, 5, 7], "no": [2, 3, 6] }, "nausea": { "yes": [2, 4], "no": [1, 3, 5, 6, 7] } };
 const conceptFluYes1 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4, 5]) };
 const conceptFluNo1 = { "decision": "flu", "value": "no", "cases": new Set([3, 6, 7]) };
@@ -13,7 +13,7 @@ const conceptFluNo1 = { "decision": "flu", "value": "no", "cases": new Set([3, 6
 
 const dataset2 = [["temperature", "headache", "nausea", "cough", "flu"], ["high", "yes", "no", "yes", "yes"], ["very_high", "yes", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["high", "yes", "yes", "yes", "yes"], ["normal", "yes", "no", "no", "no"], ["normal", "no", "yes", "yes", "no"]];
 const rulesetFluYes2 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "very_high" }], "decision": { "name": "flu", "value": "yes" } }];
-const rulesetFluNo2 = [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }];
+const rulesetFluNo2 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
 const blocks2 = { "temperature": { "very_high": [2], "high": [1, 3, 4], "normal": [5, 6] }, "headache": { "yes": [1, 2, 4, 5], "no": [3, 6] }, "nausea": { "yes": [2, 4, 6], "no": [1, 3, 5] }, "cough": { "yes": [1, 4, 6], "no": [2, 3, 5] } };
 const conceptFluYes2 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4]) };
 const conceptFluNo2 = { "decision": "flu", "value": "no", "cases": new Set([3, 5, 6]) };
@@ -96,8 +96,10 @@ describe("LEM2 Module", function () {
                 LEM2.initialize(test.dataset);
                 LEM2.initializeProcedure(test.concept);
                 LEM2.newRuleset();
+                test.ruleset.forEach(function (rule, ruleIndex) {
+                    expect(rule).to.be.deep.equal(LEM2.singleLocalCovering[ruleIndex]);
+                });
 
-                expect(LEM2.singleLocalCovering).to.be.deep.equal(test.ruleset);
             });
 
             // Empty Set Goal
@@ -216,8 +218,8 @@ describe("LEM2 Module", function () {
             { "dataset": dataset1, "coveredCases": new Set([3, 6]), "rule": rulesetFluNo1[1], "example": 1 },
             { "dataset": dataset2, "coveredCases": new Set([1, 4]), "rule": rulesetFluYes2[0], "example": 2 },
             { "dataset": dataset2, "coveredCases": new Set([2]), "rule": rulesetFluYes2[1], "example": 2 },
-            { "dataset": dataset2, "coveredCases": new Set([3, 6]), "rule": rulesetFluNo2[0], "example": 2 },
-            { "dataset": dataset2, "coveredCases": new Set([5, 6]), "rule": rulesetFluNo2[1], "example": 2 }
+            { "dataset": dataset2, "coveredCases": new Set([5, 6]), "rule": rulesetFluNo2[0], "example": 2 },
+            { "dataset": dataset2, "coveredCases": new Set([3, 6]), "rule": rulesetFluNo2[1], "example": 2 },
         ];
 
         tests.forEach(function (test, testIndex) {
@@ -262,7 +264,7 @@ describe("LEM2 Module", function () {
 
         const singleRuleRuleset = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
         const expandedRulesetFluYes1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-        const expandedRulesetFluNo1 = [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];;
+        const expandedRulesetFluNo1 = [{ "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "weakness", "value": "no" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
 
         const tests = [
             { "dataset": dataset1, "concept": conceptFluYes1, "rulesetIn": rulesetFluYes1, "rulesetOut": rulesetFluYes1, "display": "Minimal Ruleset", "example": 1 },

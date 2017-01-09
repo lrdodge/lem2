@@ -99,37 +99,23 @@ var LEM2 = {
         }
     },
 
-    // TODO: Refactor
     newRule: function () {
 
         var rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value } };
         var conceptCases = (LEM2.concept.cases);
 
         do {
-            if (conceptCases.size === 4 && conceptCases.has(1) && conceptCases.has(2) && conceptCases.has(4) && conceptCases.has(5)) {
-                var conditions = [[{ "attribute": "headache", "value": "yes" }], [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }]];
-                rule.conditions = conditions[LEM2.singleLocalCovering.length];
-            }
-
-            if (conceptCases.size === 3 && conceptCases.has(3) && conceptCases.has(6) && conceptCases.has(7)) {
-                var conditions = [[{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }]];
-                rule.conditions = conditions[LEM2.singleLocalCovering.length];
-            }
-
-            if (conceptCases.size === 3 && conceptCases.has(1) && conceptCases.has(2) && conceptCases.has(4)) {
-                var conditions = [[{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], [{ "attribute": "temperature", "value": "very_high" }]];
-                rule.conditions = conditions[LEM2.singleLocalCovering.length];
-            }
-
-            if (conceptCases.size === 3 && conceptCases.has(3) && conceptCases.has(5) && conceptCases.has(6)) {
-                var conditions = [[{ "attribute": "headache", "value": "no" }], [{ "attribute": "temperature", "value": "normal" }]];
-                rule.conditions = conditions[LEM2.singleLocalCovering.length];
-            }
+            var intersections = LEM2.newGoalBlockIntersections(rule);
+            var bestBlock = LEM2.selectBestBlock(intersections);
+            var condition = { "attribute": bestBlock.attribute, "value": bestBlock.value };
+            rule.conditions.push(condition);
+            LEM2.goal = LEM2.goal.intersection(bestBlock.cases);
 
             var coveredCases = LEM2.getCasesCoveredByRule(rule);
             var isSubset = LEM2.concept.cases.isSuperset(coveredCases);
         } while (rule.conditions.length === 0 || !isSubset)
 
+        rule = LEM2.compressRule(rule);
         return rule;
     },
 
