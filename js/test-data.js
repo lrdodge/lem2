@@ -45,21 +45,22 @@ const rulesetFluYesInconsistent = [
   {
     "conditions": [
       { "attribute": "weakness", "value": "yes" },
-      { "attribute": "temperature", "value": "high" }
+      { "attribute": "temperature", "value": "high" },
     ],
     "decision": { "name": "flu", "value": "yes" }
   },
   {
     "conditions": [
-      { "attribute": "headache", "value": "yes" }
+      { "attribute": "headache", "value": "yes" },
     ],
     "decision": { "name": "flu", "value": "yes" }
   },
   {
     "conditions": [
       { "attribute": "temperature", "value": "normal" },
+      { "attribute": "headache", "value": "no" },
       { "attribute": "weakness", "value": "yes" },
-      { "attribute": "nausea", "value": "no" }
+      { "attribute": "nausea", "value": "no" },
     ],
     "decision": { "name": "flu", "value": "yes" }
   },
@@ -68,15 +69,16 @@ const rulesetFluNoInconsistent = [
   {
     "conditions": [
       { "attribute": "nausea", "value": "no" },
-      { "attribute": "weakness", "value": "no" }
+      { "attribute": "weakness", "value": "no" },
     ],
     "decision": { "name": "flu", "value": "no" }
   },
   {
     "conditions": [
       { "attribute": "temperature", "value": "normal" },
+      { "attribute": "headache", "value": "no" },
       { "attribute": "weakness", "value": "yes" },
-      { "attribute": "nausua", "value": "no" }
+      { "attribute": "nausea", "value": "no" },
     ],
     "decision": { "name": "flu", "value": "no" }
   },
