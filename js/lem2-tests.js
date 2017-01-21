@@ -221,10 +221,10 @@ describe("LEM2 Module", function () {
 
   describe("#compressRule()", function () {
 
-    const rule1 = { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
-    const rule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
-    const expandedRule1 = { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
-    const expandedRule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } };
+    const rule1 = { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true };
+    const rule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true };
+    const expandedRule1 = { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true };
+    const expandedRule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true };
 
     const tests = [
       { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": rule1, "ruleOut": rule1, "display": "Minimal Rule" },
@@ -246,9 +246,9 @@ describe("LEM2 Module", function () {
 
   describe("#compressRuleset()", function () {
 
-    const singleRuleRuleset = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-    const expandedRulesetFluYes1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }];
-    const expandedRulesetFluNo1 = [{ "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "weakness", "value": "no" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }];
+    const singleRuleRuleset = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true }];
+    const expandedRulesetFluYes1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true }];
+    const expandedRulesetFluNo1 = [{ "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" }, "consistent": true }, { "conditions": [{ "attribute": "weakness", "value": "no" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" }, "consistent": true }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" }, "consistent": true }];
 
     const tests = [
       { "dataset": dataset1, "concept": conceptFluYes1, "rulesetIn": rulesetFluYes1, "rulesetOut": rulesetFluYes1, "display": "Minimal Ruleset", "example": 1 },
@@ -381,6 +381,8 @@ describe("LEM2 Module", function () {
         .to.be.a("array");
       expect(rule).to.have.property("decision")
         .to.be.a("object");
+      expect(rule).to.have.property("consistent")
+        .to.be.a("boolean");
 
       expect(rule.decision).to.have.property("name")
         .to.be.a("string");

@@ -101,12 +101,13 @@ var LEM2 = {
 
     newRule: function () {
 
-        var rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value } };
+        var rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value }, "consistent": true };
 
         do {
             var intersections = LEM2.newGoalBlockIntersections(rule);
             
             if (intersections.length === 0) {
+                rule.consistent = false;
                 console.error("Inconsistent Rule Created");
                 console.log(rule);
                 break;
@@ -156,7 +157,8 @@ var LEM2 = {
         var removedConditions = [];
         var minimalRule = {
             "conditions": [],
-            "decision": rule.decision
+            "decision": rule.decision,
+            "consistent": rule.consistent
         }
 
         rule.conditions.forEach(function (condition, conditionIndex) {
