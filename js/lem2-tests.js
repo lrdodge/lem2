@@ -18,6 +18,20 @@ const blocks2 = { "temperature": { "very_high": [2], "high": [1, 3, 4], "normal"
 const conceptFluYes2 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4]) };
 const conceptFluNo2 = { "decision": "flu", "value": "no", "cases": new Set([3, 5, 6]) };
 
+// Inconsistent Data Set
+const datasetInconsistent = [["temperature","headache","weakness","nausea","flu"],["very_high","yes","yes","no","yes"],["high","yes","no","yes","yes"],["normal","no","no","no","no"],["normal","yes","yes","yes","yes"],["high","no","yes","no","yes"],["high","no","no","no","no"],["normal","no","yes","no","no"],["normal","no","yes","no","yes"]];
+const conceptFluYesInconsistent = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4, 5, 8]) };
+const conceptFluNoInconsistent = { "decision": "flu", "value": "no", "cases": new Set([3, 6, 7]) };
+const rulesetFluYesInconsistent = [
+    { "conditions": [{ "attribute": "weakness", "value": "yes" },{ "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } },
+    { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } },
+    { "conditions": [{ "attribute": "temperature", "value": "normal" },{ "attribute": "weakness", "value": "yes" },{ "attribute": "nausea", "value": "no" }], "decision": { "name": "flu", "value": "yes" } },
+];
+const rulesetFluNoInconsistent = [
+  { "conditions": [{ "attribute": "nausea", "value": "no" },{ "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } },
+  { "conditions": [{ "attribute": "temperature", "value": "normal" },{ "attribute": "weakness", "value": "yes" },{ "attribute": "nausua", "value": "no" }], "decision": { "name": "flu", "value": "no" } },
+];
+
 describe("LEM2 Module", function () {
 
     describe("#initialize()", function () {
@@ -86,7 +100,9 @@ describe("LEM2 Module", function () {
             { "dataset": dataset1, "concept": conceptFluYes1, "ruleset": rulesetFluYes1, "example": 1 },
             { "dataset": dataset1, "concept": conceptFluNo1, "ruleset": rulesetFluNo1, "example": 1 },
             { "dataset": dataset2, "concept": conceptFluYes2, "ruleset": rulesetFluYes2, "example": 2 },
-            { "dataset": dataset2, "concept": conceptFluNo2, "ruleset": rulesetFluNo2, "example": 2 }
+            { "dataset": dataset2, "concept": conceptFluNo2, "ruleset": rulesetFluNo2, "example": 2 },            
+            { "dataset": datasetInconsistent, "concept": conceptFluYesInconsistent, "example": "Inconsistent" },
+            { "dataset": datasetInconsistent, "concept": conceptFluNoInconsistent, "example": "Inconsistent" },
         ];
 
         tests.forEach(function (test) {
