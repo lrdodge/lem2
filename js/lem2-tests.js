@@ -69,8 +69,8 @@ describe("LEM2 Module", function () {
       { "dataset": dataset1, "concept": conceptFluNo1, "ruleset": rulesetFluNo1, "example": 1 },
       { "dataset": dataset2, "concept": conceptFluYes2, "ruleset": rulesetFluYes2, "example": 2 },
       { "dataset": dataset2, "concept": conceptFluNo2, "ruleset": rulesetFluNo2, "example": 2 },
-      { "dataset": datasetInconsistent, "concept": conceptFluYesInconsistent, "example": "Inconsistent" },
-      { "dataset": datasetInconsistent, "concept": conceptFluNoInconsistent, "example": "Inconsistent" },
+      { "dataset": datasetInconsistent, "concept": conceptFluYesInconsistent, "ruleset": rulesetFluYesInconsistent, "example": "Inconsistent" },
+      { "dataset": datasetInconsistent, "concept": conceptFluNoInconsistent, "ruleset": rulesetFluNoInconsistent, "example": "Inconsistent" },
     ];
 
     tests.forEach(function (test) {
