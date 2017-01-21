@@ -102,10 +102,16 @@ var LEM2 = {
     newRule: function () {
 
         var rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value } };
-        var conceptCases = (LEM2.concept.cases);
 
         do {
             var intersections = LEM2.newGoalBlockIntersections(rule);
+            
+            if (intersections.length === 0) {
+                console.error("Inconsistent Rule Created");
+                console.log(rule);
+                break;
+            }
+
             var bestBlock = LEM2.selectBestBlock(intersections);
             var condition = { "attribute": bestBlock.attribute, "value": bestBlock.value };
             rule.conditions.push(condition);
