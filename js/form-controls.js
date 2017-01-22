@@ -1,8 +1,8 @@
 var FormController = (function () {
 
   var _addEventHandlers = function () {
-    $("#process-data-button").click(loadData);
-    $("#induce-rules-button").click(induceRules);
+    $("#load-data-button").click(initializeLem2);
+    $("#induce-rules-button").click(invokeLem2);
     $("input[name='dataset-options']").change(updateDataInputField);
   };
 
@@ -21,49 +21,140 @@ var FormController = (function () {
     }
   }
 
-  var parseData = function () {
-    var dataInputErrorAlert = $("#data-input-error-alert");
-    var dataInputErrorMessage = $("#data-input-error-message");
+  var covnertCsv = function () {
+    var csvInput = $("input[name='dataset-options']:checked").val();
+    var config = {
+      skipEmptyLines: true,
+      complete: function (results) {
+        verifyCsv(results);
+      }
+    };
 
-    dataInputErrorAlert.hide();
-    dataInputErrorMessage.empty();
-
-    var csv = $("#data-input").val();
-    var data = Papa.parse(csv);
-
-    if (!data.errors.length) {
-      return data;
+    if (csvInput !== "dataset-file") {
+      var csvRaw = $("#data-input").val();
+      Papa.parse(csvRaw, config);
+      return;
     }
 
+    var selectedFile = $('#input-file')[0].files[0];
+    if (selectedFile) {
+      Papa.parse(selectedFile, config);
+    }
+  };
+
+  var verifyCsv = function (csv) {
+    if (csv.errors.length) {
+      showParseErrors(csv.errors);
+      return;
+    }
+
+    LEM2.initialize(csv.data);
+    newConceptModal();
+    $("#concept-modal").modal();
+  };
+
+  var showParseErrors = function (errors) {
     var errorList = $("<ul/>");
-    data.errors.forEach(function (error) {
+    errors.forEach(function (error) {
       console.error(error);
       var row = $("<span/>", {
         "text": error.row,
         "class": "badge"
       })
+
       var errorMessage = " " + error.code + ": " + error.message;
 
       var errorItem = $("<li />", {
         "text": errorMessage
       });
+
       errorItem.prepend(row);
       errorList.append(errorItem);
-    })
-    dataInputErrorMessage.append(errorList);
-    dataInputErrorAlert.show();
+    });
 
-    return false;
+    $("#data-input-error-message").append(errorList);
+    $("#data-input-error-alert").show();
   };
 
-  var displayRules = function (rules) {
+  var newConceptRadioButton = function (concept, conceptIndex) {
+
+    // Radio Button
+
+    var radioButtonContainer = $("<div/>", {
+      "class": "radio"
+    });
+    var radioButtonLabel = $("<label/>", {
+      "text": "(" + concept.decision + ", " + concept.value + ")"
+    });
+    var radioButton = $("<input/>", {
+      "type": "radio",
+      "name": "concept",
+      "id": "concept-" + conceptIndex,
+      "value": conceptIndex
+    });
+
+    radioButtonLabel.prepend(radioButton);
+    radioButtonContainer.append(radioButtonLabel);
+
+    // Concept Cases
+
+    var conceptCasesButton = $("<span/>", {
+      "class": "badge pull-right",
+      "style": "cursor:pointer;",
+      "text": concept.cases.size
+    });
+    var conceptCases = $("<p/>", {
+      "text": concept.cases.toString(),
+      "style": "display: none; word-wrap: break-word;"
+    });
+
+    $(conceptCasesButton).click(function () { conceptCases.toggle(); });
+
+    radioButtonContainer.append(conceptCasesButton);
+    radioButtonContainer.append(conceptCases);
+
+    return radioButtonContainer;
+  };
+
+  var newConceptModal = function () {
+    var conceptModalBody = $("#concept-modal-form");
+    conceptModalBody.empty();
+
+    LEM2.datasetConcepts.forEach(function (concept, conceptIndex) {
+      var radiobutton = newConceptRadioButton(concept, conceptIndex);
+      conceptModalBody.append(radiobutton);
+    });
+
+    conceptModalBody.validate({
+      errorClass: "text-danger",
+      errorPlacement: function (error, element) {
+        error.appendTo(element.closest("form"));
+      },
+      rules: {
+        concept: {
+          required: true
+        }
+      }
+    });
+  };
+
+  var showRules = function (rules) {
     var rulesContainer = $("#rules-div");
     var ruleList = $("<ol/>", {
       "id": "rules-list"
     });
+    var warningIcon = $("<i/>", {
+      "class": "fa fa-exclamation-triangle text-warning",
+      "aria-hidden": true
+    });
 
     rules.forEach(function (rule) {
       var ruleItem = $("<li/>");
+
+      if (!rule.consistent) {
+        ruleItem.append(warningIcon);
+        $("#inconsistent-alert").show();
+      }
 
       rule.conditions.forEach(function (condition, conditionIndex) {
         var condition = " (" + condition.attribute + ", " + condition.value + ") ";
@@ -96,68 +187,25 @@ var FormController = (function () {
     rulesContainer.show();
   };
 
-  var loadData = function () {
+  var initializeLem2 = function (data) {
     $("#rules-div").hide();
+    $("#inconsistent-alert").hide();
     $("#rules-list").remove();
-
-    var csv = parseData();
-    if (!csv) {
-      return;
-    }
-
-    var data = csv.data;
-
-    // Initialize
-    LEM2.dataset = data;
-    LEM2.newAttributeValueBlocks();
-    LEM2.newConcepts();
-
-    // Build Concept Chooser Modal
-    var conceptModalBody = $("#concept-modal-form");
-    conceptModalBody.empty();
-    LEM2.concepts.forEach(function (concept, conceptIndex) {
-
-      var radioButtonContainer = $("<div/>", {
-        "class": "radio"
-      });
-      var radioButtonLabel = $("<label>", {
-        "text": "(" + concept.decision + ", " + concept.value + ") = " + concept.cases.toString()
-      });
-      var radioButton = $("<input/>", {
-        "type": "radio",
-        "name": "concept",
-        "id": "concept-" + conceptIndex,
-        "value": conceptIndex
-      });
-
-      radioButtonLabel.prepend(radioButton);
-      radioButtonContainer.append(radioButtonLabel);
-      conceptModalBody.append(radioButtonContainer);
-      conceptModalBody.validate({
-        errorClass: "text-danger",
-        errorPlacement: function (error, element) {
-          error.appendTo(element.closest("form"));
-        },
-        rules: {
-          concept: {
-            required: true
-          }
-        }
-      });
-    });
-
-    $("#concept-modal").modal();
+    $("#data-input-error-alert").hide();
+    $("#data-input-error-message").empty();
+    covnertCsv();
   };
 
-  var induceRules = function () {
+  var invokeLem2 = function () {
     if (!$("#concept-modal-form").valid()) {
       return;
     }
 
-    var conceptIndex = $("input[name='concept']:checked").val();
-    var ruleset = LEM2.executeProcedure(LEM2.concepts[conceptIndex]);
-    displayRules(ruleset.rules);
     $("#concept-modal").modal('hide');
+
+    var conceptIndex = $("input[name='concept']:checked").val();
+    LEM2.invokeProcedure(LEM2.datasetConcepts[conceptIndex]);
+    showRules(LEM2.singleLocalCovering);
   };
 
   return {

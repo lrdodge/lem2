@@ -1,136 +1,302 @@
-var LEM2;
+var LEM2 = {
+    blocks: {},
+    dataset: [],
+    datasetConcepts: [],
+    singleLocalCovering: [],
+    goal: new Set(),
+    concept: { "decision": "", "value": "", "cases": new Set() },
 
-LEM2 = {
-  dataset: {},
-  blocks: {},
-  concepts: [],
+    newConcepts: function () {
+        LEM2.datasetConcepts = [];
 
-  // TODO: Refactor
-  executeProcedure: function (concept) {
+        var decisionIndex = LEM2.dataset[0].length - 1;
+        var dataset = LEM2.dataset.slice(0);
+        var decision = dataset[0][decisionIndex];
+        // Remove decision label
+        dataset.shift();
 
-    if (concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4) && concept.cases.has(5)) {
-      return { "rules": [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }] };
-    }
+        var column = dataset.map(function (value) {
+            return value[decisionIndex];
+        });
 
-    if (concept.cases.has(3) && concept.cases.has(6) && concept.cases.has(7)) {
-      return { "rules": [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }] };
-    }
+        var decisionValues = column.filter(function (value, index, self) {
+            return self.indexOf(value) === index;
+        });
 
-    if (concept.cases.has(1) && concept.cases.has(2) && concept.cases.has(4)) {
-      return { "rules": [{ "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "high" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "very_high" }], "decision": { "name": "flu", "value": "yes" } }] };
-    }
+        decisionValues.forEach(function (decisionValue) {
+            var cases = column.reduce(function (decisionValues, value, index) {
+                if (value === decisionValue) {
+                    decisionValues.push(index + 1);
+                }
+                return decisionValues;
+            }, []);
 
-    if (concept.cases.has(3) && concept.cases.has(5) && concept.cases.has(6)) {
-      return { "rules": [{ "conditions": [{ "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }] };
-    }
-  },
+            var concept = {
+                "decision": decision,
+                "value": decisionValue,
+                "cases": new Set(cases)
+            };
 
-  newConcepts: function () {
-    LEM2.concepts = [];
+            LEM2.datasetConcepts.push(concept);
+        });
+    },
 
-    var decisionIndex = LEM2.dataset[0].length - 1;
-    var dataset = LEM2.dataset.slice(0);
-    var decision = dataset[0][decisionIndex];
-    // Remove decision label
-    dataset.shift();
+    newAttributeValueBlocks: function () {
+        LEM2.blocks = {};
+        var dataset = LEM2.dataset.slice(0);
 
-    var column = dataset.map(function (value) {
-      return value[decisionIndex];
-    });
+        var attributeNames = dataset[0].slice(0);
+        // Remove decision label
+        attributeNames.pop();
+        // Remove labels
+        dataset.shift();
 
-    var decisionValues = column.filter(function (value, index, self) {
-      return self.indexOf(value) === index;
-    });
+        attributeNames.forEach(function (attributeName, attributeIndex) {
+            LEM2.blocks[attributeName] = {};
 
-    decisionValues.forEach(function (decisionValue) {
-      var cases = column.reduce(function (decisionValues, value, index) {
-        if (value === decisionValue) {
-          decisionValues.push(index + 1);
+            var column = dataset.map(function (value) {
+                return value[attributeIndex];
+            });
+
+            var attributeValues = column.filter(function (value, index, self) {
+                return self.indexOf(value) === index;
+            });
+
+            attributeValues.forEach(function (attributeValue) {
+                LEM2.blocks[attributeName][attributeValue] = column.reduce(function (attributeValues, value, index) {
+                    if (value === attributeValue) {
+                        attributeValues.push(index + 1);
+                    }
+                    return attributeValues;
+                }, []);
+            });
+        });
+    },
+
+    initialize: function (dataset) {
+        LEM2.dataset = dataset;
+        LEM2.newConcepts();
+        LEM2.newAttributeValueBlocks();
+    },
+
+    initializeProcedure: function (concept) {
+        LEM2.concept = concept;
+        LEM2.singleLocalCovering = [];
+        LEM2.updateGoal();
+    },
+
+    invokeProcedure: function (concept) {
+        LEM2.initializeProcedure(concept);
+        LEM2.newRuleset();
+        LEM2.compressRuleset();
+    },
+
+    newRuleset: function () {
+        while (LEM2.goal.size) {
+            var rule = LEM2.newRule();
+            LEM2.singleLocalCovering.push(rule);
+            LEM2.updateGoal();
         }
-        return decisionValues;
-      }, []);
+    },
 
-      var concept = {
-        "decision": decision,
-        "value": decisionValue,
-        "cases": new Set(cases)
-      };
+    newRule: function () {
 
-      LEM2.concepts.push(concept);
-    });
-  },
+        var rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value }, "consistent": true };
 
-  newAttributeValueBlocks: function () {
-    LEM2.blocks = {};
-    var dataset = LEM2.dataset.slice(0);
+        do {
+            var intersections = LEM2.newGoalBlockIntersections(rule);
+            
+            if (intersections.length === 0) {
+                rule.consistent = false;
+                console.error("Inconsistent Rule Created");
+                console.log(rule);
+                break;
+            }
 
-    var attributeNames = dataset[0].slice(0);
-    // Remove decision label
-    attributeNames.pop();
-    // Remove labels
-    dataset.shift();
+            var bestBlock = LEM2.selectBestBlock(intersections);
+            var condition = { "attribute": bestBlock.attribute, "value": bestBlock.value };
+            rule.conditions.push(condition);
+            LEM2.goal = LEM2.goal.intersection(bestBlock.cases);
 
-    attributeNames.forEach(function (attributeName, attributeIndex) {
-      LEM2.blocks[attributeName] = {};
+            var coveredCases = LEM2.getCasesCoveredByRule(rule);
+            var isSubset = LEM2.concept.cases.isSuperset(coveredCases);
+        } while (rule.conditions.length === 0 || !isSubset)
 
-      var column = dataset.map(function (value) {
-        return value[attributeIndex];
-      });
+        rule = LEM2.compressRule(rule);
+        return rule;
+    },
 
-      var attributeValues = column.filter(function (value, index, self) {
-        return self.indexOf(value) === index;
-      });
+    getCasesCoveredByRuleset: function (ruleset) {
 
-      attributeValues.forEach(function (attributeValue) {
-        LEM2.blocks[attributeName][attributeValue] = column.reduce(function (attributeValues, value, index) {
-          if (value === attributeValue) {
-            attributeValues.push(index + 1);
-          }
-          return attributeValues;
-        }, []);
-      });
-    });
-  },
+        var coveredCases = new Set();
+        ruleset.forEach(function (rule) {
+            var coveredCasesByRule = LEM2.getCasesCoveredByRule(rule);
+            coveredCases = coveredCases.union(coveredCasesByRule);
+        });
+        return coveredCases.sort();
+    },
 
-  getCasesCoveredByRule: function (rule) {
-    var attributes = LEM2.dataset[0];
-    var coveredCases = new Set();
+    getCasesCoveredByRule: function (rule) {
+        var attributes = LEM2.dataset[0];
+        var coveredCases = new Set();
 
-    rule.conditions.forEach(function (condition) {
-      var attributeIndex = attributes.indexOf(condition.attribute);
+        rule.conditions.forEach(function (condition) {
+            var block = new Set(LEM2.blocks[condition.attribute][condition.value]);
+            if (coveredCases.size === 0) {
+                coveredCases = block;
+                return;
+            }
+            coveredCases = coveredCases.intersection(block);
+        });
 
-      var block = new Set(LEM2.blocks[condition.attribute][condition.value]);
-      if (coveredCases.size === 0) {
-        coveredCases = block;
-        return;
-      }
-      coveredCases = coveredCases.intersection(block);
-    });
+        return coveredCases.sort();
+    },
 
-    return coveredCases;
-  },
+    compressRule: function (rule) {
+        var minimalConditions = [];
+        var removedConditions = [];
+        var minimalRule = {
+            "conditions": [],
+            "decision": rule.decision,
+            "consistent": rule.consistent
+        }
 
-  // TODO: Refactor
-  reduceRuleset: function (ruleset) {
-    if (ruleset.rules.length === 3) {
-      return { "rules": [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" } }] };
+        rule.conditions.forEach(function (condition, conditionIndex) {
+            var conditionsMinusCondition = rule.conditions.slice(0);
+            conditionsMinusCondition.splice(conditionIndex, 1);
+            removedConditions.forEach(function (removedIndex) {
+                conditionsMinusCondition.splice(removedIndex, 1);
+            });
+
+            if (conditionsMinusCondition.length === 0) {
+                minimalConditions.push(condition);
+                return false;
+            }
+
+            minimalRule.conditions = conditionsMinusCondition;
+            var coveredCasesMinusCondition = LEM2.getCasesCoveredByRule(minimalRule);
+
+            if (LEM2.concept.cases.isSuperset(coveredCasesMinusCondition)) {
+                removedConditions.push(conditionIndex);
+            }
+            else {
+                minimalConditions.push(condition);
+            }
+        });
+
+        minimalRule.conditions = minimalConditions;
+        return minimalRule;
+    },
+
+    compressRuleset: function () {
+        var minimalRuleset = [];
+        var removedRules = [];
+
+        LEM2.singleLocalCovering.forEach(function (rule, ruleIndex) {
+            var rulesetMinusRule = LEM2.singleLocalCovering.slice(0);
+            rulesetMinusRule.splice(ruleIndex, 1);
+            removedRules.forEach(function (removedIndex) {
+                rulesetMinusRule.splice(removedIndex, 1);
+            });
+
+            if (rulesetMinusRule.length === 0) {
+                minimalRuleset.push(rule);
+                return false;
+            }
+
+            var coveredCasesMinusRule = LEM2.getCasesCoveredByRuleset(rulesetMinusRule);
+            var coveredDifference = LEM2.concept.cases.difference(coveredCasesMinusRule);
+
+            // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to minimalRuleset
+            if (coveredDifference.size > 0) {
+                minimalRuleset.push(rule);
+            }
+            else {
+                removedRules.push(ruleIndex);
+            }
+        });
+
+        LEM2.singleLocalCovering = minimalRuleset;
+    },
+
+    findCondition: function (rule, targetCondition) {
+        var targetIndex = -1;
+
+        rule.conditions.forEach(function (condition, conditionIndex) {
+            if (condition.attribute !== targetCondition.attribute) {
+                return;
+            }
+
+            if (condition.value !== targetCondition.value) {
+                return;
+            }
+
+            targetIndex = conditionIndex;
+        });
+
+        return targetIndex;
+    },
+
+    newGoalBlockIntersections: function (rule) {
+        var intersections = [];
+
+        for (var attribute in LEM2.blocks) {
+            var attributeBlocks = LEM2.blocks[attribute];
+            for (var attributeValue in attributeBlocks) {
+                var conditionIndex = LEM2.findCondition(rule, { "attribute": attribute, "value": attributeValue });
+                if (conditionIndex !== -1) {
+                    continue;
+                }
+
+                var blockCases = new Set(LEM2.blocks[attribute][attributeValue]);
+                var intersection = {
+                    "attribute": attribute,
+                    "value": attributeValue,
+                    "cases": blockCases.intersection(LEM2.goal)
+                }
+                if (intersection.cases.size) {
+                    intersections.push(intersection);
+                }
+            }
+        }
+
+        return intersections;
+    },
+
+    selectBestBlock: function (intersections) {
+        var bestBlock = intersections[0];
+        var bestCardinality = LEM2.blocks[intersections[0].attribute][intersections[0].value].length;
+
+        intersections.forEach(function (intersection) {
+            var cardinality = LEM2.blocks[intersection.attribute][intersection.value].length;
+
+            if (intersection.cases.size < bestBlock.cases.size) {
+                return;
+            }
+
+            if (intersection.cases.size > bestBlock.cases.size) {
+                bestBlock = intersection;
+                bestCardinality = cardinality;
+                return;
+            }
+
+            if (cardinality > bestCardinality) {
+                return;
+            }
+
+            if (cardinality < bestCardinality) {
+                bestBlock = intersection;
+                bestCardinality = cardinality;
+                return;
+            }
+        });
+
+        return bestBlock;
+    },
+
+    updateGoal: function () {
+        var coveredCases = LEM2.getCasesCoveredByRuleset(LEM2.singleLocalCovering);
+        LEM2.goal = LEM2.concept.cases.difference(coveredCases);
     }
-
-    if (ruleset.rules.length === 4) {
-      return { "rules": [{ "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" } }] };
-    }
-
-    var reducedRuleset = { "rules": [] };
-
-    ruleset.rules.forEach(function (rule, ruleIndex) {
-      var rulesetMinusRule = ruleset.rules.slice(0);
-      rulesetMinusRule.splice(ruleIndex, 1);
-      // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to reducedRuleset
-      reducedRuleset.rules.push(rule);
-    });
-
-    return reducedRuleset;
-  }
 };
 
-module.exports = LEM2;
