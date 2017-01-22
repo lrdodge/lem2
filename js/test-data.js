@@ -95,7 +95,7 @@ const datasetInconsistent = [
   ["high", "no", "yes", "no", "yes"],
   ["high", "no", "no", "no", "no"],
   ["normal", "no", "yes", "no", "no"],
-  ["normal", "no", "yes", "no", "yes"]
+  ["normal", "no", "yes", "no", "yes"],
 ];
 
 const conceptFluYesInconsistent = {
@@ -155,4 +155,22 @@ const rulesetFluNoInconsistent = [
     "decision": { "name": "flu", "value": "no" },
     "consistent": false
   },
+];
+
+// Set-Valued Attributes
+
+const datasetSetValuedAttributesOriginal = [
+  ["temperature", "headache", "cough", "flu"],
+  ["high|very high", "yes", "no", "yes"],
+  ["high", "no", "yes", "yes"],
+  ["very high", "no", "no", "no"],
+  ["normal|high", "yes", "yes", "maybe"],
+];
+
+const datasetSetValuedAttributes = [
+  ["temperature", "headache", "cough", "flu"],
+  [new Set(["high", "very high"]), "yes", "no", "yes"],
+  ["high", "no", "yes", "yes"],
+  ["very high", "no", "no", "no"],
+  [new Set(["normal", "high"]), "yes", "yes", "maybe"],
 ];

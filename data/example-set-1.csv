@@ -1,0 +1,5 @@
+temperature,headache,cough,flu
+high|very high,yes,no,yes
+high,no,yes,yes
+very high,no,no,no
+normal|high,yes,yes,maybe

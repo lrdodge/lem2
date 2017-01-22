@@ -42,6 +42,7 @@ describe('LEM2 Module', function () {
         { "name": "updateGoal" },
         { "name": "newRule" },
         { "name": "findCondition" },
+        { "name": "convertToSetValuedDataset" },
     ];
 
     functionTests.forEach(function (funct) {

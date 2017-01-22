@@ -297,6 +297,21 @@ var LEM2 = {
     updateGoal: function () {
         var coveredCases = LEM2.getCasesCoveredByRuleset(LEM2.singleLocalCovering);
         LEM2.goal = LEM2.concept.cases.difference(coveredCases);
+    },
+
+    convertToSetValuedDataset : function (dataset) {
+        dataset.forEach(function(row, rowIndex) {
+           row.forEach(function(cell, cellIndex) {               
+               if (cell.indexOf("|") === -1) {
+                   return;
+               }
+
+               var splitCell = cell.split("|");
+               dataset[rowIndex][cellIndex] = new Set(splitCell);
+           }); 
+        });
+
+        return dataset;
     }
 };
 

@@ -446,7 +446,14 @@ describe("LEM2 Module", function () {
         expect(conditionIndex).to.be.equal(test.index);
       });
     });
+  });
 
+  describe("#convertToSetValuedDataset()", function () {
+    it("should convert any pipe separated values to sets", function () {
+      var setValuedDataset = JSON.parse(JSON.stringify(datasetSetValuedAttributesOriginal))
 
+      LEM2.convertToSetValuedDataset(setValuedDataset);
+      expect(setValuedDataset).to.be.deep.equal(datasetSetValuedAttributes);
+    });
   });
 });
