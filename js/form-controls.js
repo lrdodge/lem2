@@ -143,9 +143,18 @@ var FormController = (function () {
     var ruleList = $("<ol/>", {
       "id": "rules-list"
     });
+    var warningIcon = $("<i/>", {
+      "class": "fa fa-exclamation-triangle text-warning",
+      "aria-hidden": true
+    });
 
     rules.forEach(function (rule) {
       var ruleItem = $("<li/>");
+
+      if (!rule.consistent) {
+        ruleItem.append(warningIcon);
+        $("#inconsistent-alert").show();
+      }
 
       rule.conditions.forEach(function (condition, conditionIndex) {
         var condition = " (" + condition.attribute + ", " + condition.value + ") ";
@@ -180,6 +189,7 @@ var FormController = (function () {
 
   var initializeLem2 = function (data) {
     $("#rules-div").hide();
+    $("#inconsistent-alert").hide();
     $("#rules-list").remove();
     $("#data-input-error-alert").hide();
     $("#data-input-error-message").empty();
