@@ -299,19 +299,24 @@ var LEM2 = {
         LEM2.goal = LEM2.concept.cases.difference(coveredCases);
     },
 
-    convertToSetValuedDataset : function (dataset) {
-        dataset.forEach(function(row, rowIndex) {
-           row.forEach(function(cell, cellIndex) {               
-               if (cell.indexOf("|") === -1) {
-                   return;
-               }
+    convertToSetValuedDataset: function (dataset) {
+      dataset.forEach(function (row, rowIndex) {
+        if (rowIndex === 0) {
+          // skip header
+          return;
+        }
 
-               var splitCell = cell.split("|");
-               dataset[rowIndex][cellIndex] = new Set(splitCell);
-           }); 
+        row.forEach(function (cell, cellIndex) {
+          if (cell.indexOf("|") === -1) {
+            return;
+          }
+
+          var splitCell = cell.split("|");
+          dataset[rowIndex][cellIndex] = new Set(splitCell);
         });
+      });
 
-        return dataset;
+      return dataset;
     }
 };
 
