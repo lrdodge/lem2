@@ -6,7 +6,8 @@ describe("LEM2 Module", function () {
 
     const tests = [
       { "dataset": dataset1, "blocks": blocks1, "concepts": [conceptFluYes1, conceptFluNo1] },
-      { "dataset": dataset2, "blocks": blocks2, "concepts": [conceptFluYes2, conceptFluNo2] }
+      { "dataset": dataset2, "blocks": blocks2, "concepts": [conceptFluYes2, conceptFluNo2] },
+      { "dataset": datasetSetValuedAttributesOriginal, "datasetOut": datasetSetValuedAttributes, "blocks": blocksSet, "concepts": [conceptFluYesSet, conceptFluNoSet, conceptFluMaybeSet] }
     ];
 
     tests.forEach(function (test, testIndex) {
@@ -14,7 +15,12 @@ describe("LEM2 Module", function () {
 
       it("should take a dataset and set the LEM2 dataset" + example, function () {
         LEM2.initialize(test.dataset);
-        expect(LEM2.dataset).to.be.deep.equal(test.dataset);
+        if (test.datasetOut) {
+          expect(LEM2.dataset).to.be.deep.equal(test.datasetOut);
+        }
+        else {
+          expect(LEM2.dataset).to.be.deep.equal(test.dataset);
+        }
       });
 
       it("should take a dataset and create the dataset blocks" + example, function () {
