@@ -38,7 +38,12 @@ const rulesetFluNo1 = [
   }
 ];
 
-const blocks1 = { "temperature": { "very_high": [1], "high": [2, 5, 6], "normal": [3, 4, 7] }, "headache": { "yes": [1, 2, 4], "no": [3, 5, 6, 7] }, "weakness": { "yes": [1, 4, 5, 7], "no": [2, 3, 6] }, "nausea": { "yes": [2, 4], "no": [1, 3, 5, 6, 7] } };
+const blocks1 = {
+  "temperature": { "very_high": [1], "high": [2, 5, 6], "normal": [3, 4, 7] },
+  "headache": { "yes": [1, 2, 4], "no": [3, 5, 6, 7] },
+  "weakness": { "yes": [1, 4, 5, 7], "no": [2, 3, 6] },
+  "nausea": { "yes": [2, 4], "no": [1, 3, 5, 6, 7] }
+};
 const conceptFluYes1 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4, 5]) };
 const conceptFluNo1 = { "decision": "flu", "value": "no", "cases": new Set([3, 6, 7]) };
 
@@ -80,7 +85,12 @@ const rulesetFluNo2 = [
   }
 ];
 
-const blocks2 = { "temperature": { "very_high": [2], "high": [1, 3, 4], "normal": [5, 6] }, "headache": { "yes": [1, 2, 4, 5], "no": [3, 6] }, "nausea": { "yes": [2, 4, 6], "no": [1, 3, 5] }, "cough": { "yes": [1, 4, 6], "no": [2, 3, 5] } };
+const blocks2 = {
+  "temperature": { "very_high": [2], "high": [1, 3, 4], "normal": [5, 6] },
+  "headache": { "yes": [1, 2, 4, 5], "no": [3, 6] },
+  "nausea": { "yes": [2, 4, 6], "no": [1, 3, 5] },
+  "cough": { "yes": [1, 4, 6], "no": [2, 3, 5] }
+};
 const conceptFluYes2 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4]) };
 const conceptFluNo2 = { "decision": "flu", "value": "no", "cases": new Set([3, 5, 6]) };
 
@@ -174,3 +184,13 @@ const datasetSetValuedAttributes = [
   ["very high", "no", "no", "no"],
   [new Set(["normal", "high"]), "yes", "yes", "maybe"],
 ];
+
+const blocksSet = {
+  "temperature": { "very_high": [1,3], "high": [1,2,4], "normal": [4] },
+  "headache": { "yes": [1, 4], "no": [2,3] },
+  "cough": { "yes": [2, 4], "no": [1, 3] }
+};
+
+const conceptFluYesSet = { "decision": "flu", "value": "yes", "cases": new Set([1, 2]) };
+const conceptFluNoSet = { "decision": "flu", "value": "no", "cases": new Set([3]) };
+const conceptFluMaybeSet = { "decision": "flu", "value": "maybe", "cases": new Set([4]) };
