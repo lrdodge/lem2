@@ -7,7 +7,7 @@ describe("LEM2 Module", function () {
     const tests = [
       { "dataset": dataset1, "blocks": blocks1, "concepts": [conceptFluYes1, conceptFluNo1] },
       { "dataset": dataset2, "blocks": blocks2, "concepts": [conceptFluYes2, conceptFluNo2] },
-      { "dataset": datasetSetValuedAttributesOriginal, "datasetOut": datasetSetValuedAttributes, "blocks": blocksSet, "concepts": [conceptFluYesSet, conceptFluNoSet, conceptFluMaybeSet] }
+      { "dataset": datasetSetValuesRaw, "datasetOut": datasetSetValues, "blocks": blocksSetValues, "concepts": [conceptFluYesSetValues, conceptFluNoSetValues, conceptFluMaybeSetValues] }
     ];
 
     tests.forEach(function (test, testIndex) {
@@ -456,10 +456,14 @@ describe("LEM2 Module", function () {
 
   describe("#convertToSetValuedDataset()", function () {
     it("should convert any pipe separated values to sets", function () {
-      var setValuedDataset = JSON.parse(JSON.stringify(datasetSetValuedAttributesOriginal))
+      const convertedDataset = LEM2.convertToSetValuedDataset(datasetSetValuesRaw);
+      expect(convertedDataset).to.be.deep.equal(datasetSetValues);
+    });
 
-      LEM2.convertToSetValuedDataset(setValuedDataset);
-      expect(setValuedDataset).to.be.deep.equal(datasetSetValuedAttributes);
+    it("should not modify the original data set", function () {
+      var originalDataset = JSON.parse(JSON.stringify(datasetSetValuesRaw));
+      LEM2.convertToSetValuedDataset(datasetSetValuesRaw);
+      expect(datasetSetValuesRaw).to.be.deep.equal(originalDataset);
     });
   });
 });

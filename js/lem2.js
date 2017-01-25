@@ -300,6 +300,8 @@ var LEM2 = {
     },
 
     convertToSetValuedDataset: function (dataset) {
+      var dataset = JSON.parse(JSON.stringify(dataset));
+
       dataset.forEach(function (row, rowIndex) {
         if (rowIndex === 0) {
           // skip header

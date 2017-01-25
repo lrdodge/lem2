@@ -169,7 +169,7 @@ const rulesetFluNoInconsistent = [
 
 // Set-Valued Attributes
 
-const datasetSetValuedAttributesOriginal = [
+const datasetSetValuesRaw = [
   ["temperature", "headache", "cough", "flu"],
   ["high|very high", "yes", "no", "yes"],
   ["high", "no", "yes", "yes"],
@@ -177,7 +177,7 @@ const datasetSetValuedAttributesOriginal = [
   ["normal|high", "yes", "yes", "maybe"],
 ];
 
-const datasetSetValuedAttributes = [
+const datasetSetValues = [
   ["temperature", "headache", "cough", "flu"],
   [new Set(["high", "very high"]), "yes", "no", "yes"],
   ["high", "no", "yes", "yes"],
@@ -185,12 +185,12 @@ const datasetSetValuedAttributes = [
   [new Set(["normal", "high"]), "yes", "yes", "maybe"],
 ];
 
-const blocksSet = {
+const blocksSetValues = {
   "temperature": { "very_high": [1,3], "high": [1,2,4], "normal": [4] },
   "headache": { "yes": [1, 4], "no": [2,3] },
   "cough": { "yes": [2, 4], "no": [1, 3] }
 };
 
-const conceptFluYesSet = { "decision": "flu", "value": "yes", "cases": new Set([1, 2]) };
-const conceptFluNoSet = { "decision": "flu", "value": "no", "cases": new Set([3]) };
-const conceptFluMaybeSet = { "decision": "flu", "value": "maybe", "cases": new Set([4]) };
+const conceptFluYesSetValues = { "decision": "flu", "value": "yes", "cases": new Set([1, 2]) };
+const conceptFluNoSetValues = { "decision": "flu", "value": "no", "cases": new Set([3]) };
+const conceptFluMaybeSetValues = { "decision": "flu", "value": "maybe", "cases": new Set([4]) };
