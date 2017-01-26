@@ -140,7 +140,7 @@ describe("LEM2 Module", function () {
       const example = " - Example #" + testIndex;
       const originalDataset = [];
       test.dataset.forEach(function (row, rowIndex) {
-        originalDataset[rowIndex] = test.dataset[rowIndex].slice(0);
+        originalDataset[rowIndex] = row.slice(0);
       });
 
       // Create Blocks

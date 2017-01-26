@@ -42,8 +42,11 @@ var LEM2 = {
     },
 
     newAttributeValueBlocks: function () {
-        LEM2.blocks = {};
-        var dataset = LEM2.dataset.slice(0);
+      LEM2.blocks = {};
+      const dataset = [];
+      LEM2.dataset.forEach(function (row, rowIndex) {
+        dataset[rowIndex] = row.slice(0);
+      });
 
         var attributeNames = dataset[0].slice(0);
         // Remove decision label
