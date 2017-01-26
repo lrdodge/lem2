@@ -105,12 +105,16 @@ describe("LEM2 Module", function () {
 
     const tests = [
       { "dataset": dataset1, "concepts": [conceptFluYes1, conceptFluNo1] },
-      { "dataset": dataset2, "concepts": [conceptFluYes2, conceptFluNo2] }
+      { "dataset": dataset2, "concepts": [conceptFluYes2, conceptFluNo2] },
+      { "dataset": datasetSetValues, "concepts": [conceptFluYesSetValues, conceptFluNoSetValues, conceptFluMaybeSetValues] },
     ];
 
     tests.forEach(function (test, testIndex) {
       // TODO: Create clone function and use across tests and application instead of slice
-      const originalDataset = JSON.parse(JSON.stringify(test.dataset));
+      const originalDataset = [];
+      test.dataset.forEach(function (row, rowIndex) {
+        originalDataset[rowIndex] = row.slice(0);
+      });
       const example = " - Example #" + (testIndex + 1)
 
       it("should create an array of concept objects from the dataset" + example, function () {
