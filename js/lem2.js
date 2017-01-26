@@ -53,7 +53,6 @@ var LEM2 = {
       attributeNames.pop();
       // Remove labels
       dataset.shift();
-      console.log(attributeNames);
 
       attributeNames.forEach(function (attributeName, attributeIndex) {
         LEM2.blocks[attributeName] = {};
@@ -67,6 +66,7 @@ var LEM2 = {
         column.forEach(function (attributeValue) {
           if (attributeValue.size) {
             attributeValue.forEach(function (setValue) {
+              // TODO: Combine usage of duplicate code
               if (attributeValues.indexOf(setValue) === -1) {
                 attributeValues.push(setValue);
               }
@@ -80,10 +80,20 @@ var LEM2 = {
 
           attributeValues.push(attributeValue);
         });
-        console.log(attributeValues);
 
         attributeValues.forEach(function (attributeValue) {
           LEM2.blocks[attributeName][attributeValue] = column.reduce(function (attributeValues, value, index) {
+
+            if (value.size) {
+              value.forEach(function (setValue) {
+                // TODO: Combine usage of duplicate code
+                if (setValue === attributeValue) {
+                  attributeValues.push(index + 1);
+                }
+              });
+              return attributeValues;
+            }
+
             if (value === attributeValue) {
               attributeValues.push(index + 1);
             }
