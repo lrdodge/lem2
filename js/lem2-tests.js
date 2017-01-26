@@ -368,7 +368,10 @@ describe("LEM2 Module", function () {
       { "dataset": dataset1, "concept": conceptFluYes1, "example": 1 },
       { "dataset": dataset1, "concept": conceptFluNo1, "example": 1 },
       { "dataset": dataset2, "concept": conceptFluYes2, "example": 2 },
-      { "dataset": dataset2, "concept": conceptFluNo2, "example": 2 }
+      { "dataset": dataset2, "concept": conceptFluNo2, "example": 2 },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluYesSetValues, "example": "Set" },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluNoSetValues, "example": "Set" },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluMaybeSetValues, "example": "Set" },
     ];
 
     tests.forEach(function (test) {
@@ -424,6 +427,9 @@ describe("LEM2 Module", function () {
       { "dataset": dataset1, "concept": conceptFluNo1, "example": 1 },
       { "dataset": dataset2, "concept": conceptFluYes2, "example": 2 },
       { "dataset": dataset2, "concept": conceptFluNo2, "example": 2 },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluYesSetValues, "example": "Set" },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluNoSetValues, "example": "Set" },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluMaybeSetValues, "example": "Set" },
     ];
 
     tests.forEach(function (test) {
