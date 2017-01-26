@@ -138,7 +138,10 @@ describe("LEM2 Module", function () {
 
     tests.forEach(function (test, testIndex) {
       const example = " - Example #" + testIndex;
-      const originalDataset = JSON.parse(JSON.stringify(test.dataset));
+      const originalDataset = [];
+      test.dataset.forEach(function (row, rowIndex) {
+        originalDataset[rowIndex] = test.dataset[rowIndex].slice(0);
+      });
 
       // Create Blocks
 
@@ -152,7 +155,9 @@ describe("LEM2 Module", function () {
       // Does Not Modify Dataset
 
       it("should not modify the input dataset" + example, function () {
-        expect(LEM2.dataset).to.be.deep.equal(originalDataset);
+        LEM2.dataset.forEach(function (row, rowIndex) {
+          expect(LEM2.dataset[rowIndex]).to.be.deep.equal(originalDataset[rowIndex]);
+        });
       });
     });
   });
