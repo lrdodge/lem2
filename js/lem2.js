@@ -95,6 +95,7 @@ var LEM2 = {
 
     initialize: function (dataset) {
         LEM2.dataset = dataset;
+        LEM2.dataset = LEM2.convertToSetValuedDataset(LEM2.dataset);
         LEM2.newConcepts();
         LEM2.newAttributeValueBlocks();
     },
