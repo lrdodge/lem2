@@ -48,32 +48,49 @@ var LEM2 = {
         dataset[rowIndex] = row.slice(0);
       });
 
-        var attributeNames = dataset[0].slice(0);
-        // Remove decision label
-        attributeNames.pop();
-        // Remove labels
-        dataset.shift();
+      var attributeNames = dataset[0].slice(0);
+      // Remove decision label
+      attributeNames.pop();
+      // Remove labels
+      dataset.shift();
+      console.log(attributeNames);
 
-        attributeNames.forEach(function (attributeName, attributeIndex) {
-            LEM2.blocks[attributeName] = {};
+      attributeNames.forEach(function (attributeName, attributeIndex) {
+        LEM2.blocks[attributeName] = {};
 
-            var column = dataset.map(function (value) {
-                return value[attributeIndex];
-            });
-
-            var attributeValues = column.filter(function (value, index, self) {
-                return self.indexOf(value) === index;
-            });
-
-            attributeValues.forEach(function (attributeValue) {
-                LEM2.blocks[attributeName][attributeValue] = column.reduce(function (attributeValues, value, index) {
-                    if (value === attributeValue) {
-                        attributeValues.push(index + 1);
-                    }
-                    return attributeValues;
-                }, []);
-            });
+        var column = dataset.map(function (value) {
+          return value[attributeIndex];
         });
+
+        // TODO: Refactor indentation levels
+        var attributeValues = [];
+        column.forEach(function (attributeValue) {
+          if (attributeValue.size) {
+            attributeValue.forEach(function (setValue) {
+              if (attributeValues.indexOf(setValue) === -1) {
+                attributeValues.push(setValue);
+              }
+            });
+            return;
+          }
+
+          if (attributeValues.indexOf(attributeValue) !== -1) {
+            return;
+          }
+
+          attributeValues.push(attributeValue);
+        });
+        console.log(attributeValues);
+
+        attributeValues.forEach(function (attributeValue) {
+          LEM2.blocks[attributeName][attributeValue] = column.reduce(function (attributeValues, value, index) {
+            if (value === attributeValue) {
+              attributeValues.push(index + 1);
+            }
+            return attributeValues;
+          }, []);
+        });
+      });
     },
 
     initialize: function (dataset) {
