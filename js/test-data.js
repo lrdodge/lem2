@@ -186,7 +186,7 @@ const datasetSetValues = [
 ];
 
 const blocksSetValues = {
-  "temperature": { "high": [1, 2, 4], "very_high": [1, 3], "normal": [4] },
+  "temperature": { "high": [1, 2, 4], "very high": [1, 3], "normal": [4] },
   "headache": { "yes": [1, 4], "no": [2, 3] },
   "cough": { "yes": [2, 4], "no": [1, 3] }
 };
