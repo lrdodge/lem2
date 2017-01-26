@@ -133,7 +133,8 @@ describe("LEM2 Module", function () {
     const tests = [
       { "dataset": adHocDataset, "blocks": adHocBlocks },
       { "dataset": dataset1, "blocks": blocks1 },
-      { "dataset": dataset2, "blocks": blocks2 }
+      { "dataset": dataset2, "blocks": blocks2 },
+      { "dataset": datasetSetValues, "blocks": blocksSetValues },
     ];
 
     tests.forEach(function (test, testIndex) {
