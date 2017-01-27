@@ -204,7 +204,10 @@ var FormController = (function () {
     $("#concept-modal").modal('hide');
 
     var conceptIndex = $("input[name='concept']:checked").val();
-    LEM2.invokeProcedure(LEM2.datasetConcepts[conceptIndex]);
+    var concept = LEM2.datasetConcepts[conceptIndex];
+    
+    $("#concept-display").text("(" + concept.decision + "," + concept.value + ")");
+    LEM2.invokeProcedure(concept);
     showRules(LEM2.singleLocalCovering);
   };
 
