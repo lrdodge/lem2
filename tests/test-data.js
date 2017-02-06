@@ -38,7 +38,12 @@ const rulesetFluNo1 = [
   }
 ];
 
-const blocks1 = { "temperature": { "very_high": [1], "high": [2, 5, 6], "normal": [3, 4, 7] }, "headache": { "yes": [1, 2, 4], "no": [3, 5, 6, 7] }, "weakness": { "yes": [1, 4, 5, 7], "no": [2, 3, 6] }, "nausea": { "yes": [2, 4], "no": [1, 3, 5, 6, 7] } };
+const blocks1 = {
+  "temperature": { "very_high": [1], "high": [2, 5, 6], "normal": [3, 4, 7] },
+  "headache": { "yes": [1, 2, 4], "no": [3, 5, 6, 7] },
+  "weakness": { "yes": [1, 4, 5, 7], "no": [2, 3, 6] },
+  "nausea": { "yes": [2, 4], "no": [1, 3, 5, 6, 7] }
+};
 const conceptFluYes1 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4, 5]) };
 const conceptFluNo1 = { "decision": "flu", "value": "no", "cases": new Set([3, 6, 7]) };
 
@@ -80,7 +85,12 @@ const rulesetFluNo2 = [
   }
 ];
 
-const blocks2 = { "temperature": { "very_high": [2], "high": [1, 3, 4], "normal": [5, 6] }, "headache": { "yes": [1, 2, 4, 5], "no": [3, 6] }, "nausea": { "yes": [2, 4, 6], "no": [1, 3, 5] }, "cough": { "yes": [1, 4, 6], "no": [2, 3, 5] } };
+const blocks2 = {
+  "temperature": { "very_high": [2], "high": [1, 3, 4], "normal": [5, 6] },
+  "headache": { "yes": [1, 2, 4, 5], "no": [3, 6] },
+  "nausea": { "yes": [2, 4, 6], "no": [1, 3, 5] },
+  "cough": { "yes": [1, 4, 6], "no": [2, 3, 5] }
+};
 const conceptFluYes2 = { "decision": "flu", "value": "yes", "cases": new Set([1, 2, 4]) };
 const conceptFluNo2 = { "decision": "flu", "value": "no", "cases": new Set([3, 5, 6]) };
 
@@ -95,7 +105,7 @@ const datasetInconsistent = [
   ["high", "no", "yes", "no", "yes"],
   ["high", "no", "no", "no", "no"],
   ["normal", "no", "yes", "no", "no"],
-  ["normal", "no", "yes", "no", "yes"]
+  ["normal", "no", "yes", "no", "yes"],
 ];
 
 const conceptFluYesInconsistent = {
@@ -156,3 +166,31 @@ const rulesetFluNoInconsistent = [
     "consistent": false
   },
 ];
+
+// Set-Valued Attributes
+
+const datasetSetValuesRaw = [
+  ["temperature", "headache", "cough", "flu"],
+  ["high|very high", "yes", "no", "yes"],
+  ["high", "no", "yes", "yes"],
+  ["very high", "no", "no", "no"],
+  ["normal|high", "yes", "yes", "maybe"],
+];
+
+const datasetSetValues = [
+  ["temperature", "headache", "cough", "flu"],
+  [new Set(["high", "very high"]), "yes", "no", "yes"],
+  ["high", "no", "yes", "yes"],
+  ["very high", "no", "no", "no"],
+  [new Set(["normal", "high"]), "yes", "yes", "maybe"],
+];
+
+const blocksSetValues = {
+  "temperature": { "high": [1, 2, 4], "very high": [1, 3], "normal": [4] },
+  "headache": { "yes": [1, 4], "no": [2, 3] },
+  "cough": { "yes": [2, 4], "no": [1, 3] }
+};
+
+const conceptFluYesSetValues = { "decision": "flu", "value": "yes", "cases": new Set([1, 2]) };
+const conceptFluNoSetValues = { "decision": "flu", "value": "no", "cases": new Set([3]) };
+const conceptFluMaybeSetValues = { "decision": "flu", "value": "maybe", "cases": new Set([4]) };

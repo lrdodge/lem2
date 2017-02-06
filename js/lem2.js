@@ -42,39 +42,70 @@ var LEM2 = {
     },
 
     newAttributeValueBlocks: function () {
-        LEM2.blocks = {};
-        var dataset = LEM2.dataset.slice(0);
+      LEM2.blocks = {};
+      const dataset = [];
+      LEM2.dataset.forEach(function (row, rowIndex) {
+        dataset[rowIndex] = row.slice(0);
+      });
 
-        var attributeNames = dataset[0].slice(0);
-        // Remove decision label
-        attributeNames.pop();
-        // Remove labels
-        dataset.shift();
+      var attributeNames = dataset[0].slice(0);
+      // Remove decision label
+      attributeNames.pop();
+      // Remove labels
+      dataset.shift();
 
-        attributeNames.forEach(function (attributeName, attributeIndex) {
-            LEM2.blocks[attributeName] = {};
+      attributeNames.forEach(function (attributeName, attributeIndex) {
+        LEM2.blocks[attributeName] = {};
 
-            var column = dataset.map(function (value) {
-                return value[attributeIndex];
-            });
-
-            var attributeValues = column.filter(function (value, index, self) {
-                return self.indexOf(value) === index;
-            });
-
-            attributeValues.forEach(function (attributeValue) {
-                LEM2.blocks[attributeName][attributeValue] = column.reduce(function (attributeValues, value, index) {
-                    if (value === attributeValue) {
-                        attributeValues.push(index + 1);
-                    }
-                    return attributeValues;
-                }, []);
-            });
+        var column = dataset.map(function (value) {
+          return value[attributeIndex];
         });
+
+        // TODO: Refactor indentation levels
+        var attributeValues = [];
+        column.forEach(function (attributeValue) {
+          if (attributeValue.size) {
+            attributeValue.forEach(function (setValue) {
+              // TODO: Combine usage of duplicate code
+              if (attributeValues.indexOf(setValue) === -1) {
+                attributeValues.push(setValue);
+              }
+            });
+            return;
+          }
+
+          if (attributeValues.indexOf(attributeValue) !== -1) {
+            return;
+          }
+
+          attributeValues.push(attributeValue);
+        });
+
+        attributeValues.forEach(function (attributeValue) {
+          LEM2.blocks[attributeName][attributeValue] = column.reduce(function (attributeValues, value, index) {
+
+            if (value.size) {
+              value.forEach(function (setValue) {
+                // TODO: Combine usage of duplicate code
+                if (setValue === attributeValue) {
+                  attributeValues.push(index + 1);
+                }
+              });
+              return attributeValues;
+            }
+
+            if (value === attributeValue) {
+              attributeValues.push(index + 1);
+            }
+            return attributeValues;
+          }, []);
+        });
+      });
     },
 
     initialize: function (dataset) {
         LEM2.dataset = dataset;
+        LEM2.dataset = LEM2.convertToSetValuedDataset(LEM2.dataset);
         LEM2.newConcepts();
         LEM2.newAttributeValueBlocks();
     },
@@ -297,6 +328,28 @@ var LEM2 = {
     updateGoal: function () {
         var coveredCases = LEM2.getCasesCoveredByRuleset(LEM2.singleLocalCovering);
         LEM2.goal = LEM2.concept.cases.difference(coveredCases);
+    },
+
+    convertToSetValuedDataset: function (dataset) {
+      var dataset = JSON.parse(JSON.stringify(dataset));
+
+      dataset.forEach(function (row, rowIndex) {
+        if (rowIndex === 0) {
+          // skip header
+          return;
+        }
+
+        row.forEach(function (cell, cellIndex) {
+          if (cell.indexOf("|") === -1) {
+            return;
+          }
+
+          var splitCell = cell.split("|");
+          dataset[rowIndex][cellIndex] = new Set(splitCell);
+        });
+      });
+
+      return dataset;
     }
 };
 

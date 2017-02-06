@@ -11,13 +11,17 @@ var FormController = (function () {
 
     switch (this.id) {
       case "dataset-1":
-        dataInputField.val("temperature,headache,weakness,nausea,flu\nvery_high,yes,yes,no,yes\nhigh,yes,no,yes,yes\nnormal,no,no,no,no\nnormal,yes,yes,yes,yes\nhigh,no,yes,no,yes\nhigh,no,no,no,no\nnormal,no,yes,no,no")
+        dataInputField.val("temperature,headache,weakness,nausea,flu\nvery_high,yes,yes,no,yes\nhigh,yes,no,yes,yes\nnormal,no,no,no,no\nnormal,yes,yes,yes,yes\nhigh,no,yes,no,yes\nhigh,no,no,no,no\nnormal,no,yes,no,no");
         break;
       case "dataset-2":
-        dataInputField.val("temperature,headache,nausea,cough,flu\nhigh,yes,no,yes,yes\nvery_high,yes,yes,no,yes\nhigh,no,no,no,no\nhigh,yes,yes,yes,yes\nnormal,yes,no,no,no\nnormal,no,yes,yes,no")
+        dataInputField.val("temperature,headache,nausea,cough,flu\nhigh,yes,no,yes,yes\nvery_high,yes,yes,no,yes\nhigh,no,no,no,no\nhigh,yes,yes,yes,yes\nnormal,yes,no,no,no\nnormal,no,yes,yes,no");
+        break;
+      case "dataset-set":
+        dataInputField.val("temperature,headache,cough,flu\nhigh|very high,yes,no,yes\nhigh,no,yes,yes\nvery high,no,no,no\nnormal|high,yes,yes,maybe");
         break;
       default:
         dataInputField.val("");
+        break;
     }
   }
 
@@ -204,7 +208,10 @@ var FormController = (function () {
     $("#concept-modal").modal('hide');
 
     var conceptIndex = $("input[name='concept']:checked").val();
-    LEM2.invokeProcedure(LEM2.datasetConcepts[conceptIndex]);
+    var concept = LEM2.datasetConcepts[conceptIndex];
+
+    $("#concept-display").text("(" + concept.decision + "," + concept.value + ")");
+    LEM2.invokeProcedure(concept);
     showRules(LEM2.singleLocalCovering);
   };
 

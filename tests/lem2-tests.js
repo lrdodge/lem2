@@ -6,7 +6,8 @@ describe("LEM2 Module", function () {
 
     const tests = [
       { "dataset": dataset1, "blocks": blocks1, "concepts": [conceptFluYes1, conceptFluNo1] },
-      { "dataset": dataset2, "blocks": blocks2, "concepts": [conceptFluYes2, conceptFluNo2] }
+      { "dataset": dataset2, "blocks": blocks2, "concepts": [conceptFluYes2, conceptFluNo2] },
+      { "dataset": datasetSetValuesRaw, "datasetOut": datasetSetValues, "blocks": blocksSetValues, "concepts": [conceptFluYesSetValues, conceptFluNoSetValues, conceptFluMaybeSetValues] }
     ];
 
     tests.forEach(function (test, testIndex) {
@@ -14,7 +15,12 @@ describe("LEM2 Module", function () {
 
       it("should take a dataset and set the LEM2 dataset" + example, function () {
         LEM2.initialize(test.dataset);
-        expect(LEM2.dataset).to.be.deep.equal(test.dataset);
+        if (test.datasetOut) {
+          expect(LEM2.dataset).to.be.deep.equal(test.datasetOut);
+        }
+        else {
+          expect(LEM2.dataset).to.be.deep.equal(test.dataset);
+        }
       });
 
       it("should take a dataset and create the dataset blocks" + example, function () {
@@ -99,12 +105,16 @@ describe("LEM2 Module", function () {
 
     const tests = [
       { "dataset": dataset1, "concepts": [conceptFluYes1, conceptFluNo1] },
-      { "dataset": dataset2, "concepts": [conceptFluYes2, conceptFluNo2] }
+      { "dataset": dataset2, "concepts": [conceptFluYes2, conceptFluNo2] },
+      { "dataset": datasetSetValues, "concepts": [conceptFluYesSetValues, conceptFluNoSetValues, conceptFluMaybeSetValues] },
     ];
 
     tests.forEach(function (test, testIndex) {
       // TODO: Create clone function and use across tests and application instead of slice
-      const originalDataset = JSON.parse(JSON.stringify(test.dataset));
+      const originalDataset = [];
+      test.dataset.forEach(function (row, rowIndex) {
+        originalDataset[rowIndex] = row.slice(0);
+      });
       const example = " - Example #" + (testIndex + 1)
 
       it("should create an array of concept objects from the dataset" + example, function () {
@@ -127,12 +137,16 @@ describe("LEM2 Module", function () {
     const tests = [
       { "dataset": adHocDataset, "blocks": adHocBlocks },
       { "dataset": dataset1, "blocks": blocks1 },
-      { "dataset": dataset2, "blocks": blocks2 }
+      { "dataset": dataset2, "blocks": blocks2 },
+      { "dataset": datasetSetValues, "blocks": blocksSetValues },
     ];
 
     tests.forEach(function (test, testIndex) {
       const example = " - Example #" + testIndex;
-      const originalDataset = JSON.parse(JSON.stringify(test.dataset));
+      const originalDataset = [];
+      test.dataset.forEach(function (row, rowIndex) {
+        originalDataset[rowIndex] = row.slice(0);
+      });
 
       // Create Blocks
 
@@ -146,7 +160,9 @@ describe("LEM2 Module", function () {
       // Does Not Modify Dataset
 
       it("should not modify the input dataset" + example, function () {
-        expect(LEM2.dataset).to.be.deep.equal(originalDataset);
+        LEM2.dataset.forEach(function (row, rowIndex) {
+          expect(LEM2.dataset[rowIndex]).to.be.deep.equal(originalDataset[rowIndex]);
+        });
       });
     });
   });
@@ -352,7 +368,10 @@ describe("LEM2 Module", function () {
       { "dataset": dataset1, "concept": conceptFluYes1, "example": 1 },
       { "dataset": dataset1, "concept": conceptFluNo1, "example": 1 },
       { "dataset": dataset2, "concept": conceptFluYes2, "example": 2 },
-      { "dataset": dataset2, "concept": conceptFluNo2, "example": 2 }
+      { "dataset": dataset2, "concept": conceptFluNo2, "example": 2 },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluYesSetValues, "example": "Set" },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluNoSetValues, "example": "Set" },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluMaybeSetValues, "example": "Set" },
     ];
 
     tests.forEach(function (test) {
@@ -408,6 +427,9 @@ describe("LEM2 Module", function () {
       { "dataset": dataset1, "concept": conceptFluNo1, "example": 1 },
       { "dataset": dataset2, "concept": conceptFluYes2, "example": 2 },
       { "dataset": dataset2, "concept": conceptFluNo2, "example": 2 },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluYesSetValues, "example": "Set" },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluNoSetValues, "example": "Set" },
+      { "dataset": datasetSetValuesRaw, "concept": conceptFluMaybeSetValues, "example": "Set" },
     ];
 
     tests.forEach(function (test) {
@@ -446,7 +468,18 @@ describe("LEM2 Module", function () {
         expect(conditionIndex).to.be.equal(test.index);
       });
     });
+  });
 
+  describe("#convertToSetValuedDataset()", function () {
+    it("should convert any pipe separated values to sets", function () {
+      const convertedDataset = LEM2.convertToSetValuedDataset(datasetSetValuesRaw);
+      expect(convertedDataset).to.be.deep.equal(datasetSetValues);
+    });
 
+    it("should not modify the original data set", function () {
+      var originalDataset = JSON.parse(JSON.stringify(datasetSetValuesRaw));
+      LEM2.convertToSetValuedDataset(datasetSetValuesRaw);
+      expect(datasetSetValuesRaw).to.be.deep.equal(originalDataset);
+    });
   });
 });
