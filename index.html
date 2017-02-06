@@ -63,7 +63,7 @@
           <div class="form-group">
             <label for="data-input">Comma separated value (CSV) data</label>
             <textarea id="data-input" rows="10" class="form-control"></textarea>
-            <span class="help-block">First row should be the column labels. Last column should be the decision value. Omit case numbers.</span>
+            <span class="help-block">First row should be the column labels. Last column should be the decision value. Omit case numbers. Separate set values with <code>|</code>. For optimum performance and rule coverage, data should be discretized.</span>
           </div>
         </div>
 
@@ -85,7 +85,7 @@
         <div id="rules-div" style="display: none;">
           <h2>Rules <small id="concept-display"></small></h2>
           <div id="inconsistent-alert" class="alert alert-warning" role="alert" style="display: none;">
-            Inconsistent rules were created during rule induction which indicates the data set is inconsistent. Cosider creating an approximation of the data set for a more accurate rule set.
+            Inconsistent rules were created during rule induction which indicates the data set is inconsistent. Consider creating an approximation of the data set for a more accurate rule set.
           </div>
         </div>
       </div>
