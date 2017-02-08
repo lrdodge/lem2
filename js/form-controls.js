@@ -8,26 +8,36 @@ var FormController = (function () {
 
   var updateDataInputField = function () {
     var dataInputField = $("#data-input");
+    var dataUrl;
 
     switch (this.id) {
       case "dataset-1":
-        dataInputField.val("temperature,headache,weakness,nausea,flu\nvery_high,yes,yes,no,yes\nhigh,yes,no,yes,yes\nnormal,no,no,no,no\nnormal,yes,yes,yes,yes\nhigh,no,yes,no,yes\nhigh,no,no,no,no\nnormal,no,yes,no,no");
+        dataUrl = "data/example-1.csv";
         break;
       case "dataset-2":
-        dataInputField.val("temperature,headache,nausea,cough,flu\nhigh,yes,no,yes,yes\nvery_high,yes,yes,no,yes\nhigh,no,no,no,no\nhigh,yes,yes,yes,yes\nnormal,yes,no,no,no\nnormal,no,yes,yes,no");
+        dataUrl = "data/example-2.csv";
         break;
       case "dataset-set":
-        dataInputField.val("temperature,headache,cough,flu\nhigh|very high,yes,no,yes\nhigh,no,yes,yes\nvery high,no,no,no\nnormal|high,yes,yes,maybe");
+        dataUrl = "data/example-set-1.csv";
         break;
       default:
         dataInputField.val("");
-        break;
+        return;
     }
+
+    $.ajax({
+      type: "GET",
+      url: dataUrl,
+      dataType: "text",
+      success: function (data) {
+        dataInputField.val(data);
+      }
+    });
   }
 
-  var covnertCsv = function () {
+  var convertCsv = function () {
     var csvInput = $("input[name='dataset-options']:checked").val();
-    var config = {
+    var parseConfig = {
       skipEmptyLines: true,
       complete: function (results) {
         verifyCsv(results);
@@ -36,13 +46,13 @@ var FormController = (function () {
 
     if (csvInput !== "dataset-file") {
       var csvRaw = $("#data-input").val();
-      Papa.parse(csvRaw, config);
+      Papa.parse(csvRaw, parseConfig);
       return;
     }
 
-    var selectedFile = $('#input-file')[0].files[0];
+    var selectedFile = $("#input-file")[0].files[0];
     if (selectedFile) {
-      Papa.parse(selectedFile, config);
+      Papa.parse(selectedFile, parseConfig);
     }
   };
 
@@ -67,7 +77,6 @@ var FormController = (function () {
       })
 
       var errorMessage = " " + error.code + ": " + error.message;
-
       var errorItem = $("<li />", {
         "text": errorMessage
       });
@@ -147,13 +156,13 @@ var FormController = (function () {
     var ruleList = $("<ol/>", {
       "id": "rules-list"
     });
-    var warningIcon = $("<i/>", {
-      "class": "fa fa-exclamation-triangle text-warning",
-      "aria-hidden": true
-    });
 
     rules.forEach(function (rule) {
       var ruleItem = $("<li/>");
+      var warningIcon = $("<i/>", {
+        "class": "fa fa-exclamation-triangle text-warning",
+        "aria-hidden": true
+      });
 
       if (!rule.consistent) {
         ruleItem.append(warningIcon);
@@ -185,19 +194,19 @@ var FormController = (function () {
       ruleItem.append(decision);
 
       ruleList.append(ruleItem);
-      rulesContainer.append(ruleList);
     });
 
+    rulesContainer.append(ruleList);
     rulesContainer.show();
   };
 
   var initializeLem2 = function (data) {
     $("#rules-div").hide();
     $("#inconsistent-alert").hide();
-    $("#rules-list").remove();
     $("#data-input-error-alert").hide();
     $("#data-input-error-message").empty();
-    covnertCsv();
+    $("#rules-list").remove();
+    convertCsv();
   };
 
   var invokeLem2 = function () {
@@ -205,7 +214,7 @@ var FormController = (function () {
       return;
     }
 
-    $("#concept-modal").modal('hide');
+    $("#concept-modal").modal("hide");
 
     var conceptIndex = $("input[name='concept']:checked").val();
     var concept = LEM2.datasetConcepts[conceptIndex];
