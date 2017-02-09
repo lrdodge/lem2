@@ -113,7 +113,7 @@ var LEM2 = {
     initializeProcedure: function (concept) {
         LEM2.concept = concept;
         LEM2.singleLocalCovering = [];
-        LEM2.updateGoal();
+        LEM2.goal = concept.cases;
     },
 
     invokeProcedure: function (concept) {
@@ -123,10 +123,15 @@ var LEM2 = {
     },
 
     newRuleset: function () {
+        var casesCoveredByRuleset = new Set();
         while (LEM2.goal.size) {
             var rule = LEM2.newRule();
             LEM2.singleLocalCovering.push(rule);
-            LEM2.updateGoal();
+
+            // TODO: rule covered by cases already computed in rule creation
+            var casesCoveredByRule = LEM2.getCasesCoveredByRule(rule);
+            casesCoveredByRuleset = casesCoveredByRuleset.union(casesCoveredByRule);
+            LEM2.goal = LEM2.concept.cases.difference(casesCoveredByRuleset);
         }
     },
 
@@ -136,7 +141,7 @@ var LEM2 = {
 
         do {
             var intersections = LEM2.newGoalBlockIntersections(rule);
-            
+
             if (intersections.length === 0) {
                 rule.consistent = false;
                 console.error("Inconsistent Rule Created");
@@ -325,11 +330,6 @@ var LEM2 = {
         return bestBlock;
     },
 
-    updateGoal: function () {
-        var coveredCases = LEM2.getCasesCoveredByRuleset(LEM2.singleLocalCovering);
-        LEM2.goal = LEM2.concept.cases.difference(coveredCases);
-    },
-
     convertToSetValuedDataset: function (dataset) {
       var dataset = JSON.parse(JSON.stringify(dataset));
 
@@ -352,4 +352,3 @@ var LEM2 = {
       return dataset;
     }
 };
-

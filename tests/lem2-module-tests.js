@@ -39,7 +39,6 @@ describe('LEM2 Module', function () {
         { "name": "initializeProcedure" },
         { "name": "newGoalBlockIntersections" },
         { "name": "selectBestBlock" },
-        { "name": "updateGoal" },
         { "name": "newRule" },
         { "name": "findCondition" },
         { "name": "convertToSetValuedDataset" },

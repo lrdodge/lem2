@@ -363,30 +363,6 @@ describe("LEM2 Module", function () {
     });
   });
 
-  describe("#updateGoal()", function () {
-    const tests = [
-      { "dataset": dataset1, "concept": conceptFluYes1, "example": 1 },
-      { "dataset": dataset1, "concept": conceptFluNo1, "example": 1 },
-      { "dataset": dataset2, "concept": conceptFluYes2, "example": 2 },
-      { "dataset": dataset2, "concept": conceptFluNo2, "example": 2 },
-      { "dataset": datasetSetValuesRaw, "concept": conceptFluYesSetValues, "example": "Set" },
-      { "dataset": datasetSetValuesRaw, "concept": conceptFluNoSetValues, "example": "Set" },
-      { "dataset": datasetSetValuesRaw, "concept": conceptFluMaybeSetValues, "example": "Set" },
-    ];
-
-    tests.forEach(function (test) {
-      const example = " - Example #" + test.example + " (" + test.concept.decision + "," + test.concept.value + ")";
-
-      it("should set the goal to the concept minus the single local covering" + example, function () {
-        LEM2.initialize(test.dataset);
-        LEM2.initializeProcedure(test.concept);
-        LEM2.updateGoal();
-
-        expect(LEM2.goal).to.be.deep.equal(LEM2.concept.cases);
-      });
-    });
-  });
-
   describe("#newRule()", function () {
 
     it("should return a rule object", function () {
