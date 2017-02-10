@@ -152,8 +152,15 @@ var LEM2 = {
             rule.conditions.push(condition);
             LEM2.goal = LEM2.goal.intersection(bestBlock.cases);
 
-            var coveredCases = LEM2.getCasesCoveredByRule(rule);
-            var isSubset = LEM2.concept.cases.isSuperset(coveredCases);
+            var block = new Set(LEM2.blocks[condition.attribute][condition.value]);
+            if (rule.coveredCases.size === 0) {
+                rule.coveredCases = block;
+            }
+            else {
+              rule.coveredCases = rule.coveredCases.intersection(block);
+            }
+
+            var isSubset = LEM2.concept.cases.isSuperset(rule.coveredCases);
         } while (rule.conditions.length === 0 || !isSubset)
 
         rule = LEM2.compressRule(rule);
@@ -298,6 +305,7 @@ var LEM2 = {
         return intersections;
     },
 
+    // TODO: Rename to selectBestIntersection
     selectBestBlock: function (intersections) {
         var bestBlock = intersections[0];
         var bestCardinality = LEM2.blocks[intersections[0].attribute][intersections[0].value].length;
