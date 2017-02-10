@@ -113,7 +113,7 @@ var LEM2 = {
     initializeProcedure: function (concept) {
         LEM2.concept = concept;
         LEM2.singleLocalCovering = [];
-        LEM2.updateGoal();
+        LEM2.goal = concept.cases;
     },
 
     invokeProcedure: function (concept) {
@@ -123,20 +123,23 @@ var LEM2 = {
     },
 
     newRuleset: function () {
+        var casesCoveredByRuleset = new Set();
         while (LEM2.goal.size) {
             var rule = LEM2.newRule();
             LEM2.singleLocalCovering.push(rule);
-            LEM2.updateGoal();
+
+            casesCoveredByRuleset = casesCoveredByRuleset.union(rule.coveredCases);
+            LEM2.goal = LEM2.concept.cases.difference(casesCoveredByRuleset);
         }
     },
 
     newRule: function () {
 
-        var rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value }, "consistent": true };
+        var rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value }, "coveredCases": new Set(), "consistent": true };
 
         do {
             var intersections = LEM2.newGoalBlockIntersections(rule);
-            
+
             if (intersections.length === 0) {
                 rule.consistent = false;
                 console.error("Inconsistent Rule Created");
@@ -149,8 +152,15 @@ var LEM2 = {
             rule.conditions.push(condition);
             LEM2.goal = LEM2.goal.intersection(bestBlock.cases);
 
-            var coveredCases = LEM2.getCasesCoveredByRule(rule);
-            var isSubset = LEM2.concept.cases.isSuperset(coveredCases);
+            var block = new Set(LEM2.blocks[condition.attribute][condition.value]);
+            if (rule.coveredCases.size === 0) {
+                rule.coveredCases = block;
+            }
+            else {
+              rule.coveredCases = rule.coveredCases.intersection(block);
+            }
+
+            var isSubset = LEM2.concept.cases.isSuperset(rule.coveredCases);
         } while (rule.conditions.length === 0 || !isSubset)
 
         rule = LEM2.compressRule(rule);
@@ -161,8 +171,7 @@ var LEM2 = {
 
         var coveredCases = new Set();
         ruleset.forEach(function (rule) {
-            var coveredCasesByRule = LEM2.getCasesCoveredByRule(rule);
-            coveredCases = coveredCases.union(coveredCasesByRule);
+            coveredCases = coveredCases.union(rule.coveredCases);
         });
         return coveredCases.sort();
     },
@@ -189,6 +198,7 @@ var LEM2 = {
         var minimalRule = {
             "conditions": [],
             "decision": rule.decision,
+            "coveredCases": new Set(),
             "consistent": rule.consistent
         }
 
@@ -216,6 +226,7 @@ var LEM2 = {
         });
 
         minimalRule.conditions = minimalConditions;
+        minimalRule.coveredCases = LEM2.getCasesCoveredByRule(minimalRule);
         return minimalRule;
     },
 
@@ -294,6 +305,7 @@ var LEM2 = {
         return intersections;
     },
 
+    // TODO: Rename to selectBestIntersection
     selectBestBlock: function (intersections) {
         var bestBlock = intersections[0];
         var bestCardinality = LEM2.blocks[intersections[0].attribute][intersections[0].value].length;
@@ -325,11 +337,6 @@ var LEM2 = {
         return bestBlock;
     },
 
-    updateGoal: function () {
-        var coveredCases = LEM2.getCasesCoveredByRuleset(LEM2.singleLocalCovering);
-        LEM2.goal = LEM2.concept.cases.difference(coveredCases);
-    },
-
     convertToSetValuedDataset: function (dataset) {
       var dataset = JSON.parse(JSON.stringify(dataset));
 
@@ -352,4 +359,3 @@ var LEM2 = {
       return dataset;
     }
 };
-

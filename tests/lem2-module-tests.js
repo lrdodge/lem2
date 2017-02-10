@@ -39,7 +39,6 @@ describe('LEM2 Module', function () {
         { "name": "initializeProcedure" },
         { "name": "newGoalBlockIntersections" },
         { "name": "selectBestBlock" },
-        { "name": "updateGoal" },
         { "name": "newRule" },
         { "name": "findCondition" },
         { "name": "convertToSetValuedDataset" },
@@ -48,7 +47,7 @@ describe('LEM2 Module', function () {
     functionTests.forEach(function (funct) {
         it("should have an " + funct.name + " function", function () {
             expect(LEM2).to.have.property(funct.name)
-                .that.is.a('function');
+                .that.is.a("function");
         });
     });
 });
