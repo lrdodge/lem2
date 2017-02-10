@@ -237,10 +237,30 @@ describe("LEM2 Module", function () {
 
   describe("#compressRule()", function () {
 
-    const rule1 = { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true };
-    const rule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true };
-    const expandedRule1 = { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true };
-    const expandedRule2 = { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true };
+    const rule1 = {
+      "conditions": [{ "attribute": "headache", "value": "yes" }],
+      "decision": { "name": "flu", "value": "yes" },
+      "coveredCases": new Set([1,2,4]),
+      "consistent": true
+    };
+    const rule2 = {
+      "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }],
+      "decision": { "name": "flu", "value": "yes" },
+      "coveredCases": new Set([5]),
+      "consistent": true
+    };
+    const expandedRule1 = {
+      "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "yes" }],
+      "decision": { "name": "flu", "value": "yes" },
+      "coveredCases": new Set([4]),
+      "consistent": true
+    };
+    const expandedRule2 = {
+      "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "yes" }],
+      "decision": { "name": "flu", "value": "yes" },
+      "coveredCases": new Set([5]),
+      "consistent": true
+    };
 
     const tests = [
       { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": rule1, "ruleOut": rule1, "display": "Minimal Rule" },
@@ -250,6 +270,29 @@ describe("LEM2 Module", function () {
     ];
 
     tests.forEach(function (test) {
+      // TODO: Combine duplicated code with New Rule tests
+      it("should take a " + test.display + "should return a rule object", function () {
+        LEM2.initialize(test.dataset);
+        LEM2.concept = test.concept;
+        const rule = LEM2.compressRule(test.ruleIn);
+
+        expect(rule).to.be.a("object");
+
+        expect(rule).to.have.property("conditions")
+          .to.be.a("array");
+        expect(rule).to.have.property("decision")
+          .to.be.a("object");
+        expect(rule).to.have.property("coveredCases")
+          .to.be.a("set");
+        expect(rule).to.have.property("consistent")
+          .to.be.a("boolean");
+
+        expect(rule.decision).to.have.property("name")
+          .to.be.a("string");
+        expect(rule.decision).to.have.property("value")
+          .to.be.a("string");
+      });
+
       it("should take a " + test.display + " and return a minimal rule", function () {
         LEM2.initialize(test.dataset);
         LEM2.concept = test.concept;
@@ -262,9 +305,20 @@ describe("LEM2 Module", function () {
 
   describe("#compressRuleset()", function () {
 
-    const singleRuleRuleset = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true }];
-    const expandedRulesetFluYes1 = [{ "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true }, { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true }, { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true }];
-    const expandedRulesetFluNo1 = [{ "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" } }, { "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" }, "consistent": true }, { "conditions": [{ "attribute": "weakness", "value": "no" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" }, "consistent": true }, { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" }, "consistent": true }];
+    const singleRuleRuleset = [
+      { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "consistent": true }
+    ];
+    const expandedRulesetFluYes1 = [
+      { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([1,2,4]), "consistent": true },
+      { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([4]), "consistent": true },
+      { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([5]), "consistent": true }
+    ];
+    const expandedRulesetFluNo1 = [
+      { "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" }, "coveredCases": new Set([3,7]), "consistent": true },
+      { "conditions": [{ "attribute": "nausea", "value": "no" }, { "attribute": "temperature", "value": "normal" }], "decision": { "name": "flu", "value": "no" }, "coveredCases": new Set([3,7]), "consistent": true },
+      { "conditions": [{ "attribute": "weakness", "value": "no" }, { "attribute": "headache", "value": "no" }], "decision": { "name": "flu", "value": "no" }, "coveredCases": new Set([3,6]), "consistent": true },
+      { "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "no" }, { "attribute": "weakness", "value": "no" }], "decision": { "name": "flu", "value": "no" }, "coveredCases": new Set([3]), "consistent": true }
+    ];
 
     const tests = [
       { "dataset": dataset1, "concept": conceptFluYes1, "rulesetIn": rulesetFluYes1, "rulesetOut": rulesetFluYes1, "display": "Minimal Ruleset", "example": 1 },
@@ -376,6 +430,8 @@ describe("LEM2 Module", function () {
         .to.be.a("array");
       expect(rule).to.have.property("decision")
         .to.be.a("object");
+      expect(rule).to.have.property("coveredCases")
+        .to.be.a("set");
       expect(rule).to.have.property("consistent")
         .to.be.a("boolean");
 

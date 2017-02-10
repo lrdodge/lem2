@@ -128,16 +128,14 @@ var LEM2 = {
             var rule = LEM2.newRule();
             LEM2.singleLocalCovering.push(rule);
 
-            // TODO: rule covered by cases already computed in rule creation
-            var casesCoveredByRule = LEM2.getCasesCoveredByRule(rule);
-            casesCoveredByRuleset = casesCoveredByRuleset.union(casesCoveredByRule);
+            casesCoveredByRuleset = casesCoveredByRuleset.union(rule.coveredCases);
             LEM2.goal = LEM2.concept.cases.difference(casesCoveredByRuleset);
         }
     },
 
     newRule: function () {
 
-        var rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value }, "consistent": true };
+        var rule = { "conditions": [], "decision": { "name": LEM2.concept.decision, "value": LEM2.concept.value }, "coveredCases": new Set(), "consistent": true };
 
         do {
             var intersections = LEM2.newGoalBlockIntersections(rule);
@@ -166,8 +164,7 @@ var LEM2 = {
 
         var coveredCases = new Set();
         ruleset.forEach(function (rule) {
-            var coveredCasesByRule = LEM2.getCasesCoveredByRule(rule);
-            coveredCases = coveredCases.union(coveredCasesByRule);
+            coveredCases = coveredCases.union(rule.coveredCases);
         });
         return coveredCases.sort();
     },
@@ -194,6 +191,7 @@ var LEM2 = {
         var minimalRule = {
             "conditions": [],
             "decision": rule.decision,
+            "coveredCases": new Set(),
             "consistent": rule.consistent
         }
 
@@ -221,6 +219,7 @@ var LEM2 = {
         });
 
         minimalRule.conditions = minimalConditions;
+        minimalRule.coveredCases = LEM2.getCasesCoveredByRule(minimalRule);
         return minimalRule;
     },
 

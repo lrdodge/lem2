@@ -17,6 +17,7 @@ const rulesetFluYes1 = [
       { "attribute": "headache", "value": "yes" },
     ],
     "decision": { "name": "flu", "value": "yes" },
+    "coveredCases": new Set([1,2,4]),
     "consistent": true
   },
   {
@@ -25,6 +26,7 @@ const rulesetFluYes1 = [
       { "attribute": "weakness", "value": "yes" },
     ],
     "decision": { "name": "flu", "value": "yes" },
+    "coveredCases": new Set([5]),
     "consistent": true
   }
 ];
@@ -35,6 +37,7 @@ const rulesetFluNo1 = [
       { "attribute": "temperature", "value": "normal" },
     ],
     "decision": { "name": "flu", "value": "no" },
+    "coveredCases": new Set([3,7]),
     "consistent": true
   },
   {
@@ -43,6 +46,7 @@ const rulesetFluNo1 = [
       { "attribute": "headache", "value": "no" },
     ],
     "decision": { "name": "flu", "value": "no" },
+    "coveredCases": new Set([3,6]),
     "consistent": true
   }
 ];
@@ -75,6 +79,7 @@ const rulesetFluYes2 = [
       { "attribute": "temperature", "value": "high" },
     ],
     "decision": { "name": "flu", "value": "yes" },
+    "coveredCases": new Set([1,4]),
     "consistent": true
   },
   {
@@ -82,6 +87,7 @@ const rulesetFluYes2 = [
       { "attribute": "temperature", "value": "very_high" },
     ],
     "decision": { "name": "flu", "value": "yes" },
+    "coveredCases": new Set([2]),
     "consistent": true
   }
 ];
@@ -91,6 +97,7 @@ const rulesetFluNo2 = [
       { "attribute": "temperature", "value": "normal" },
     ],
     "decision": { "name": "flu", "value": "no" },
+    "coveredCases": new Set([5,6]),
     "consistent": true
   },
   {
@@ -98,6 +105,7 @@ const rulesetFluNo2 = [
       { "attribute": "headache", "value": "no" },
     ],
     "decision": { "name": "flu", "value": "no" },
+    "coveredCases": new Set([3,6]),
     "consistent": true
   }
 ];
@@ -143,6 +151,7 @@ const rulesetFluYesInconsistent = [
       { "attribute": "temperature", "value": "high" },
     ],
     "decision": { "name": "flu", "value": "yes" },
+    "coveredCases": new Set([5]),
     "consistent": true
   },
   {
@@ -150,6 +159,7 @@ const rulesetFluYesInconsistent = [
       { "attribute": "headache", "value": "yes" },
     ],
     "decision": { "name": "flu", "value": "yes" },
+    "coveredCases": new Set([1,2,4]),
     "consistent": true
   },
   {
@@ -160,6 +170,7 @@ const rulesetFluYesInconsistent = [
       { "attribute": "nausea", "value": "no" },
     ],
     "decision": { "name": "flu", "value": "yes" },
+    "coveredCases": new Set([7,8]),
     "consistent": false
   },
 ];
@@ -170,6 +181,7 @@ const rulesetFluNoInconsistent = [
       { "attribute": "weakness", "value": "no" },
     ],
     "decision": { "name": "flu", "value": "no" },
+    "coveredCases": new Set([3,6]),
     "consistent": true
   },
   {
@@ -180,6 +192,7 @@ const rulesetFluNoInconsistent = [
       { "attribute": "nausea", "value": "no" },
     ],
     "decision": { "name": "flu", "value": "no" },
+    "coveredCases": new Set([7,8]),
     "consistent": false
   },
 ];
