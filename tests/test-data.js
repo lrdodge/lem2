@@ -1,6 +1,15 @@
 // Data Example 1
 
-const dataset1 = [["temperature", "headache", "weakness", "nausea", "flu"], ["very_high", "yes", "yes", "no", "yes"], ["high", "yes", "no", "yes", "yes"], ["normal", "no", "no", "no", "no"], ["normal", "yes", "yes", "yes", "yes"], ["high", "no", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["normal", "no", "yes", "no", "no"]];
+const dataset1 = [
+  ["temperature", "headache", "weakness", "nausea", "flu"],
+  ["very_high", "yes", "yes", "no", "yes"],
+  ["high", "yes", "no", "yes", "yes"],
+  ["normal", "no", "no", "no", "no"],
+  ["normal", "yes", "yes", "yes", "yes"],
+  ["high", "no", "yes", "no", "yes"],
+  ["high", "no", "no", "no", "no"],
+  ["normal", "no", "yes", "no", "no"]
+];
 
 const rulesetFluYes1 = [
   {
@@ -49,7 +58,15 @@ const conceptFluNo1 = { "decision": "flu", "value": "no", "cases": new Set([3, 6
 
 // Data Example 2
 
-const dataset2 = [["temperature", "headache", "nausea", "cough", "flu"], ["high", "yes", "no", "yes", "yes"], ["very_high", "yes", "yes", "no", "yes"], ["high", "no", "no", "no", "no"], ["high", "yes", "yes", "yes", "yes"], ["normal", "yes", "no", "no", "no"], ["normal", "no", "yes", "yes", "no"]];
+const dataset2 = [
+  ["temperature", "headache", "nausea", "cough", "flu"],
+  ["high", "yes", "no", "yes", "yes"],
+  ["very_high", "yes", "yes", "no", "yes"],
+  ["high", "no", "no", "no", "no"],
+  ["high", "yes", "yes", "yes", "yes"],
+  ["normal", "yes", "no", "no", "no"],
+  ["normal", "no", "yes", "yes", "no"]
+];
 
 const rulesetFluYes2 = [
   {
