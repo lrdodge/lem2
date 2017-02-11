@@ -129,6 +129,7 @@ var LEM2 = {
             LEM2.singleLocalCovering.push(rule);
 
             casesCoveredByRuleset = casesCoveredByRuleset.union(rule.coveredCases);
+            casesCoveredByRuleset = casesCoveredByRuleset.sort();
             LEM2.goal = LEM2.concept.cases.difference(casesCoveredByRuleset);
         }
     },
