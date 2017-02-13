@@ -195,7 +195,16 @@ var LEM2 = {
         }
 
         // End Time
+        console.log("## Induction Status");
         console.log(new Date());
+        var totalMinutes = (totalInductionTime * 0.001) / 60;
+        var totalHours = totalMinutes / 60;
+        if (totalHours < 1) {
+            console.log("Total Induction Time: " + totalMinutes.toFixed(2) + " min");
+        }
+        else {
+            console.log("Total Induction Time: " + totalHours.toFixed(2) + " hours");
+        }
     },
 
     newRule: function () {
