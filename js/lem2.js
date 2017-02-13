@@ -156,39 +156,39 @@ var LEM2 = {
             var averageInductionTime = (totalInductionTime / LEM2.singleLocalCovering.length) * .001;
             console.log("Inducing the Rule took " + (t2 - t0) * .001 + " seconds (" + averageInductionTime.toFixed(4) + " avg)");
 
-            console.log("STATUS");
-
+            console.log("## STATUS");
 
             var percentCompleteRuleset = casesCoveredByRuleset.size / LEM2.concept.cases.size * 100;
             var remainingCasesRuleset = (LEM2.concept.cases.size - casesCoveredByRuleset.size);
-            // var remainingTimeRuleset = (remainingCasesRuleset * averageInductionTime) / 60;
-            var remainingTimeRuleset = totalInductionTime / (percentCompleteRuleset / 100);
-            // console.log(remainingTimeRuleset)
-            remainingTimeRuleset = (remainingTimeRuleset * .001) / 60;
-            console.log("Cases Covered by Ruleset: " + casesCoveredByRuleset.size);
-            console.log("Remaining Cases by Ruleset: " + remainingCasesRuleset + " (" + percentCompleteRuleset.toFixed(4) + "% complete)");
+            // var remainingTimeRuleset = totalInductionTime / (percentCompleteRuleset / 100);
+            var averageCasesPerRuleRuleset = casesCoveredByRuleset.size / LEM2.singleLocalCovering.length;
+            var remainingTimeRuleset = averageInductionTime * (remainingCasesRuleset / averageCasesPerRuleRuleset);
+
+            // remainingTimeRuleset = (remainingTimeRuleset * .001) / 60;
+            remainingTimeRuleset = remainingTimeRuleset / 60;
+            console.log("[Ruleset] Cases Covered: " + casesCoveredByRuleset.size);
+            console.log("[Ruleset] Remaining Cases: " + remainingCasesRuleset + " (" + percentCompleteRuleset.toFixed(4) + "% complete)");
             var hoursRuleset = remainingTimeRuleset / 60;
             if (hoursRuleset < 1) {
-                console.log("Estimated Time Remaining by Ruleset: " + Math.round(remainingTimeRuleset) + " min");
+                console.log("[Ruleset] Estimated Time Remaining: " + Math.round(remainingTimeRuleset) + " min");
             }
             else {
-                console.log("Estimated Time Remaining by Ruleset: " + hoursRuleset.toFixed(2) + " hours");
+                console.log("[Ruleset] Estimated Time Remaining: " + hoursRuleset.toFixed(2) + " hours");
             }
 
             var percentCompleteGoal = (LEM2.concept.cases.size - LEM2.goal.size) / LEM2.concept.cases.size * 100;
-            // var remainingCasesGoal = LEM2.goal.size;
-            // var remainingTimeGoal = (remainingCasesGoal * averageInductionTime) / 60; // minutes
             var remainingTimeGoal = totalInductionTime / (percentCompleteGoal / 100);
-            // console.log(remainingTimeGoal)
-            remainingTimeGoal = (remainingTimeGoal * .001) / 60;
-            console.log("Cases Covered by Goal: " + (LEM2.concept.cases.size - LEM2.goal.size));
-            console.log("Remaining Cases by Goal: " + LEM2.goal.size + " (" + percentCompleteGoal.toFixed(4) + "% complete)");
+            var averageCasesPerRuleGoal = (LEM2.concept.cases.size - LEM2.goal.size) / LEM2.singleLocalCovering.length;
+            var remainingTimeGoal = averageInductionTime * (LEM2.goal.size / averageCasesPerRuleGoal);
+            remainingTimeGoal = remainingTimeGoal / 60;
+            console.log("[Goal] Cases Covered: " + (LEM2.concept.cases.size - LEM2.goal.size));
+            console.log("[Goal] Remaining Cases: " + LEM2.goal.size + " (" + percentCompleteGoal.toFixed(4) + "% complete)");
             var hoursGoal = remainingTimeGoal / 60;
             if (hoursGoal < 1) {
-                console.log("Estimated Time Remaining by Goal: " + Math.round(remainingTimeGoal) + " min");
+                console.log("[Goal] Estimated Time Remaining: " + Math.round(remainingTimeGoal) + " min");
             }
             else {
-                console.log("Estimated Time Remaining by Goal: " + hoursGoal.toFixed(2) + " hours");
+                console.log("[Goal] Estimated Time Remaining: " + hoursGoal.toFixed(2) + " hours");
             }
         }
 
