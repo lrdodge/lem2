@@ -125,6 +125,8 @@ var LEM2 = {
     newRuleset: function () {
 
         // Start Time
+        console.log("New Ruleset");
+        console.log("===========");
         console.log(new Date());
         var totalRuleCreationTime = 0;
         var totalGoalUpdateTime = 0;
@@ -132,9 +134,9 @@ var LEM2 = {
 
         var casesCoveredByRuleset = new Set();
         while (LEM2.goal.size) {
-            console.log('---');
+            console.log("## New Rule");
             console.log(new Date());
-            console.log('Goal Size: ' + LEM2.goal.size);
+            console.log("Goal Size: " + LEM2.goal.size);
             var t0 = performance.now();
 
             var rule = LEM2.newRule();
@@ -156,7 +158,7 @@ var LEM2 = {
             var averageInductionTime = (totalInductionTime / LEM2.singleLocalCovering.length) * .001;
             console.log("Inducing the Rule took " + (t2 - t0) * .001 + " seconds (" + averageInductionTime.toFixed(4) + " avg)");
 
-            console.log("## STATUS");
+            console.log("### Status");
 
             var percentCompleteRuleset = casesCoveredByRuleset.size / LEM2.concept.cases.size * 100;
             var remainingCasesRuleset = (LEM2.concept.cases.size - casesCoveredByRuleset.size);
