@@ -308,7 +308,15 @@ var LEM2 = {
         var minimalRuleset = [];
         var removedRules = [];
 
+        console.log("Compress Ruleset");
+        console.log("================");
+        console.log(new Date());
+        var t0 = performance.now();
+        var t2 = 0;
+
         LEM2.singleLocalCovering.forEach(function (rule, ruleIndex) {
+            console.log("## Check for Redundancy");
+            var t1 = performance.now();
             var rulesetMinusRule = LEM2.singleLocalCovering.slice(0);
             rulesetMinusRule.splice(ruleIndex, 1);
             removedRules.forEach(function (removedIndex) {
@@ -330,9 +338,24 @@ var LEM2 = {
             else {
                 removedRules.push(ruleIndex);
             }
+            t2 = performance.now();
+
+            var ruleNumber = ruleIndex + 1;
+            var averageTime = ((t2 - t1) / ruleNumber) * .001;
+            console.log("Redundancy Checking Rule #" + ruleNumber + " took " + (t2 - t1) * .001 + " seconds (" + averageTime.toFixed(4) + " avg)");
         });
 
         LEM2.singleLocalCovering = minimalRuleset;
+        console.log("## Status");
+        console.log(new Date());
+        var totalTime = ((t2-t0) * .001) / 60;
+        var totalTimeHours = totalTime / 60;
+        if (totalTimeHours < 1) {
+            console.log("Total Compress Rulelset Time: " + totalTime.toFixed(4) + " min");
+        }
+        else {
+            console.log("Total Compress Rulelset Time: " + totalTimeHours.toFixed(4) + " hours");
+        }
     },
 
     findCondition: function (rule, targetCondition) {
