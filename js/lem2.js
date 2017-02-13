@@ -123,15 +123,77 @@ var LEM2 = {
     },
 
     newRuleset: function () {
+
+        // Start Time
+        console.log(new Date());
+        var totalRuleCreationTime = 0;
+        var totalGoalUpdateTime = 0;
+        var totalInductionTime = 0;
+
         var casesCoveredByRuleset = new Set();
         while (LEM2.goal.size) {
+            console.log('---');
+            console.log(new Date());
+            console.log('Goal Size: ' + LEM2.goal.size);
+            var t0 = performance.now();
+
             var rule = LEM2.newRule();
             LEM2.singleLocalCovering.push(rule);
+            var t1 = performance.now();
+            totalRuleCreationTime += (t1 - t0);
+            var averageRuleCreationTime = (totalRuleCreationTime / LEM2.singleLocalCovering.length) * .001;
+            console.log("Creating a rule took " + (t1 - t0) * .001 + " seconds (" + averageRuleCreationTime.toFixed(4) + " avg)");
 
             casesCoveredByRuleset = casesCoveredByRuleset.union(rule.coveredCases);
             casesCoveredByRuleset = casesCoveredByRuleset.sort();
             LEM2.goal = LEM2.concept.cases.difference(casesCoveredByRuleset);
+            var t2 = performance.now();
+            totalGoalUpdateTime += (t2 - t1);
+            var averageGoalCreationTime = (totalGoalUpdateTime / LEM2.singleLocalCovering.length) * .001;
+            console.log("Updating the Goal took " + (t2 - t1) * .001 + " seconds (" + averageGoalCreationTime.toFixed(4) + " avg)");
+
+            totalInductionTime += (t2 - t0);
+            var averageInductionTime = (totalInductionTime / LEM2.singleLocalCovering.length) * .001;
+            console.log("Inducing the Rule took " + (t2 - t0) * .001 + " seconds (" + averageInductionTime.toFixed(4) + " avg)");
+
+            console.log("STATUS");
+
+
+            var percentCompleteRuleset = casesCoveredByRuleset.size / LEM2.concept.cases.size * 100;
+            var remainingCasesRuleset = (LEM2.concept.cases.size - casesCoveredByRuleset.size);
+            // var remainingTimeRuleset = (remainingCasesRuleset * averageInductionTime) / 60;
+            var remainingTimeRuleset = totalInductionTime / (percentCompleteRuleset / 100);
+            // console.log(remainingTimeRuleset)
+            remainingTimeRuleset = (remainingTimeRuleset * .001) / 60;
+            console.log("Cases Covered by Ruleset: " + casesCoveredByRuleset.size);
+            console.log("Remaining Cases by Ruleset: " + remainingCasesRuleset + " (" + percentCompleteRuleset.toFixed(4) + "% complete)");
+            var hoursRuleset = remainingTimeRuleset / 60;
+            if (hoursRuleset < 1) {
+                console.log("Estimated Time Remaining by Ruleset: " + Math.round(remainingTimeRuleset) + " min");
+            }
+            else {
+                console.log("Estimated Time Remaining by Ruleset: " + hoursRuleset.toFixed(2) + " hours");
+            }
+
+            var percentCompleteGoal = (LEM2.concept.cases.size - LEM2.goal.size) / LEM2.concept.cases.size * 100;
+            // var remainingCasesGoal = LEM2.goal.size;
+            // var remainingTimeGoal = (remainingCasesGoal * averageInductionTime) / 60; // minutes
+            var remainingTimeGoal = totalInductionTime / (percentCompleteGoal / 100);
+            // console.log(remainingTimeGoal)
+            remainingTimeGoal = (remainingTimeGoal * .001) / 60;
+            console.log("Cases Covered by Goal: " + (LEM2.concept.cases.size - LEM2.goal.size));
+            console.log("Remaining Cases by Goal: " + LEM2.goal.size + " (" + percentCompleteGoal.toFixed(4) + "% complete)");
+            var hoursGoal = remainingTimeGoal / 60;
+            if (hoursGoal < 1) {
+                console.log("Estimated Time Remaining by Goal: " + Math.round(remainingTimeGoal) + " min");
+            }
+            else {
+                console.log("Estimated Time Remaining by Goal: " + hoursGoal.toFixed(2) + " hours");
+            }
         }
+
+        // End Time
+        console.log(new Date());
     },
 
     newRule: function () {
