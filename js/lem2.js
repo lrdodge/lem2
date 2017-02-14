@@ -280,7 +280,7 @@ var LEM2 = {
             "decision": rule.decision,
             "coveredCases": new Set(),
             "consistent": rule.consistent
-        }
+        };
 
         rule.conditions.forEach(function (condition, conditionIndex) {
             var conditionsMinusCondition = rule.conditions.slice(0);
