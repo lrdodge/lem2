@@ -33,7 +33,7 @@ describe("LEM2 Module", function () {
     });
   });
 
-  describe('#initializeProcedure()', function () {
+  describe("#initializeProcedure()", function () {
 
     const tests = [
       { "concept": conceptFluYes1, "example": 1 },
