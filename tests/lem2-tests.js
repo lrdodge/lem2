@@ -318,6 +318,8 @@ describe("LEM2 Module", function () {
     const expandedRulesetFluYes1 = [
       { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([1,2,4]), "consistent": true },
       { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([4]), "consistent": true },
+      { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([4]), "consistent": true },
+      { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([4]), "consistent": true },
       { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([5]), "consistent": true }
     ];
     const expandedRulesetFluNo1 = [

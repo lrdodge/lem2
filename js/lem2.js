@@ -283,7 +283,7 @@ var LEM2 = {
         };
         var minimalRule = JSON.parse(JSON.stringify(rule));
         minimalRule.conditions.reverse();
-        
+
         for (var conditionIndex = minimalRule.conditions.length - 1; conditionIndex >= 0; conditionIndex--) {
           if (minimalRule.conditions.length === 1) {
             break;
@@ -304,6 +304,27 @@ var LEM2 = {
     },
 
     compressRuleset: function () {
+      LEM2.singleLocalCovering.reverse();
+
+      for (var ruleIndex = LEM2.singleLocalCovering.length - 1; ruleIndex >= 0; ruleIndex--) {
+        if (LEM2.singleLocalCovering.length === 1) {
+          break;
+        }
+
+        var rulesetMinusRule = LEM2.singleLocalCovering.slice(0);
+        rulesetMinusRule.splice(ruleIndex, 1);
+
+        var coveredCasesMinusRule = LEM2.getCasesCoveredByRuleset(rulesetMinusRule);
+        var coveredDifference = LEM2.concept.cases.difference(coveredCasesMinusRule);
+
+        // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to minimalRuleset
+        if (coveredDifference.size === 0) {
+            LEM2.singleLocalCovering.splice(ruleIndex, 1);
+        }
+      }
+
+      LEM2.singleLocalCovering.reverse();
+
         var minimalRuleset = [];
         var removedRules = [];
 
