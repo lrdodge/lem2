@@ -317,6 +317,7 @@ var LEM2 = {
         console.log("Compress Ruleset");
         console.log("================");
         console.log(new Date());
+        console.log("Rule Count: " + LEM2.singleLocalCovering.length);
         var t0 = performance.now();
         var t2 = 0;
 
@@ -354,6 +355,7 @@ var LEM2 = {
         LEM2.singleLocalCovering = minimalRuleset;
         console.log("## Status");
         console.log(new Date());
+        console.log("Rule Count: " + LEM2.singleLocalCovering.length);
         var totalTime = ((t2-t0) * .001) / 60;
         var totalTimeHours = totalTime / 60;
         if (totalTimeHours < 1) {
