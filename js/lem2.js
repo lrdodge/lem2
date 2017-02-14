@@ -281,31 +281,24 @@ var LEM2 = {
             "coveredCases": new Set(),
             "consistent": rule.consistent
         };
+        var minimalRule = JSON.parse(JSON.stringify(rule));
+        minimalRule.conditions.reverse();
+        
+        for (var conditionIndex = minimalRule.conditions.length - 1; conditionIndex >= 0; conditionIndex--) {
+          if (minimalRule.conditions.length === 1) {
+            break;
+          }
 
-        rule.conditions.forEach(function (condition, conditionIndex) {
-            var conditionsMinusCondition = rule.conditions.slice(0);
-            conditionsMinusCondition.splice(conditionIndex, 1);
-            removedConditions.forEach(function (removedIndex) {
-                conditionsMinusCondition.splice(removedIndex, 1);
-            });
+          var ruleMinusCondition = JSON.parse(JSON.stringify(minimalRule));
+          ruleMinusCondition.conditions.splice(conditionIndex, 1);
+          var coveredCasesMinusCondition = LEM2.getCasesCoveredByRule(ruleMinusCondition);
 
-            if (conditionsMinusCondition.length === 0) {
-                minimalConditions.push(condition);
-                return false;
-            }
+          if (LEM2.concept.cases.isSuperset(coveredCasesMinusCondition)) {
+              minimalRule.conditions.splice(conditionIndex, 1);
+          }
+        }
 
-            minimalRule.conditions = conditionsMinusCondition;
-            var coveredCasesMinusCondition = LEM2.getCasesCoveredByRule(minimalRule);
-
-            if (LEM2.concept.cases.isSuperset(coveredCasesMinusCondition)) {
-                removedConditions.push(conditionIndex);
-            }
-            else {
-                minimalConditions.push(condition);
-            }
-        });
-
-        minimalRule.conditions = minimalConditions;
+        minimalRule.conditions.reverse();
         minimalRule.coveredCases = LEM2.getCasesCoveredByRule(minimalRule);
         return minimalRule;
     },
