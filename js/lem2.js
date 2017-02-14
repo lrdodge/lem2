@@ -192,6 +192,12 @@ var LEM2 = {
             else {
                 console.log("[Goal] Estimated Time Remaining: " + hoursGoal.toFixed(2) + " hours");
             }
+
+            if (remainingCasesRuleset !== LEM2.goal.size) {
+              console.warn("Ruleset/Goal Coverage Out of Sync");
+              console.log(rule.coveredCases.difference(LEM2.concept.cases));
+              // break;
+            }
         }
 
         // End Time
