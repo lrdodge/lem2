@@ -237,35 +237,6 @@ var LEM2 = {
       }
 
       LEM2.singleLocalCovering.reverse();
-
-        var minimalRuleset = [];
-        var removedRules = [];
-
-        LEM2.singleLocalCovering.forEach(function (rule, ruleIndex) {
-            var rulesetMinusRule = LEM2.singleLocalCovering.slice(0);
-            rulesetMinusRule.splice(ruleIndex, 1);
-            removedRules.forEach(function (removedIndex) {
-                rulesetMinusRule.splice(removedIndex, 1);
-            });
-
-            if (rulesetMinusRule.length === 0) {
-                minimalRuleset.push(rule);
-                return false;
-            }
-
-            var coveredCasesMinusRule = LEM2.getCasesCoveredByRuleset(rulesetMinusRule);
-            var coveredDifference = LEM2.concept.cases.difference(coveredCasesMinusRule);
-
-            // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to minimalRuleset
-            if (coveredDifference.size > 0) {
-                minimalRuleset.push(rule);
-            }
-            else {
-                removedRules.push(ruleIndex);
-            }
-        });
-
-        LEM2.singleLocalCovering = minimalRuleset;
     },
 
     findCondition: function (rule, targetCondition) {
