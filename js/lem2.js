@@ -331,12 +331,16 @@ var LEM2 = {
 
       if (coveredDifference.size === 0) {
         LEM2.singleLocalCovering.splice(ruleIndex, 1);
+        console.log("REMOVED");
       }
 
       t2 = performance.now();
       var ruleNumber = ruleCount - ruleIndex;
-      var averageTime = ((t2 - t1) / ruleNumber) * .001;
+      var averageTime = ((t2 - t0) / ruleNumber) * .001;
+      var percentComplete = (ruleNumber / LEM2.singleLocalCovering.length) * 100;
+      var timeRemaining = averageTime * ruleIndex;
       console.log("Redundancy Checking Rule #" + ruleNumber + " took " + (t2 - t1) * .001 + " seconds (" + averageTime.toFixed(4) + " avg)");
+      console.log("Estimated Time Remaining: " + timeRemaining / 60 + " min (" + percentComplete.toFixed(4) + "%)");
     }
 
     LEM2.singleLocalCovering.reverse();
