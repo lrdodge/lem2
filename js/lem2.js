@@ -304,9 +304,21 @@ var LEM2 = {
   },
 
   compressRuleset: function () {
+
+    console.log("Compress Ruleset");
+    console.log("================");
+    console.log(new Date());
+    console.log("Rule Count: " + LEM2.singleLocalCovering.length);
+    var t0 = performance.now();
+    var t2 = 0;
+
     LEM2.singleLocalCovering.reverse();
+    var ruleCount = LEM2.singleLocalCovering.length;
 
     for (var ruleIndex = LEM2.singleLocalCovering.length - 1; ruleIndex >= 0; ruleIndex--) {
+      console.log("## Check for Redundancy");
+      var t1 = performance.now();
+
       if (LEM2.singleLocalCovering.length === 1) {
         break;
       }
@@ -317,56 +329,18 @@ var LEM2 = {
       var coveredCasesMinusRule = LEM2.getCasesCoveredByRuleset(rulesetMinusRule);
       var coveredDifference = LEM2.concept.cases.difference(coveredCasesMinusRule);
 
-      // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to minimalRuleset
       if (coveredDifference.size === 0) {
         LEM2.singleLocalCovering.splice(ruleIndex, 1);
       }
+
+      t2 = performance.now();
+      var ruleNumber = ruleCount - ruleIndex;
+      var averageTime = ((t2 - t1) / ruleNumber) * .001;
+      console.log("Redundancy Checking Rule #" + ruleNumber + " took " + (t2 - t1) * .001 + " seconds (" + averageTime.toFixed(4) + " avg)");
     }
 
     LEM2.singleLocalCovering.reverse();
 
-    var minimalRuleset = [];
-    var removedRules = [];
-
-    console.log("Compress Ruleset");
-    console.log("================");
-    console.log(new Date());
-    console.log("Rule Count: " + LEM2.singleLocalCovering.length);
-    var t0 = performance.now();
-    var t2 = 0;
-
-    LEM2.singleLocalCovering.forEach(function (rule, ruleIndex) {
-      console.log("## Check for Redundancy");
-      var t1 = performance.now();
-      var rulesetMinusRule = LEM2.singleLocalCovering.slice(0);
-      rulesetMinusRule.splice(ruleIndex, 1);
-      removedRules.forEach(function (removedIndex) {
-        rulesetMinusRule.splice(removedIndex, 1);
-      });
-
-      if (rulesetMinusRule.length === 0) {
-        minimalRuleset.push(rule);
-        return false;
-      }
-
-      var coveredCasesMinusRule = LEM2.getCasesCoveredByRuleset(rulesetMinusRule);
-      var coveredDifference = LEM2.concept.cases.difference(coveredCasesMinusRule);
-
-      // if rules covered by minus ruleset does not equal rules covered by original ruleset, add to minimalRuleset
-      if (coveredDifference.size > 0) {
-        minimalRuleset.push(rule);
-      }
-      else {
-        removedRules.push(ruleIndex);
-      }
-      t2 = performance.now();
-
-      var ruleNumber = ruleIndex + 1;
-      var averageTime = ((t2 - t1) / ruleNumber) * .001;
-      console.log("Redundancy Checking Rule #" + ruleNumber + " took " + (t2 - t1) * .001 + " seconds (" + averageTime.toFixed(4) + " avg)");
-    });
-
-    LEM2.singleLocalCovering = minimalRuleset;
     console.log("## Status");
     console.log(new Date());
     console.log("Rule Count: " + LEM2.singleLocalCovering.length);
