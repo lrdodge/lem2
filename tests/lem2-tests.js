@@ -33,7 +33,7 @@ describe("LEM2 Module", function () {
     });
   });
 
-  describe('#initializeProcedure()', function () {
+  describe("#initializeProcedure()", function () {
 
     const tests = [
       { "concept": conceptFluYes1, "example": 1 },
@@ -261,11 +261,18 @@ describe("LEM2 Module", function () {
       "coveredCases": new Set([5]),
       "consistent": true
     };
+    const expandedRule1b = {
+      "conditions": [{ "attribute": "temperature", "value": "normal" }, { "attribute": "headache", "value": "yes" }, { "attribute": "temperature", "value": "normal" }],
+      "decision": { "name": "flu", "value": "yes" },
+      "coveredCases": new Set([4]),
+      "consistent": true
+    };
 
     const tests = [
       { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": rule1, "ruleOut": rule1, "display": "Minimal Rule" },
       { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": rule2, "ruleOut": rule2, "display": "Minimal Rule" },
       { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": expandedRule1, "ruleOut": rule1, "display": "Non-Minimal Rule" },
+      { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": expandedRule1b, "ruleOut": rule1, "display": "Larger Non-Minimal Rule" },
       { "dataset": dataset1, "concept": conceptFluYes1, "ruleIn": expandedRule2, "ruleOut": rule2, "display": "Non-Minimal Rule" },
     ];
 
@@ -310,6 +317,8 @@ describe("LEM2 Module", function () {
     ];
     const expandedRulesetFluYes1 = [
       { "conditions": [{ "attribute": "headache", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([1,2,4]), "consistent": true },
+      { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([4]), "consistent": true },
+      { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([4]), "consistent": true },
       { "conditions": [{ "attribute": "headache", "value": "yes" }, { "attribute": "weakness", "value": "yes" }, { "attribute": "nausea", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([4]), "consistent": true },
       { "conditions": [{ "attribute": "temperature", "value": "high" }, { "attribute": "weakness", "value": "yes" }], "decision": { "name": "flu", "value": "yes" }, "coveredCases": new Set([5]), "consistent": true }
     ];
